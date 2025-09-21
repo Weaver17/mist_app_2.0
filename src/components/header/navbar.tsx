@@ -104,7 +104,7 @@ function Navbar() {
                 </CustomNavigationMenu>
             ) : (
                 <CustomNavigationMenu viewport={false} className="relative">
-                    <CustomNavigationMenuList className="flex gap-2 bg-[#0D0C0C]! rounded-sm p-4 shadow-md md:py-2 md:px-4 lg:p-4">
+                    <CustomNavigationMenuList className="flex gap-2 bg-border rounded-lg p-4 shadow-md">
                         <CustomNavigationMenuItem>
                             <NavLink
                                 href="/signin"

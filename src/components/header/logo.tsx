@@ -4,13 +4,13 @@ import Image from "next/image";
 
 function Logo() {
     return (
-        <div className="h-[60px]">
+        <div className="shadow-lg bg-border rounded-sm p-2">
             <Image
-                src={images.logo}
+                src={images.logo2}
                 alt="Mist Logo"
-                height={20}
-                width={20}
-                className="object-contain h-[60px] w-fit"
+                height={60}
+                width={187}
+                className="object-contain h-[40px]! w-fit md:h-[60px]!"
             />
         </div>
     );
