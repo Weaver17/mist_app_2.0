@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+.navbar-link {
+    font-size: var(--text-xs) /* 0.75rem = 12px */;
+    line-height: var(
+        --tw-leading,
+        var(--text-xs--line-height) /* calc(1 / 0.75) ≈ 1.3333 */
+    );
+    cursor: pointer;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
