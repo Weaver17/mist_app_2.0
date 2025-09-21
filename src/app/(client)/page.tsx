@@ -1,8 +1,28 @@
-import React from "react";
+"use client";
+import GameCard from "@/components/cards/game-card";
+import NewestGames from "@/components/newest/newest-games";
+import { getGamesByReleaseDate } from "@/lib/game-api";
+import { useEffect, useState } from "react";
 
 function Home() {
+    const [newestGames, setNewestGames] = useState([]);
+
+    useEffect(() => {
+        async function getGames() {
+            await getGamesByReleaseDate()
+                .then((data) => {
+                    setNewestGames(data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        getGames();
+    }, []);
+
     return (
         <div className="p-4">
+            <NewestGames games={newestGames} />
             <p className="font-sans">This is Font Sans</p>
             <p className="font-mono">This is Font Mono</p>
             <p className="font-special">This is Zen Dots</p>

@@ -25,6 +25,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --breakpoint-grid2: 580px;
+    --breakpoint-grid3: 940px;
+    --breakpoint-grid4: 1280px;
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-font-sans);
@@ -71,7 +74,7 @@
     --primary: #0284b8;
     --secondary: #e8c902;
     --muted-light: #e5e5e5;
-    --muted-dark: #a5a2a2;
+    --muted-dark: #767474;
     --accent: #2f9cc7;
     --destructive: oklch(0.577 0.245 27.325);
     --border: #0d0c0c;
