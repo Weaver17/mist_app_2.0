@@ -9,15 +9,14 @@ const customButtonVariants = cva(
     {
         variants: {
             variant: {
-                default:
-                    "bg-primary text-primary-foreground hover:bg-primary/80",
+                default: "bg-primary text-foreground hover:bg-primary/80",
                 destructive:
                     "bg-destructive text-white hover:bg-destructive/70 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
                 outline:
-                    "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground hover:border-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+                    "border bg-background shadow-xs hover:bg-accent hover:text-accent hover:border-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
                 secondary:
-                    "bg-secondary border border-secondary text-secondary-foreground hover:bg-secondary/50 hover:border hover:border-border",
-                ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+                    "bg-secondary border border-secondary text-secondary hover:bg-secondary/50 hover:border hover:border-border",
+                ghost: "hover:bg-background hover:text-foreground/75 dark:hover:bg-accent/50",
                 link: "text-primary underline-offset-3 hover:underline",
             },
             size: {
