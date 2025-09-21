@@ -4,26 +4,22 @@ import {
     CustomNavigationMenu,
     CustomNavigationMenuList,
     CustomNavigationMenuItem,
-    CustomNavigationMenuLink,
 } from "../custom/c_navigation-menu";
-import Link from "next/link";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, X } from "lucide-react";
 import { CustomButton } from "../custom/c_button";
+import NavLink from "./navlink";
 
 const MOBILENAVBAR_KEYBOARD_SHORTCUT = "esc";
 
 function Navbar() {
     const isMobile = useIsMobile();
     const [openMobile, setOpenMobile] = React.useState(false);
-    const [open, setOpen] = React.useState(false);
 
     // Helper to toggle the sidebar.
     const toggleMobileNavbar = React.useCallback(() => {
-        return isMobile
-            ? setOpenMobile((open) => !open)
-            : setOpen((open) => !open);
-    }, [isMobile, setOpen, setOpenMobile]);
+        setOpenMobile((open) => !open);
+    }, [setOpenMobile]);
 
     // Adds a keyboard shortcut to toggle the sidebar.
     React.useEffect(() => {
@@ -43,58 +39,91 @@ function Navbar() {
 
     return (
         <nav className="font-special">
-            <CustomNavigationMenu viewport={false} className="relative">
-                {open ? (
-                    <CustomButton
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => toggleMobileNavbar()}
-                    >
-                        <X />
-                    </CustomButton>
-                ) : (
-                    <CustomButton
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => toggleMobileNavbar()}
-                    >
-                        <Menu />
-                    </CustomButton>
-                )}
+            {isMobile ? (
+                <CustomNavigationMenu viewport={false} className="relative">
+                    {isMobile && openMobile ? (
+                        <CustomButton
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => toggleMobileNavbar()}
+                            className="z-[60]"
+                        >
+                            <X />
+                        </CustomButton>
+                    ) : (
+                        <CustomButton
+                            size="icon"
+                            variant="ghost"
+                            onClick={() => toggleMobileNavbar()}
+                            className="z[60]"
+                        >
+                            <Menu />
+                        </CustomButton>
+                    )}
 
-                {open ? (
-                    <CustomNavigationMenuList className="flex flex-col gap-2 absolute -top-[40px] right-[40px] w-[120px] bg-amber-200">
+                    <div
+                        className={`absolute opacity-0 top-[5px] right-[5px] w-[140px] bg-card border rounded-sm p-4 transition-all duration-300 ease-in-out ${
+                            openMobile
+                                ? "opacity-100 translate-x-0"
+                                : "translate-x-full"
+                        }`}
+                    >
+                        {isMobile && openMobile ? (
+                            <CustomNavigationMenuList className="flex flex-col items-center justify-center gap-2">
+                                <CustomNavigationMenuItem>
+                                    <NavLink
+                                        href="/signin"
+                                        text="Sign In"
+                                        color="text-primary!"
+                                    />
+                                </CustomNavigationMenuItem>
+                                <CustomNavigationMenuItem>
+                                    <NavLink
+                                        href="/signup"
+                                        text="Sign Up"
+                                        color="text-foreground!"
+                                    />
+                                </CustomNavigationMenuItem>
+                                <CustomNavigationMenuItem>
+                                    <NavLink
+                                        href="/search"
+                                        text="Search"
+                                        color="text-foreground!"
+                                    />
+                                </CustomNavigationMenuItem>
+                                <CustomNavigationMenuItem>
+                                    <NavLink
+                                        href="/all-games"
+                                        text="All Games"
+                                        color="text-foreground!"
+                                    />
+                                </CustomNavigationMenuItem>
+                            </CustomNavigationMenuList>
+                        ) : null}
+                    </div>
+                </CustomNavigationMenu>
+            ) : (
+                <CustomNavigationMenu viewport={false} className="relative">
+                    <CustomNavigationMenuList className="flex gap-2 bg-[#0D0C0C]! rounded-sm p-4 shadow-md md:py-2 md:px-4 lg:p-4">
                         <CustomNavigationMenuItem>
-                            <CustomNavigationMenuLink asChild>
-                                <Link href="/signin" className="navbar-link">
-                                    Sign In
-                                </Link>
-                            </CustomNavigationMenuLink>
+                            <NavLink
+                                href="/signin"
+                                text="Sign In"
+                                color="text-primary!"
+                            />
                         </CustomNavigationMenuItem>
                         <CustomNavigationMenuItem>
-                            <CustomNavigationMenuLink asChild>
-                                <Link href="/signup" className="navbar-link">
-                                    Sign Up
-                                </Link>
-                            </CustomNavigationMenuLink>
+                            <NavLink href="/signup" text="Sign Up" />
                         </CustomNavigationMenuItem>
                         <CustomNavigationMenuItem>
-                            <CustomNavigationMenuLink asChild>
-                                <Link href="/search" className="navbar-link">
-                                    Search
-                                </Link>
-                            </CustomNavigationMenuLink>
+                            <NavLink href="/search" text="Search" />
                         </CustomNavigationMenuItem>
                         <CustomNavigationMenuItem>
-                            <CustomNavigationMenuLink asChild>
-                                <Link href="/all-games" className="navbar-link">
-                                    All Games
-                                </Link>
-                            </CustomNavigationMenuLink>
+                            <NavLink href="/all-games" text="All Games" />
                         </CustomNavigationMenuItem>
                     </CustomNavigationMenuList>
-                ) : null}
-            </CustomNavigationMenu>
+                </CustomNavigationMenu>
+            )}
         </nav>
     );
 }
