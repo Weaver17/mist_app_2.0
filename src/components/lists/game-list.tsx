@@ -1,5 +1,5 @@
 "use client";
-import { Game } from "@/app/types/types";
+import { Game } from "@/types/types";
 import GameCard from "../cards/game-card";
 import { useState } from "react";
 import { DEFAULT_VISIBLE_COUNT, VISIBLE_COUNT_ADD } from "@/lib/constants";

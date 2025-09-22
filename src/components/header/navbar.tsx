@@ -48,7 +48,7 @@ function Navbar() {
                             onClick={() => toggleMobileNavbar()}
                             className="z-[60]"
                         >
-                            <X />
+                            <X className="size-6" />
                         </CustomButton>
                     ) : (
                         <CustomButton
@@ -57,15 +57,15 @@ function Navbar() {
                             onClick={() => toggleMobileNavbar()}
                             className="z[60]"
                         >
-                            <Menu />
+                            <Menu className="size-8" />
                         </CustomButton>
                     )}
 
                     <div
                         className={`absolute z-50 opacity-0 top-[5px] right-[5px] w-[140px] bg-card border rounded-sm p-4 transition-all duration-300 ease-in-out ${
                             openMobile
-                                ? "opacity-100 translate-x-0"
-                                : "translate-x-full"
+                                ? "opacity-100 -translate-y-0"
+                                : "-translate-y-50"
                         }`}
                     >
                         {isMobile && openMobile ? (
