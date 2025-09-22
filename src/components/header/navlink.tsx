@@ -10,10 +10,13 @@ type NavListProps = {
 
 function NavLink({ href, text, color }: NavListProps) {
     return (
-        <CustomNavigationMenuLink asChild>
+        <CustomNavigationMenuLink
+            className="focus:bg-transparent! focus:text-secondary! focus-visible:ring-transparent! focus-visible:outline-1!"
+            asChild
+        >
             <Link
                 href={href}
-                className={`navbar-link text-center ${color} hover:bg-transparent! hover:text-secondary! `}
+                className={`navbar-link text-center ${color}  hover:bg-transparent! hover:text-secondary!`}
             >
                 {text}
             </Link>
