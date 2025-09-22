@@ -9,20 +9,10 @@ function Header() {
     const isMobile = useIsMobile();
 
     return (
-        <header className="w-full p-4 flex justify-between items-center gap-4 max-w-[1380px] mx-auto">
-            <div>
-                <Logo />
-            </div>
-            <div>
-                <Navbar />
-            </div>
-            {isMobile ? (
-                <></>
-            ) : (
-                <div>
-                    <Avatar />
-                </div>
-            )}
+        <header className="relative w-full p-4 flex justify-between items-center gap-4 max-w-[1380px] mx-auto">
+            <Logo />
+            <Navbar />
+            {isMobile ? <></> : <Avatar />}
         </header>
     );
 }

@@ -5,12 +5,12 @@ import {
     CustomNavigationMenuList,
     CustomNavigationMenuItem,
 } from "../custom/c_navigation-menu";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, X } from "lucide-react";
 import { CustomButton } from "../custom/c_button";
 import NavLink from "./navlink";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-const MOBILENAVBAR_KEYBOARD_SHORTCUT = "esc";
+const MOBILENAVBAR_KEYBOARD_SHORTCUT = "m";
 
 function Navbar() {
     const isMobile = useIsMobile();
@@ -99,12 +99,17 @@ function Navbar() {
                                     />
                                 </CustomNavigationMenuItem>
                             </CustomNavigationMenuList>
-                        ) : null}
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </CustomNavigationMenu>
             ) : (
-                <CustomNavigationMenu viewport={false} className="relative">
-                    <CustomNavigationMenuList className="flex gap-2 bg-border rounded-lg p-4 shadow-md">
+                <CustomNavigationMenu
+                    viewport={false}
+                    className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2"
+                >
+                    <CustomNavigationMenuList className="flex gap-2 bg-border rounded-lg  shadow-md p-4">
                         <CustomNavigationMenuItem>
                             <NavLink
                                 href="/signin"
