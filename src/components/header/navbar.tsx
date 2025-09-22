@@ -62,7 +62,7 @@ function Navbar() {
                     )}
 
                     <div
-                        className={`absolute opacity-0 top-[5px] right-[5px] w-[140px] bg-card border rounded-sm p-4 transition-all duration-400 ease-in-out ${
+                        className={`absolute z-50 opacity-0 top-[5px] right-[5px] w-[140px] bg-card border rounded-sm p-4 transition-all duration-300 ease-in-out ${
                             openMobile
                                 ? "opacity-100 -translate-y-0"
                                 : "-translate-y-50"

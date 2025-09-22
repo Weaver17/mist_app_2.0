@@ -12,7 +12,10 @@ function Avatar() {
     return (
         <div className="bg-border rounded-lg p-4 shadow-md">
             <CustomAvatar>
-                <CustomAvatarImage src={avatar} alt="Avatar" />
+                <CustomAvatarImage
+                    src="https://www.freetogame.com/g/461/thumbnail.jpg"
+                    alt="Avatar"
+                />
                 <CustomAvatarFallback className="text-secondary">
                     AZ
                 </CustomAvatarFallback>

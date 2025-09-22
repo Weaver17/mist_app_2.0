@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 .background {
-    background: #0284b820 url("../../public/background.svg") repeat 70% center;
+    background: #0284b820 url("../../public/background.svg") repeat center;
 }
 
 .navbar-link {
@@ -22,9 +22,72 @@
     cursor: pointer;
 }
 
+.featured-game-info-label {
+    font-family: var(--font-font-special);
+    font-size: var(--text-xs) /* 0.75rem = 12px */;
+    line-height: var(
+        --tw-leading,
+        var(--text-xs--line-height) /* calc(1 / 0.75) ≈ 1.3333 */
+    );
+    --tw-font-weight: var(--font-weight-semibold) /* 600 */;
+
+    @property --tw-font-weight {
+        syntax: "*";
+        inherits: false;
+    }
+}
+
+.featured-game-info {
+    margin-top: calc(var(--spacing) * 0) /* 0rem = 0px */ !important;
+    font-size: var(--text-xs) /* 0.75rem = 12px */;
+    line-height: var(
+        --tw-leading,
+        var(--text-xs--line-height) /* calc(1 / 0.75) ≈ 1.3333 */
+    );
+    --tw-font-weight: var(--font-weight-semibold) /* 600 */;
+    font-weight: var(--font-weight-semibold) /* 600 */;
+
+    @property --tw-font-weight {
+        syntax: "*";
+        inherits: false;
+    }
+}
+
+.games-select-container {
+    width: calc(3 / 4 * 100%) /* 75% */;
+    max-width: 240px;
+
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 2px;
+    border-left-style: var(--tw-border-style);
+    border-left-width: 2px;
+    @media (width >= 580px) {
+        width: calc(1 / 2 * 100%) /* 50% */;
+    }
+    @media (width >= 940px) {
+        width: calc(1 / 3 * 100%) /* 33.3333% */;
+    }
+
+    @property --tw-border-style {
+        syntax: "*";
+        inherits: false;
+        initial-value: solid;
+    }
+}
+
+.games-select-trigger {
+    background-color: var(--card);
+    border-radius: 0;
+    width: 100%;
+    margin-inline: auto;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --breakpoint-grid2: 580px;
+    --breakpoint-grid3: 940px;
+    --breakpoint-grid4: 1280px;
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-font-sans);
@@ -71,7 +134,7 @@
     --primary: #0284b8;
     --secondary: #e8c902;
     --muted-light: #e5e5e5;
-    --muted-dark: #a5a2a2;
+    --muted-dark: #767474;
     --accent: #2f9cc7;
     --destructive: oklch(0.577 0.245 27.325);
     --border: #0d0c0c;
