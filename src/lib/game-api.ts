@@ -19,10 +19,13 @@ export async function request(
 }
 
 export const getGamesByReleaseDate = () => {
-    // change to /games
     return request(`${gameUrl}/games?sort-by=release-date`, { headers });
 };
 
 export const getGameById = (id: number) => {
     return request(`${gameUrl}/game?id=${id}`, { headers });
+};
+
+export const getGamesByPop = () => {
+    return request(`${gameUrl}/games?sort-by=popularity`, { headers });
 };

@@ -1,5 +1,3 @@
-import { Url } from "next/dist/shared/lib/router/router";
-
 export type Game = {
     developer: string;
     freetogame_profile_url: string;
@@ -44,4 +42,9 @@ type Minimum_System_Requirements = {
     os: string;
     processor: string;
     storage: string;
+};
+
+export type SelectOption = {
+    title: string;
+    slug: string;
 };
