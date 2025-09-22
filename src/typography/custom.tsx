@@ -11,7 +11,7 @@ export function H1Custom({
     return (
         <h1
             className={cn(
-                "scroll-m-20 text-2xl font-extrabold tracking-tight text-balance lg:text-5xl",
+                "scroll-m-20 text-2xl font-extrabold tracking-tight text-balance md:text-3xl lg:text-4xl",
                 className
             )}
         >
