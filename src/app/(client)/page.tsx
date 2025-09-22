@@ -2,10 +2,11 @@
 import Featured from "@/components/game-pages/featured";
 import NewestGames from "@/components/game-pages/newest-games";
 import { getGamesByReleaseDate } from "@/lib/game-api";
+import { Game } from "@/types/types";
 import { Suspense, useEffect, useState } from "react";
 
 function Home() {
-    const [newestGames, setNewestGames] = useState([]);
+    const [newestGames, setNewestGames] = useState<Game[]>([]);
 
     useEffect(() => {
         async function getGames() {

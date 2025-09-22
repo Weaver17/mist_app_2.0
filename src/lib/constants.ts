@@ -1,4 +1,4 @@
-export const categories = [
+export const CATEGORIES = [
     { title: "All", slug: "All" },
     { title: "2D", slug: "2d" },
     { title: "3D", slug: "3d" },
@@ -47,14 +47,18 @@ export const categories = [
     { title: "Zombie", slug: "zombie" },
 ];
 
-export const sortOptionsArr = [
+export const SORT_OPTIONS = [
     { title: "Popularity", slug: "popularity" },
     { title: "Relevance", slug: "relevance" },
     { title: "Release Date", slug: "release-date" },
     { title: "Alphabetical", slug: "alphabetical" },
 ];
 
-export const platforms = ["All", "PC", "Browser"];
+export const PLATFORMS = [
+    { title: "All", slug: "all" },
+    { title: "PC (Windows)", slug: "pc" },
+    { title: "Browser", slug: "browser" },
+];
 
 export const DEFAULT_VISIBLE_COUNT = 12;
 export const VISIBLE_COUNT_ADD = 6;
