@@ -11,7 +11,7 @@ export function H1Custom({
     return (
         <h1
             className={cn(
-                "scroll-m-20 text-5xl font-extrabold tracking-tight text-balance",
+                "scroll-m-20 text-2xl font-extrabold tracking-tight text-balance lg:text-5xl",
                 className
             )}
         >
@@ -30,7 +30,7 @@ export function H2Custom({
     return (
         <h2
             className={cn(
-                "scroll-m-20 border-b pb-2 text-4xl font-bold tracking-tight first:mt-0",
+                "scroll-m-20 border-b pb-2 text-2xl font-bold tracking-tight first:mt-0 md:text-4xl",
                 className
             )}
         >
@@ -272,8 +272,6 @@ export function MutedCustom({
     className?: string;
 }>) {
     return (
-        <p className={cn("text-muted-foreground text-sm", className)}>
-            {children}
-        </p>
+        <p className={cn("text-muted-dark text-sm", className)}>{children}</p>
     );
 }

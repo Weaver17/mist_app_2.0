@@ -5,6 +5,7 @@ import {
     Zen_Dots as font_special,
 } from "next/font/google";
 import "./globals.css";
+import { Suspense } from "react";
 
 const fontSans = font_sans({
     variable: "--font-font-sans",
@@ -39,7 +40,7 @@ export default function RootLayout({
             <body
                 className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased background`}
             >
-                {children}
+                <Suspense>{children}</Suspense>
             </body>
         </html>
     );
