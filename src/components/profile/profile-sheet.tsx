@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
     CustomSheet,
     CustomSheetContent,
@@ -16,8 +17,14 @@ import { CustomButton } from "../custom/c_button";
 import Link from "next/link";
 
 function ProfileSheet() {
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+    const handleProfileClick = () => {
+        setIsSheetOpen(false);
+    };
+
     return (
-        <CustomSheet>
+        <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <CustomSheetTrigger asChild>
                 <CustomAvatar className="cursor-pointer">
                     <CustomAvatarImage
@@ -36,8 +43,8 @@ function ProfileSheet() {
                     </H2Custom>
                 </CustomSheetHeader>
                 <div className="flex flex-col gap-8 w-3/4 mx-auto">
-                    <CustomButton>
-                        <Link href="/profile">Profile Page</Link>
+                    <CustomButton onClick={handleProfileClick}>
+                        <Link href="/profile/17">Profile Page</Link>
                     </CustomButton>
                     <CustomButton variant="secondary">
                         Change Username
