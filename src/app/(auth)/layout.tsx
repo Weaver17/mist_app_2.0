@@ -7,9 +7,7 @@ function AuthLayout({ children }: Readonly<{ children: ReactNode }>) {
             <div className="lg:w-1/2">
                 <AuthLogo />
             </div>
-            <div className=" border-b-2 lg:border-b-0 lg:border-l-2 lg:w-1/2">
-                {children}
-            </div>
+            <div className="lg:border-l-2 lg:w-1/2">{children}</div>
         </div>
     );
 }
