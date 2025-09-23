@@ -13,6 +13,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 type AuthInputProps = {
     customForm: UseFormReturn<FieldValues, FieldValues>;
     label: string;
+    name: string;
     placeholder?: string;
     description?: string;
     type?: string;
@@ -21,6 +22,7 @@ type AuthInputProps = {
 function AuthInput({
     customForm,
     label,
+    name,
     placeholder,
     description,
     type,
@@ -28,7 +30,7 @@ function AuthInput({
     return (
         <FormField
             control={customForm.control}
-            name="username"
+            name={name}
             render={({ field }) => (
                 <FormItem>
                     <FormLabel className="font-mono font-semibold">
@@ -40,6 +42,7 @@ function AuthInput({
                             placeholder={placeholder || ""}
                             {...field}
                             type={type || "text"}
+                            value={field.value}
                         />
                     </FormControl>
                     <FormDescription className="text-xs font-semibold">

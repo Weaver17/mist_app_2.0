@@ -27,12 +27,14 @@ function SignUpPage() {
                         <AuthInput
                             customForm={signUpForm}
                             label="Username"
+                            name="username"
                             placeholder="Choose a Username"
                             description="Min 4 characters"
                         />
                         <AuthInput
                             customForm={signUpForm}
                             label="Email"
+                            name="email"
                             placeholder="gamer@example.com"
                             description="Enter your Email"
                             type="email"
@@ -40,6 +42,7 @@ function SignUpPage() {
                         <AuthInput
                             customForm={signUpForm}
                             label="Password"
+                            name="password"
                             placeholder="Choose Your Password"
                             description="Min 8 characters, 1 letter, 1 number, 1 special character"
                             type="password"
@@ -47,6 +50,7 @@ function SignUpPage() {
                         <AuthInput
                             customForm={signUpForm}
                             label="Confirm Password"
+                            name="confirm"
                             placeholder="Passwords Must Match"
                             description="Confirm Your Password"
                             type="password"

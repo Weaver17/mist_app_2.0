@@ -27,12 +27,14 @@ function SignInPage() {
                         <AuthInput
                             customForm={signInForm}
                             label="Email"
+                            name="email"
                             description="Enter your Email"
                             type="email"
                         />
                         <AuthInput
                             customForm={signInForm}
                             label="Password"
+                            name="password"
                             description="Enter Your Password"
                             type="password"
                         />
