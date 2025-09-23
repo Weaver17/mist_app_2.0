@@ -5,21 +5,14 @@ import {
     CustomAvatarImage,
 } from "../custom/c_avatar";
 import images from "@/lib/images";
+import ProfileSheet from "../profile/profile-sheet";
 
 function Avatar() {
     const avatar = images.logo;
 
     return (
         <div className="bg-border rounded-lg p-4 shadow-md">
-            <CustomAvatar>
-                <CustomAvatarImage
-                    src="https://www.freetogame.com/g/461/thumbnail.jpg"
-                    alt="Avatar"
-                />
-                <CustomAvatarFallback className="text-secondary">
-                    AZ
-                </CustomAvatarFallback>
-            </CustomAvatar>
+            <ProfileSheet />
         </div>
     );
 }

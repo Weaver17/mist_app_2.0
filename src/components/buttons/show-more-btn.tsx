@@ -8,10 +8,7 @@ type ShowMoreBtnProps = {
 
 function ShowMoreBtn({ onShowMoreClick }: ShowMoreBtnProps) {
     return (
-        <CustomButton
-            onClick={onShowMoreClick}
-            className="font-special hover:bg-secondary"
-        >
+        <CustomButton onClick={onShowMoreClick} className="font-special">
             Show More
         </CustomButton>
     );
