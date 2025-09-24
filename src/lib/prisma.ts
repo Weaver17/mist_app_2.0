@@ -4,8 +4,6 @@ import { PrismaClient } from "@/generated/prisma-client";
 
 const connectionString = `${process.env.MIST_SQL_DB_PRISMA_DATABASE_URL}`;
 
-console.log(connectionString);
-
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 export const prisma =

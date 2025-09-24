@@ -27,10 +27,8 @@ function SignUpPage() {
 
     const onSubmit = async (data: TSignUpSchema) => {
         try {
-            console.log("submitting");
             await createUser(data);
             signUpForm.reset();
-            console.log("submitted");
             router.push("/");
         } catch (error) {
             console.error(error);

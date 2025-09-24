@@ -6,13 +6,32 @@ import {
     CustomCardHeader,
 } from "@/components/custom/c_card";
 import React from "react";
-import { useForm } from "react-hook-form";
-import AuthForm from "@/components/auth/auth-singup-form";
-import AuthInput from "@/components/auth/auth-signup-input";
 import AuthSubmit from "@/components/auth/auth-submit";
+import AuthSignInForm from "@/components/auth/auth-signin-form";
+import AuthSignInInput from "@/components/auth/auth-signin-input";
+import { useSignInFormContext } from "@/hooks/use-auth-context";
+import { useRouter } from "next/navigation";
+import { TSignInSchema } from "@/types/types";
+import { signIn } from "@/actions/actions";
 
 function SignInPage() {
-    const signInForm = useForm();
+    const signInForm = useSignInFormContext();
+
+    const router = useRouter();
+    const {
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = signInForm;
+
+    const onSubmit = async (data: TSignInSchema) => {
+        try {
+            await signIn(data);
+            signInForm.reset();
+            router.push("/");
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <div className="p-4 flex flex-col gap-4 w-full mx-auto md:p-12 lg:p-18">
@@ -23,15 +42,21 @@ function SignInPage() {
                     </H1Custom>
                 </CustomCardHeader>
                 <CustomCardContent>
-                    {/* <AuthForm customForm={signInForm}>
-                        <AuthInput
+                    <AuthSignInForm
+                        onSubmit={onSubmit}
+                        handleSubmit={handleSubmit}
+                        errors={errors}
+                        isSubmitting={isSubmitting}
+                        customForm={signInForm}
+                    >
+                        <AuthSignInInput
                             customForm={signInForm}
                             label="Email"
                             name="email"
                             description="Enter your Email"
                             type="email"
                         />
-                        <AuthInput
+                        <AuthSignInInput
                             customForm={signInForm}
                             label="Password"
                             name="password"
@@ -43,7 +68,7 @@ function SignInPage() {
                             linkHref="/signup"
                             linkText="Sign Up"
                         />
-                    </AuthForm> */}
+                    </AuthSignInForm>
                 </CustomCardContent>
             </CustomCard>
         </div>
