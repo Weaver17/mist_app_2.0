@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
+import { Toaster } from "sonner";
 
 const fontSans = font_sans({
     variable: "--font-font-sans",
@@ -41,6 +42,7 @@ export default function RootLayout({
                 className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased background`}
             >
                 <Suspense>{children}</Suspense>
+                <Toaster position="top-center" />
             </body>
         </html>
     );

@@ -8,7 +8,7 @@ import {
     FormMessage,
 } from "../ui/form";
 import { CustomInput } from "../custom/c_input";
-import { FieldErrors, UseFormReturn } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import { TSignUpSchema } from "@/types/types";
 
 type AuthSignUpInputProps = {

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useSignUpFormContext } from "@/hooks/use-auth-context";
 import AuthSignUpForm from "@/components/auth/auth-singup-form";
 import AuthSignUpInput from "@/components/auth/auth-signup-input";
+import { toast } from "sonner";
 
 // obi1@jedi.com
 
@@ -30,8 +31,12 @@ function SignUpPage() {
             await createUser(data);
             signUpForm.reset();
             router.push("/");
+            toast.success(
+                "Signed Up Successfully! Sending you to the homepage..."
+            );
         } catch (error) {
             console.error(error);
+            toast.error("Invalid Credentials");
         }
     };
 

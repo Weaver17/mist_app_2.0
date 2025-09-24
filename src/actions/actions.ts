@@ -16,6 +16,16 @@ export async function createUser(data: TCreateUser) {
             throw new Error("Invalid data");
         }
 
+        const existingUser = await prisma.user.findUnique({
+            where: {
+                email: safeData.email,
+            },
+        });
+
+        if (existingUser) {
+            throw new Error("Email already in use");
+        }
+
         if (safeData.password !== safeData.confirmPassword) {
             throw new Error("Passwords do not match");
         }
@@ -33,6 +43,7 @@ export async function createUser(data: TCreateUser) {
         return user;
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }
 

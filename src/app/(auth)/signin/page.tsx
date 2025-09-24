@@ -12,6 +12,7 @@ import { useSignInFormContext } from "@/hooks/use-auth-context";
 import { useRouter } from "next/navigation";
 import { TSignInSchema } from "@/types/types";
 import { signIn } from "@/actions/actions";
+import { toast } from "sonner";
 
 function SignInPage() {
     const signInForm = useSignInFormContext();
@@ -27,8 +28,12 @@ function SignInPage() {
             await signIn(data);
             signInForm.reset();
             router.push("/");
+            toast.success(
+                "Signed In Successfully! Sending you to the homepage..."
+            );
         } catch (error) {
             console.error(error);
+            toast.error("Invalid Credentials");
         }
     };
 
