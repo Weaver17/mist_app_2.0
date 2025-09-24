@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("MIST_SQL_DB_PRISMA_DATABASE_URL")
+}
+
+model Screenshot {
+  id    Int   @unique
+  image String
+
+  savedGame   SavedGame @relation(fields: [savedGameId], references: [id])
+  savedGameId String
+}
+
+model MinimumSystemRequirements {
+  id        String @id @default(cuid())
+  os        String?
+  graphics  String?
+  memory    String?
+  storage   String?
+  processor String?
+
+  savedGame   SavedGame @relation(fields: [savedGameId], references: [id])
+  savedGameId String    @unique
+}
+
+model SavedGame {
+  id                          String                     @id @default(cuid())
+  description                 String
+  developer                   String
+  freetogame_profile_url      String
+  game_url                    String
+  genre                       String
+  game_id                     Int                        @unique
+  minimum_system_requirements MinimumSystemRequirements?
+  platform                    String
+  publisher                   String
+  release_date                String
+  screenshots                 Screenshot[]
+  short_description           String
+  status                      String
+  thumbnail                   String
+  title                       String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model User {
+  id              String @id @default(cuid())
+  email           String @unique
+  username        String
+  password        String
+
+  savedGames SavedGame[]
+}

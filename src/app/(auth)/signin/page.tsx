@@ -7,8 +7,8 @@ import {
 } from "@/components/custom/c_card";
 import React from "react";
 import { useForm } from "react-hook-form";
-import AuthForm from "@/components/auth/auth-form";
-import AuthInput from "@/components/auth/auth-input";
+import AuthForm from "@/components/auth/auth-singup-form";
+import AuthInput from "@/components/auth/auth-signup-input";
 import AuthSubmit from "@/components/auth/auth-submit";
 
 function SignInPage() {
@@ -23,7 +23,7 @@ function SignInPage() {
                     </H1Custom>
                 </CustomCardHeader>
                 <CustomCardContent>
-                    <AuthForm customForm={signInForm}>
+                    {/* <AuthForm customForm={signInForm}>
                         <AuthInput
                             customForm={signInForm}
                             label="Email"
@@ -43,7 +43,7 @@ function SignInPage() {
                             linkHref="/signup"
                             linkText="Sign Up"
                         />
-                    </AuthForm>
+                    </AuthForm> */}
                 </CustomCardContent>
             </CustomCard>
         </div>

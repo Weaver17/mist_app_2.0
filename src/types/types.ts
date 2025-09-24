@@ -4,6 +4,34 @@ import z from "zod";
 export type TSignInSchema = z.infer<typeof signInSchema>;
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
 
+export type User = {
+    _id: string;
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+};
+
+export type SavedGame = {
+    _id: string;
+    description: string;
+    developer: string;
+    freetogame_profile_url: string;
+    game_url: string;
+    genre: string;
+    id: number;
+    minimum_system_requirements: Minimum_System_Requirements;
+    platform: string;
+    publisher: string;
+    release_date: string;
+    screenshots: Screenshots[];
+    short_description: string;
+    status: string;
+    thumbnail: string;
+    title: string;
+    user_id: string;
+};
+
 export type Game = {
     developer: string;
     freetogame_profile_url: string;
@@ -26,7 +54,6 @@ export type FeaturedGame = {
     genre: string;
     id: number;
     minimum_system_requirements: Minimum_System_Requirements;
-
     platform: string;
     publisher: string;
     release_date: string;
