@@ -8,7 +8,7 @@ import {
     FormMessage,
 } from "../ui/form";
 import { CustomInput } from "../custom/c_input";
-import { UseFormReturn } from "react-hook-form";
+import { FieldErrors, UseFormReturn } from "react-hook-form";
 import { TSignUpSchema } from "@/types/types";
 
 type AuthSignUpInputProps = {
@@ -18,6 +18,7 @@ type AuthSignUpInputProps = {
     placeholder?: string;
     description?: string;
     type?: string;
+    errorMessage: string | undefined;
 };
 
 function AuthSignUpInput({
@@ -27,6 +28,7 @@ function AuthSignUpInput({
     placeholder,
     description,
     type,
+    errorMessage,
 }: AuthSignUpInputProps) {
     return (
         <FormField
@@ -46,10 +48,13 @@ function AuthSignUpInput({
                             value={field.value}
                         />
                     </FormControl>
-                    <FormDescription className="text-xs font-semibold">
-                        {description}
-                    </FormDescription>
-                    <FormMessage />
+                    {errorMessage ? (
+                        <FormMessage>{errorMessage}</FormMessage>
+                    ) : (
+                        <FormDescription className="text-xs font-semibold">
+                            {description}
+                        </FormDescription>
+                    )}
                 </FormItem>
             )}
         />

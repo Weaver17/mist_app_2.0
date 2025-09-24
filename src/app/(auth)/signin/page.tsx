@@ -5,7 +5,6 @@ import {
     CustomCardContent,
     CustomCardHeader,
 } from "@/components/custom/c_card";
-import React from "react";
 import AuthSubmit from "@/components/auth/auth-submit";
 import AuthSignInForm from "@/components/auth/auth-signin-form";
 import AuthSignInInput from "@/components/auth/auth-signin-input";
@@ -45,8 +44,6 @@ function SignInPage() {
                     <AuthSignInForm
                         onSubmit={onSubmit}
                         handleSubmit={handleSubmit}
-                        errors={errors}
-                        isSubmitting={isSubmitting}
                         customForm={signInForm}
                     >
                         <AuthSignInInput
@@ -55,6 +52,7 @@ function SignInPage() {
                             name="email"
                             description="Enter your Email"
                             type="email"
+                            errorMessage={errors.email?.message}
                         />
                         <AuthSignInInput
                             customForm={signInForm}
@@ -62,8 +60,11 @@ function SignInPage() {
                             name="password"
                             description="Enter Your Password"
                             type="password"
+                            errorMessage={errors.password?.message}
                         />
                         <AuthSubmit
+                            isSubmitting={isSubmitting}
+                            submittingText="Signing In..."
                             buttonText="Sign In"
                             linkHref="/signup"
                             linkText="Sign Up"

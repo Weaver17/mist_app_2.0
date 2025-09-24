@@ -4,16 +4,24 @@ import { MutedCustom } from "@/typography/custom";
 import Link from "next/link";
 
 type AuthSubmitProps = {
+    isSubmitting: boolean;
+    submittingText: string;
     buttonText: string;
     linkText: string;
     linkHref: string;
 };
 
-function AuthSubmit({ buttonText, linkHref, linkText }: AuthSubmitProps) {
+function AuthSubmit({
+    submittingText,
+    isSubmitting,
+    buttonText,
+    linkHref,
+    linkText,
+}: AuthSubmitProps) {
     return (
         <>
             <CustomButton className="w-full text-muted-light font-special">
-                {buttonText}
+                {isSubmitting ? submittingText : buttonText}
             </CustomButton>
             <MutedCustom className="text-center">
                 Already have an account?{" "}

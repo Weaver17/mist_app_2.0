@@ -48,17 +48,21 @@ export async function signIn(data: TSignIn) {
         const user = await prisma.user.findUnique({
             where: {
                 email: safeData.email,
-                password: safeData.password, // This should be a hashed password
             },
         });
 
         if (!user) {
-            throw new Error("Incorrect Email or Password");
+            throw new Error("No account associated with that email");
+        }
+
+        if (user.password !== safeData.password) {
+            throw new Error("Incorrect password");
         }
 
         console.log("signed in: ", user);
         return user;
     } catch (error) {
         console.error(error);
+        throw error;
     }
 }

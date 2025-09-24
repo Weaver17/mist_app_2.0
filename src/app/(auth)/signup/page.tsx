@@ -47,8 +47,6 @@ function SignUpPage() {
                     <AuthSignUpForm
                         onSubmit={onSubmit}
                         handleSubmit={handleSubmit}
-                        errors={errors}
-                        isSubmitting={isSubmitting}
                         customForm={signUpForm}
                     >
                         <AuthSignUpInput
@@ -57,6 +55,7 @@ function SignUpPage() {
                             name="username"
                             placeholder="Choose a Username"
                             description="Min 4 characters"
+                            errorMessage={errors.username?.message}
                         />
                         <AuthSignUpInput
                             customForm={signUpForm}
@@ -65,6 +64,7 @@ function SignUpPage() {
                             placeholder="gamer@example.com"
                             description="Enter your Email"
                             type="email"
+                            errorMessage={errors.email?.message}
                         />
                         <AuthSignUpInput
                             customForm={signUpForm}
@@ -73,6 +73,7 @@ function SignUpPage() {
                             placeholder="Choose Your Password"
                             description="Min 8 characters, 1 letter, 1 number, 1 special character"
                             type="password"
+                            errorMessage={errors.password?.message}
                         />
                         <AuthSignUpInput
                             customForm={signUpForm}
@@ -81,8 +82,11 @@ function SignUpPage() {
                             placeholder="Passwords Must Match"
                             description="Confirm Your Password"
                             type="password"
+                            errorMessage={errors.confirmPassword?.message}
                         />
                         <AuthSubmit
+                            isSubmitting={isSubmitting}
+                            submittingText="Signing Up..."
                             buttonText="Sign Up"
                             linkHref="/signin"
                             linkText="Sign In"

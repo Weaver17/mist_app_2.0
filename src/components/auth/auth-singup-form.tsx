@@ -2,15 +2,13 @@
 
 import { TSignUpSchema } from "@/types/types";
 import { Form } from "../ui/form";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 
 type AuthSignUpFormProps = {
     customForm: UseFormReturn<TSignUpSchema>;
     children: React.ReactNode;
     onSubmit: (data: TSignUpSchema) => Promise<void>;
     handleSubmit: UseFormReturn<TSignUpSchema>["handleSubmit"];
-    errors?: FieldValues;
-    isSubmitting?: boolean;
 };
 
 function AuthSignUpForm({
@@ -18,8 +16,6 @@ function AuthSignUpForm({
     children,
     onSubmit,
     handleSubmit,
-    errors,
-    isSubmitting,
 }: AuthSignUpFormProps) {
     return (
         <Form {...customForm}>

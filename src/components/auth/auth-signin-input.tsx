@@ -18,6 +18,7 @@ type AuthSignInInputProps = {
     placeholder?: string;
     description?: string;
     type?: string;
+    errorMessage: string | undefined;
 };
 
 function AuthSignInInput({
@@ -27,6 +28,7 @@ function AuthSignInInput({
     placeholder,
     description,
     type,
+    errorMessage,
 }: AuthSignInInputProps) {
     return (
         <FormField
@@ -46,10 +48,14 @@ function AuthSignInInput({
                             value={field.value}
                         />
                     </FormControl>
-                    <FormDescription className="text-xs font-semibold">
-                        {description}
-                    </FormDescription>
-                    <FormMessage />
+
+                    {errorMessage ? (
+                        <FormMessage>{errorMessage}</FormMessage>
+                    ) : (
+                        <FormDescription className="text-xs font-semibold">
+                            {description}
+                        </FormDescription>
+                    )}
                 </FormItem>
             )}
         />
