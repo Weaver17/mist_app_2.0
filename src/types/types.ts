@@ -10,6 +10,7 @@ export type User = {
     email: string;
     password: string;
     confirmPassword?: string;
+    savedGames?: SavedGame[];
 };
 
 export type CurrentUser = {
