@@ -71,7 +71,7 @@ export type FeaturedGame = {
     title: string;
 };
 
-type Screenshots = {
+export type Screenshots = {
     id: number;
     image: string;
 };

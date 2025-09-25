@@ -1,5 +1,5 @@
 "use client";
-import { User } from "@/types/types";
+import { SavedGame, User } from "@/types/types";
 import {
     createContext,
     useMemo,
@@ -12,6 +12,7 @@ interface UserContextType {
     login: (user: User) => Promise<void>;
     logout: () => void;
     editUsername: (username: string) => Promise<void>;
+    saveGame: (game: SavedGame) => Promise<void>;
     currentUser: User | null;
     isLoading: boolean;
     isLoggedIn: boolean;
@@ -25,7 +26,6 @@ export function UserProvider({
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
     const login = async (user: User) => {
         setIsLoading(true);
@@ -72,11 +72,31 @@ export function UserProvider({
         [currentUser]
     );
 
+    const saveGame = useCallback(
+        async (game: SavedGame) => {
+            setIsLoading(true);
+            try {
+                if (!currentUser) {
+                    throw Error("Must be logged in to save game");
+                }
+
+                currentUser.savedGames?.push(game);
+            } catch (error) {
+                console.error(error);
+                throw error;
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [currentUser]
+    );
+
     const values = useMemo(
         () => ({
             login,
             logout,
             editUsername,
+            saveGame,
             currentUser,
             setCurrentUser,
             isLoading,
@@ -86,6 +106,7 @@ export function UserProvider({
         }),
         [
             editUsername,
+            saveGame,
             currentUser,
             setCurrentUser,
             isLoading,
