@@ -11,14 +11,15 @@ function ProfilePage() {
                 </H1Custom>
             </div>
             <div className="flex gap-12 py-4 px-8">
-                <div className="w-1/4">
-                    <div className="flex flex-col gap-8 py-20">
-                        <CustomButton variant="secondary">
+                <div className="w-1/4 relative">
+                    <div className="flex flex-col gap-8 py-20 px-4 rounded-sm bg-card/90 blur-lg min-h-[400px]"></div>
+                    <div className="absolute flex flex-col gap-8 py-20 px-4 top-0 left-1/2 -translate-x-1/2">
+                        <CustomButton variant="secondary" className="z-10">
                             Change Username
                         </CustomButton>
                         <CustomButton
                             variant="outline"
-                            className="text-muted-light! bg-muted-dark! hover:bg-card! hover:text-foreground!"
+                            className="text-muted-light! bg-muted-dark! z-10 hover:bg-card! hover:text-foreground!"
                         >
                             Sign Out
                         </CustomButton>

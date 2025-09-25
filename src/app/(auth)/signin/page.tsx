@@ -13,9 +13,12 @@ import { useRouter } from "next/navigation";
 import { TSignInSchema } from "@/types/types";
 import { signIn } from "@/actions/actions";
 import { toast } from "sonner";
+import { useUserContext } from "@/contexts/user-context";
 
 function SignInPage() {
     const signInForm = useSignInFormContext();
+
+    const { login } = useUserContext();
 
     const router = useRouter();
     const {
@@ -25,7 +28,8 @@ function SignInPage() {
 
     const onSubmit = async (data: TSignInSchema) => {
         try {
-            await signIn(data);
+            const user = await signIn(data);
+            await login(user);
             signInForm.reset();
             router.push("/");
             toast.success(

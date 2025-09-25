@@ -5,21 +5,26 @@ export type TSignInSchema = z.infer<typeof signInSchema>;
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
 
 export type User = {
-    _id: string;
+    id: string;
     username: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
+};
+
+export type CurrentUser = {
+    email: string;
+    password: string;
 };
 
 export type SavedGame = {
-    _id: string;
+    id: string;
     description: string;
     developer: string;
     freetogame_profile_url: string;
     game_url: string;
     genre: string;
-    id: number;
+    game_id: number;
     minimum_system_requirements: Minimum_System_Requirements;
     platform: string;
     publisher: string;

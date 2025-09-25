@@ -9,12 +9,21 @@ import { Menu, X } from "lucide-react";
 import { CustomButton } from "../custom/c_button";
 import NavLink from "./navlink";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useUserContext } from "@/contexts/user-context";
+import {
+    CustomAvatar,
+    CustomAvatarFallback,
+    CustomAvatarImage,
+} from "../custom/c_avatar";
+import Link from "next/link";
 
 const MOBILENAVBAR_KEYBOARD_SHORTCUT = "m";
 
 function Navbar() {
     const isMobile = useIsMobile();
     const [openMobile, setOpenMobile] = React.useState(false);
+
+    const { isLoggedIn } = useUserContext();
 
     // Helper to toggle the sidebar.
     const toggleMobileNavbar = React.useCallback(() => {
@@ -70,20 +79,37 @@ function Navbar() {
                     >
                         {isMobile && openMobile ? (
                             <CustomNavigationMenuList className="flex flex-col items-center justify-center gap-2">
-                                <CustomNavigationMenuItem>
-                                    <NavLink
-                                        href="/signin"
-                                        text="Sign In"
-                                        color="text-primary!"
-                                    />
-                                </CustomNavigationMenuItem>
-                                <CustomNavigationMenuItem>
-                                    <NavLink
-                                        href="/signup"
-                                        text="Sign Up"
-                                        color="text-foreground!"
-                                    />
-                                </CustomNavigationMenuItem>
+                                {isLoggedIn ? (
+                                    <CustomAvatar className="cursor-pointer">
+                                        <Link href="/profile/17">
+                                            <CustomAvatarImage
+                                                src="https://www.freetogame.com/g/461/thumbnail.jpg"
+                                                alt="Avatar"
+                                            />
+                                        </Link>
+                                        <CustomAvatarFallback className="text-secondary">
+                                            AZ
+                                        </CustomAvatarFallback>
+                                    </CustomAvatar>
+                                ) : (
+                                    <>
+                                        <CustomNavigationMenuItem>
+                                            <NavLink
+                                                href="/signin"
+                                                text="Sign In"
+                                                color="text-primary!"
+                                            />
+                                        </CustomNavigationMenuItem>
+                                        <CustomNavigationMenuItem>
+                                            <NavLink
+                                                href="/signup"
+                                                text="Sign Up"
+                                                color="text-foreground!"
+                                            />
+                                        </CustomNavigationMenuItem>
+                                    </>
+                                )}
+
                                 <CustomNavigationMenuItem>
                                     <NavLink
                                         href="/search"
@@ -110,16 +136,26 @@ function Navbar() {
                     className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2"
                 >
                     <CustomNavigationMenuList className="flex gap-2 bg-border rounded-lg  shadow-md p-4">
-                        <CustomNavigationMenuItem>
-                            <NavLink
-                                href="/signin"
-                                text="Sign In"
-                                color="text-primary!"
-                            />
-                        </CustomNavigationMenuItem>
-                        <CustomNavigationMenuItem>
-                            <NavLink href="/signup" text="Sign Up" />
-                        </CustomNavigationMenuItem>
+                        {isLoggedIn ? (
+                            <></>
+                        ) : (
+                            <>
+                                <CustomNavigationMenuItem>
+                                    <NavLink
+                                        href="/signin"
+                                        text="Sign In"
+                                        color="text-primary!"
+                                    />
+                                </CustomNavigationMenuItem>
+                                <CustomNavigationMenuItem>
+                                    <NavLink
+                                        href="/signup"
+                                        text="Sign Up"
+                                        color="text-foreground!"
+                                    />
+                                </CustomNavigationMenuItem>
+                            </>
+                        )}
                         <CustomNavigationMenuItem>
                             <NavLink href="/search" text="Search" />
                         </CustomNavigationMenuItem>

@@ -7,6 +7,7 @@ import {
 import "./globals.css";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
+import { UserProvider } from "@/contexts/user-context";
 
 const fontSans = font_sans({
     variable: "--font-font-sans",
@@ -41,8 +42,10 @@ export default function RootLayout({
             <body
                 className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased background`}
             >
-                <Suspense>{children}</Suspense>
-                <Toaster position="top-center" />
+                <UserProvider>
+                    <Suspense>{children}</Suspense>
+                    <Toaster position="top-center" />
+                </UserProvider>
             </body>
         </html>
     );

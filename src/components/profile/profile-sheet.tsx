@@ -15,9 +15,13 @@ import {
 import { H2Custom, H3Custom } from "@/typography/custom";
 import { CustomButton } from "../custom/c_button";
 import Link from "next/link";
+import { User } from "lucide-react";
+import { useUserContext } from "@/contexts/user-context";
 
 function ProfileSheet() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+    const { isLoggedIn, currentUser } = useUserContext();
 
     const handleProfileClick = () => {
         setIsSheetOpen(false);
@@ -27,50 +31,70 @@ function ProfileSheet() {
         <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <CustomSheetTrigger asChild>
                 <CustomAvatar className="cursor-pointer">
-                    <CustomAvatarImage
-                        src="https://www.freetogame.com/g/461/thumbnail.jpg"
-                        alt="Avatar"
-                    />
-                    <CustomAvatarFallback className="text-secondary">
-                        AZ
-                    </CustomAvatarFallback>
+                    {isLoggedIn ? (
+                        <>
+                            <CustomAvatarImage
+                                src="https://www.freetogame.com/g/461/thumbnail.jpg"
+                                alt="Avatar"
+                            />
+                            <CustomAvatarFallback className="text-secondary">
+                                AZ
+                            </CustomAvatarFallback>
+                        </>
+                    ) : (
+                        <User
+                            size={24}
+                            className="text-secondary mx-auto my-auto"
+                        />
+                    )}
                 </CustomAvatar>
             </CustomSheetTrigger>
             <CustomSheetContent side="right" className="bg-card py-12">
                 <CustomSheetHeader>
                     <H2Custom className="text-center text-2xl! font-special">
-                        Profile
+                        {currentUser ? currentUser.username : ""}
                     </H2Custom>
                 </CustomSheetHeader>
-                <div className="flex flex-col gap-8 w-3/4 mx-auto">
-                    <CustomButton onClick={handleProfileClick}>
-                        <Link href="/profile/17">Profile Page</Link>
-                    </CustomButton>
-                    <CustomButton variant="secondary">
-                        Change Username
-                    </CustomButton>
-                </div>
-                <div className="flex flex-col gap-2 w-3/4 mx-auto">
-                    <H3Custom className="text-center border-b pb-2!">
-                        Saved Games
-                    </H3Custom>
-                    <ul>
-                        <li>Overwatch 2</li>
-                        <li>Valorant</li>
-                        <li>Marvel Heroes</li>
-                        <li>League of Legends</li>
-                        <li>Fortnite</li>
-                        <li>Apex Legends</li>
-                    </ul>
-                </div>
-                <CustomSheetFooter className="w-3/4 mx-auto">
-                    <CustomButton
-                        variant="outline"
-                        className="bg-muted-dark/50! hover:bg-card!"
-                    >
-                        Sign Out
-                    </CustomButton>
-                </CustomSheetFooter>
+                {isLoggedIn ? (
+                    <>
+                        {" "}
+                        <div className="flex flex-col gap-8 w-3/4 mx-auto">
+                            <CustomButton onClick={handleProfileClick}>
+                                <Link href="/profile/17">Profile Page</Link>
+                            </CustomButton>
+                            <CustomButton variant="secondary">
+                                Change Username
+                            </CustomButton>
+                        </div>
+                        <div className="flex flex-col gap-2 w-3/4 mx-auto">
+                            <H3Custom className="text-center border-b pb-2!">
+                                Saved Games
+                            </H3Custom>
+                            <ul>
+                                <li>Overwatch 2</li>
+                                <li>Valorant</li>
+                                <li>Marvel Heroes</li>
+                                <li>League of Legends</li>
+                                <li>Fortnite</li>
+                                <li>Apex Legends</li>
+                            </ul>
+                        </div>
+                        <CustomSheetFooter className="w-3/4 mx-auto">
+                            <CustomButton
+                                variant="outline"
+                                className="bg-muted-dark/50! hover:bg-card!"
+                            >
+                                Sign Out
+                            </CustomButton>
+                        </CustomSheetFooter>
+                    </>
+                ) : (
+                    <div className="flex flex-col gap-8 w-3/4 mx-auto">
+                        <CustomButton>
+                            <Link href="/signin">Sign In</Link>
+                        </CustomButton>
+                    </div>
+                )}
             </CustomSheetContent>
         </CustomSheet>
     );
