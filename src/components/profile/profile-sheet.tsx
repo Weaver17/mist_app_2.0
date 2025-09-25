@@ -5,6 +5,7 @@ import {
     CustomSheetContent,
     CustomSheetFooter,
     CustomSheetHeader,
+    CustomSheetTitle,
     CustomSheetTrigger,
 } from "../custom/c_sheet";
 import {
@@ -17,13 +18,14 @@ import { CustomButton } from "../custom/c_button";
 import Link from "next/link";
 import { User } from "lucide-react";
 import { useUserContext } from "@/contexts/user-context";
+import EditDialog from "../auth/edit-username/edit-dialog";
 
 function ProfileSheet() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
     const { isLoggedIn, currentUser } = useUserContext();
 
-    const handleProfileClick = () => {
+    const handleSheetBtnClick = () => {
         setIsSheetOpen(false);
     };
 
@@ -50,6 +52,11 @@ function ProfileSheet() {
                 </CustomAvatar>
             </CustomSheetTrigger>
             <CustomSheetContent side="right" className="bg-card py-12">
+                <CustomSheetTitle className="hidden">
+                    {currentUser
+                        ? `${currentUser.username}'s Info`
+                        : "Sign In to View Your Info"}
+                </CustomSheetTitle>
                 <CustomSheetHeader>
                     <H2Custom className="text-center text-2xl! font-special">
                         {currentUser ? currentUser.username : ""}
@@ -59,12 +66,10 @@ function ProfileSheet() {
                     <>
                         {" "}
                         <div className="flex flex-col gap-8 w-3/4 mx-auto">
-                            <CustomButton onClick={handleProfileClick}>
+                            <CustomButton onClick={handleSheetBtnClick}>
                                 <Link href="/profile/17">Profile Page</Link>
                             </CustomButton>
-                            <CustomButton variant="secondary">
-                                Change Username
-                            </CustomButton>
+                            <EditDialog />
                         </div>
                         <div className="flex flex-col gap-2 w-3/4 mx-auto">
                             <H3Custom className="text-center border-b pb-2!">

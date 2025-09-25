@@ -1,18 +1,16 @@
 "use client";
+import EditDialog from "@/components/auth/edit-username/edit-dialog";
 import { CustomButton } from "@/components/custom/c_button";
 import { useUserContext } from "@/contexts/user-context";
 import { H1Custom, H3Custom, H4Custom, PCustom } from "@/typography/custom";
-import { is } from "date-fns/locale";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import React from "react";
 
 function ProfilePage() {
     const { isLoggedIn, currentUser } = useUserContext();
 
-    const router = useRouter();
-
     if (!isLoggedIn) {
-        router.push("/signin");
+        redirect("/signin");
     }
 
     return (
@@ -22,22 +20,29 @@ function ProfilePage() {
                     {currentUser?.username}
                 </H1Custom>
             </div>
-            <div className="flex gap-12 py-4 px-8">
-                <div className="w-1/4 relative">
-                    <div className="flex flex-col gap-8 py-20 px-4 rounded-sm bg-card/90 blur-lg min-h-[400px]"></div>
-                    <div className="absolute flex flex-col gap-8 py-20 px-4 top-0 left-1/2 -translate-x-1/2">
-                        <PCustom>{currentUser?.email}</PCustom>
-                        <H4Custom>Saved Games</H4Custom>
-                        <ul>
-                            {currentUser?.savedGames?.length !== undefined ? (
-                                <li>{currentUser?.savedGames?.length}</li>
-                            ) : (
-                                <li>No Saved Games</li>
-                            )}
-                        </ul>
-                        <CustomButton variant="secondary" className="z-10">
-                            Change Username
-                        </CustomButton>
+            <div className="flex flex-col gap-12 py-4 px-8 lg:flex-row">
+                <div className="w-full relative lg:w-1/4">
+                    <div className="mx-auto max-w-[320px] rounded-sm bg-card/90 blur-lg min-h-[400px]"></div>
+                    <div className="absolute flex flex-col gap-4 py-8 max-w-[320px] top-0 left-1/2 -translate-x-1/2 lg:gap-8 lg:py-20">
+                        <PCustom className="text-center text-sm md:text-md">
+                            {currentUser?.email}
+                        </PCustom>
+                        <div className="flex flex-col gap-2 my-4 lg:my-2">
+                            <H4Custom>Saved Games</H4Custom>
+                            <ul>
+                                {currentUser?.savedGames?.length !==
+                                undefined ? (
+                                    <li className="text-center">
+                                        {currentUser?.savedGames?.length}
+                                    </li>
+                                ) : (
+                                    <li className="text-center">
+                                        No Saved Games
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                        <EditDialog />
                         <CustomButton
                             variant="outline"
                             className="text-muted-light! bg-muted-dark! z-10 hover:bg-card! hover:text-foreground!"
@@ -46,7 +51,7 @@ function ProfilePage() {
                         </CustomButton>
                     </div>
                 </div>
-                <div className="w-3/4">
+                <div className="w-full lg:w-3/4">
                     <H3Custom>Saved Games</H3Custom>
                 </div>
             </div>

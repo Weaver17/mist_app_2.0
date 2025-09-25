@@ -1,11 +1,16 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { signInSchema, signUpSchema } from "@/schema/auth";
+import {
+    changeUsernameSchema,
+    signInSchema,
+    signUpSchema,
+} from "@/schema/auth";
 import z from "zod";
 
 type TCreateUser = z.infer<typeof signUpSchema>;
 type TSignIn = z.infer<typeof signInSchema>;
+type TChangeUsername = z.infer<typeof changeUsernameSchema>;
 
 export async function createUser(data: TCreateUser) {
     try {
@@ -72,6 +77,43 @@ export async function signIn(data: TSignIn) {
 
         console.log("signed in: ", user);
         return user;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export async function changeUsername(
+    email: string,
+    newUsername: TChangeUsername
+) {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email,
+            },
+        });
+
+        if (!user) {
+            throw new Error("No account associated with that email");
+        }
+
+        const changedUser = await prisma.user.update({
+            where: {
+                email: email,
+            },
+            data: {
+                username: newUsername.newUsername,
+            },
+        });
+
+        console.log(
+            "username changed from: ",
+            user.username,
+            "to: ",
+            changedUser.username
+        );
+        return changedUser;
     } catch (error) {
         console.error(error);
         throw error;

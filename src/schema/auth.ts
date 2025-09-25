@@ -11,3 +11,7 @@ export const signUpSchema = z.object({
     password: z.string().min(8).max(24),
     confirmPassword: z.string().min(8).max(24),
 });
+
+export const changeUsernameSchema = z.object({
+    newUsername: z.string().min(4).max(16),
+});

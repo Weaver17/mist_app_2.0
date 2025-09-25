@@ -148,11 +148,7 @@ function Navbar() {
                                     />
                                 </CustomNavigationMenuItem>
                                 <CustomNavigationMenuItem>
-                                    <NavLink
-                                        href="/signup"
-                                        text="Sign Up"
-                                        color="text-foreground!"
-                                    />
+                                    <NavLink href="/signup" text="Sign Up" />
                                 </CustomNavigationMenuItem>
                             </>
                         )}

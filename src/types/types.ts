@@ -1,8 +1,14 @@
-import { signInSchema, signUpSchema } from "@/schema/auth";
+import {
+    changeUsernameSchema,
+    signInSchema,
+    signUpSchema,
+} from "@/schema/auth";
 import z from "zod";
 
 export type TSignInSchema = z.infer<typeof signInSchema>;
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
+
+export type TChangeUsernameSchema = z.infer<typeof changeUsernameSchema>;
 
 export type User = {
     id: string;
@@ -11,11 +17,6 @@ export type User = {
     password: string;
     confirmPassword?: string;
     savedGames?: SavedGame[];
-};
-
-export type CurrentUser = {
-    email: string;
-    password: string;
 };
 
 export type SavedGame = {
