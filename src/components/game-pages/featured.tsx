@@ -1,21 +1,20 @@
 "use client";
 import { FeaturedGame, Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
-import React from "react";
+import { useEffect, useState } from "react";
 import FeaturedCard from "../cards/featured-card";
 import { FEATURED_GAME_TIME } from "@/lib/constants";
 import { getGameById } from "@/lib/game-api";
+import LoadingSpinner from "../loading/loading-spinner";
 
 type FeaturedProps = {
     games: Game[];
 };
 
 function Featured({ games }: FeaturedProps) {
-    const [featuredGame, setFeaturedGame] = React.useState<FeaturedGame | null>(
-        null
-    );
+    const [featuredGame, setFeaturedGame] = useState<FeaturedGame | null>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchFeaturedGame = async () => {
             try {
                 const lastFetchTime = localStorage.getItem("lastFetchTime");
@@ -43,20 +42,21 @@ function Featured({ games }: FeaturedProps) {
                 console.error(error);
             }
         };
-
-        fetchFeaturedGame();
+        setTimeout(() => {
+            fetchFeaturedGame();
+        }, 1000);
     }, [games]);
-
-    if (!featuredGame) {
-        return null; // Or a loading skeleton
-    }
 
     return (
         <div className="flex flex-col gap-2 md:gap-4">
             <H1Custom className="pb-2 font-special border-b border-secondary">
                 Featured Game
             </H1Custom>
-            <FeaturedCard featuredGame={featuredGame} />
+            {!featuredGame ? (
+                <LoadingSpinner />
+            ) : (
+                <FeaturedCard featuredGame={featuredGame} />
+            )}
         </div>
     );
 }

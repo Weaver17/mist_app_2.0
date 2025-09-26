@@ -8,6 +8,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
 import { UserProvider } from "@/contexts/user-context";
+import LoadingOverlay from "@/components/loading/loading-overlay";
 
 const fontSans = font_sans({
     variable: "--font-font-sans",
@@ -40,10 +41,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased background`}
+                className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased background relative`}
             >
                 <UserProvider>
-                    <Suspense>{children}</Suspense>
+                    <Suspense fallback={<LoadingOverlay />}>
+                        {children}
+                    </Suspense>
                     <Toaster position="top-center" />
                 </UserProvider>
             </body>

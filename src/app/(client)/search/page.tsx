@@ -1,6 +1,7 @@
 "use client";
 import { CustomInput } from "@/components/custom/c_input";
 import GameList from "@/components/lists/game-list";
+import LoadingSpinner from "@/components/loading/loading-spinner";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
@@ -52,7 +53,11 @@ function SearchPage() {
                 />
             </div>
             <div>
-                <GameList games={gamesToShow} />
+                {gamesToShow.length === 0 ? (
+                    <LoadingSpinner />
+                ) : (
+                    <GameList games={gamesToShow} />
+                )}
             </div>
         </div>
     );

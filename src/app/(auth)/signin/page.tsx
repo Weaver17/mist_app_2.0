@@ -14,6 +14,7 @@ import { TSignInSchema } from "@/types/types";
 import { signIn } from "@/actions/actions";
 import { toast } from "sonner";
 import { useUserContext } from "@/contexts/user-context";
+import LoadingOverlay from "@/components/loading/loading-overlay";
 
 function SignInPage() {
     const signInForm = useSignInFormContext();
@@ -43,6 +44,7 @@ function SignInPage() {
 
     return (
         <div className="p-4 flex flex-col gap-4 w-full mx-auto md:p-12 lg:p-18">
+            {isSubmitting && <LoadingOverlay />}
             <CustomCard>
                 <CustomCardHeader className="border-b pb-2!">
                     <H1Custom className="text-center font-special">
