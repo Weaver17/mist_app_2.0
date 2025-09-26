@@ -6,6 +6,7 @@ import { H1Custom, H3Custom, H4Custom, PCustom } from "@/typography/custom";
 import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
 import SavedList from "@/components/lists/saved-list";
+import SignOutBtn from "@/components/buttons/sign-out-btn";
 
 function ProfilePage() {
     const { isLoggedIn, currentUser, getSavedGames, savedGames } =
@@ -51,12 +52,7 @@ function ProfilePage() {
                             </ul>
                         </div>
                         <EditDialog />
-                        <CustomButton
-                            variant="outline"
-                            className="text-muted-light! bg-muted-dark! z-10 hover:bg-card! hover:text-foreground!"
-                        >
-                            Sign Out
-                        </CustomButton>
+                        <SignOutBtn />
                     </div>
                 </div>
                 <div className="w-full flex flex-col gap-4 lg:w-3/4">

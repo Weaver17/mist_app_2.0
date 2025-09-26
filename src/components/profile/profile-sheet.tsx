@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     CustomSheet,
     CustomSheetContent,
@@ -19,15 +19,27 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { useUserContext } from "@/contexts/user-context";
 import EditDialog from "../auth/edit-username/edit-dialog";
+import SignOutBtn from "../buttons/sign-out-btn";
+import { User as CurrentUser } from "@/types/types";
 
 function ProfileSheet() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-    const { isLoggedIn, currentUser } = useUserContext();
+    const { isLoggedIn, currentUser, getSavedGames, savedGames } =
+        useUserContext();
 
     const handleSheetBtnClick = () => {
         setIsSheetOpen(false);
     };
+
+    useEffect(() => {
+        if (currentUser) {
+            async function getSavedGamesList(currentUser: CurrentUser) {
+                return await getSavedGames(currentUser);
+            }
+            getSavedGamesList(currentUser);
+        }
+    }, [currentUser, getSavedGames]);
 
     return (
         <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -75,22 +87,19 @@ function ProfileSheet() {
                             <H3Custom className="text-center border-b pb-2!">
                                 Saved Games
                             </H3Custom>
-                            <ul>
-                                <li>Overwatch 2</li>
-                                <li>Valorant</li>
-                                <li>Marvel Heroes</li>
-                                <li>League of Legends</li>
-                                <li>Fortnite</li>
-                                <li>Apex Legends</li>
+                            <ul className="flex flex-col gap-4 mx-auto">
+                                {savedGames.map((game) => (
+                                    <li
+                                        key={game.id}
+                                        className="text-center cursor-pointer font-special hover:underline hover:underline-offset-2"
+                                    >
+                                        {game.title}
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                         <CustomSheetFooter className="w-3/4 mx-auto">
-                            <CustomButton
-                                variant="outline"
-                                className="bg-muted-dark/50! hover:bg-card!"
-                            >
-                                Sign Out
-                            </CustomButton>
+                            <SignOutBtn />
                         </CustomSheetFooter>
                     </>
                 ) : (
