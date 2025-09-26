@@ -22,7 +22,6 @@ function Featured({ games }: FeaturedProps) {
                 const storedGame = localStorage.getItem("featuredGame");
 
                 if (lastFetchTime && storedGame) {
-                    console.log(featuredGame);
                     const timeSinceLastFetch =
                         Date.now() - parseInt(lastFetchTime, 10);
                     if (timeSinceLastFetch < FEATURED_GAME_TIME) {

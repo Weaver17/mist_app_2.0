@@ -1,22 +1,59 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import {
     CustomCard,
     CustomCardContent,
     CustomCardHeader,
 } from "../custom/c_card";
-import { FeaturedGame } from "@/types/types";
+import { FeaturedGame, Game } from "@/types/types";
 import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
 import { H3Custom, MutedCustom, PCustom } from "@/typography/custom";
 import { CustomButton } from "../custom/c_button";
 import images from "@/lib/images";
 import Link from "next/link";
+import { useUserContext } from "@/contexts/user-context";
+import { SavedGame } from "@/generated/prisma-client";
+import { saveGameAction, unsaveGameAction } from "@/actions/actions";
+import { getGameById } from "@/lib/game-api";
 
 type FeaturedCardProps = {
     featuredGame: FeaturedGame;
 };
 
 function FeaturedCard({ featuredGame }: FeaturedCardProps) {
+    const { currentUser, isLoggedIn, unsaveGame, getSavedGames, isGameSaved } =
+        useUserContext();
+
+    const onSaveGameClick = async (game: Game | SavedGame) => {
+        const isSaved = isGameSaved(game.id);
+        console.log(
+            `${isSaved ? "unsaving" : "saving"} game...`,
+            currentUser?.username,
+            game
+        );
+        try {
+            if (isSaved) {
+                await unsaveGameAction(currentUser!.email, game.id);
+                unsaveGame(game.id);
+            } else {
+                const gameDetails = await getGameById(game.id);
+                await saveGameAction(currentUser!.email, gameDetails);
+                await getSavedGames(currentUser!);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
+    const isSaved = isGameSaved(featuredGame.id);
+
+    useEffect(() => {
+        if (currentUser) {
+            getSavedGames(currentUser);
+        }
+    }, [currentUser, getSavedGames]);
     return (
         <div className="w-full mx-auto xl:max-w-5/6">
             <CustomCard className="py-2 gap-0!">
@@ -24,18 +61,37 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                     <H3Custom className="font-special text-lg font-semibold truncate md:text-2xl lg:text-4xl">
                         {featuredGame.title}
                     </H3Custom>
-                    <CustomButton
-                        size="sm"
-                        variant="ghost"
-                        className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
-                    >
-                        <Image
-                            src={images.save}
-                            alt="save icon"
-                            width={18}
-                            height={18}
-                        />
-                    </CustomButton>
+                    {isLoggedIn ? (
+                        <CustomButton
+                            size="sm"
+                            variant="ghost"
+                            className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
+                            onClick={() => onSaveGameClick(featuredGame)}
+                        >
+                            <Image
+                                src={isSaved ? images.checkmark : images.save}
+                                alt="save icon"
+                                width={18}
+                                height={18}
+                                priority
+                            />
+                        </CustomButton>
+                    ) : (
+                        <CustomButton
+                            size="sm"
+                            variant="ghost"
+                            disabled
+                            className="px-0!"
+                        >
+                            <Image
+                                src={images.save}
+                                alt="save icon"
+                                width={18}
+                                height={18}
+                                priority
+                            />
+                        </CustomButton>
+                    )}
                 </CustomCardHeader>
                 <CustomCardContent className="p-0! flex flex-col gap-2">
                     <div className="flex flex-col pb-2 gap-2 border-b border-primary md:flex-row">

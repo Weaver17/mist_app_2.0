@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import {
     CustomCard,
     CustomCardContent,
@@ -12,29 +12,84 @@ import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import { Game } from "@/types/types";
 import { CustomButton } from "../custom/c_button";
 import images from "@/lib/images";
+import { useUserContext } from "@/contexts/user-context";
+import { saveGameAction, unsaveGameAction } from "@/actions/actions";
+import { getGameById } from "@/lib/game-api";
+import { useEffect } from "react";
+import { SavedGame } from "@/generated/prisma-client";
 
 type GameCardProps = {
-    game: Game;
+    game: Game | SavedGame;
 };
 
 function GameCard({ game }: GameCardProps) {
+    const { currentUser, isLoggedIn, unsaveGame, getSavedGames, isGameSaved } =
+        useUserContext();
+
+    const onSaveGameClick = async (game: Game | SavedGame) => {
+        const isSaved = isGameSaved(game.id);
+        console.log(
+            `${isSaved ? "unsaving" : "saving"} game...`,
+            currentUser?.username,
+            game
+        );
+        try {
+            if (isSaved) {
+                await unsaveGameAction(currentUser!.email, game.id);
+                unsaveGame(game.id);
+            } else {
+                const gameDetails = await getGameById(game.id);
+                await saveGameAction(currentUser!.email, gameDetails);
+                await getSavedGames(currentUser!);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
+    const isSaved = isGameSaved(game.id);
+
+    useEffect(() => {
+        if (currentUser) {
+            getSavedGames(currentUser);
+        }
+    }, [currentUser, getSavedGames]);
     return (
         <CustomCard className="w-[280px] h-[300px] py-2 gap-0!">
-            <CustomCardHeader className="font-special text-lg flex justify-between items-center">
+            <CustomCardHeader className="pr-1! font-special text-lg flex justify-between items-center">
                 <H5Custom className="truncate">{game.title}</H5Custom>
-                <CustomButton
-                    size="sm"
-                    variant="ghost"
-                    className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
-                >
-                    <Image
-                        src={images.save}
-                        alt="save icon"
-                        width={18}
-                        height={18}
-                        priority
-                    />
-                </CustomButton>
+                {isLoggedIn ? (
+                    <CustomButton
+                        size="sm"
+                        variant="ghost"
+                        className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
+                        onClick={() => onSaveGameClick(game)}
+                    >
+                        <Image
+                            src={isSaved ? images.checkmark : images.save}
+                            alt="save icon"
+                            width={18}
+                            height={18}
+                            priority
+                        />
+                    </CustomButton>
+                ) : (
+                    <CustomButton
+                        size="sm"
+                        variant="ghost"
+                        disabled
+                        className="px-0!"
+                    >
+                        <Image
+                            src={images.save}
+                            alt="save icon"
+                            width={18}
+                            height={18}
+                            priority
+                        />
+                    </CustomButton>
+                )}
             </CustomCardHeader>
             <CustomCardContent className="flex flex-col gap-2 p-1!">
                 <CustomAspectRatio
