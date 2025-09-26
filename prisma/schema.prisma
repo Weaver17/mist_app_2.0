@@ -15,33 +15,33 @@ datasource db {
 }
 
 model Screenshot {
-  id    Int   @unique
+  id    Int    @unique
   image String
 
-  savedGame   SavedGame @relation(fields: [savedGameId], references: [id])
+  savedGame   SavedGame @relation(fields: [savedGameId], references: [saved_id])
   savedGameId String
 }
 
 model MinimumSystemRequirements {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   os        String?
   graphics  String?
   memory    String?
   storage   String?
   processor String?
 
-  savedGame   SavedGame @relation(fields: [savedGameId], references: [id])
+  savedGame   SavedGame @relation(fields: [savedGameId], references: [saved_id])
   savedGameId String    @unique
 }
 
 model SavedGame {
-  id                          String                     @id @default(cuid())
+  saved_id                    String                     @id @default(cuid())
   description                 String
   developer                   String
   freetogame_profile_url      String
   game_url                    String
   genre                       String
-  game_id                     Int                        @unique
+  id                          Int                        @unique
   minimum_system_requirements MinimumSystemRequirements?
   platform                    String
   publisher                   String
@@ -57,10 +57,10 @@ model SavedGame {
 }
 
 model User {
-  id              String @id @default(cuid())
-  email           String @unique
-  username        String
-  password        String
+  id       String @id @default(cuid())
+  email    String @unique
+  username String
+  password String
 
   savedGames SavedGame[]
 }

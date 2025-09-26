@@ -137,13 +137,13 @@ exports.Prisma.MinimumSystemRequirementsScalarFieldEnum = {
 };
 
 exports.Prisma.SavedGameScalarFieldEnum = {
-  id: 'id',
+  saved_id: 'saved_id',
   description: 'description',
   developer: 'developer',
   freetogame_profile_url: 'freetogame_profile_url',
   game_url: 'game_url',
   genre: 'genre',
-  game_id: 'game_id',
+  id: 'id',
   platform: 'platform',
   publisher: 'publisher',
   release_date: 'release_date',

@@ -3357,21 +3357,21 @@ export namespace Prisma {
   }
 
   export type SavedGameAvgAggregateOutputType = {
-    game_id: number | null
+    id: number | null
   }
 
   export type SavedGameSumAggregateOutputType = {
-    game_id: number | null
+    id: number | null
   }
 
   export type SavedGameMinAggregateOutputType = {
-    id: string | null
+    saved_id: string | null
     description: string | null
     developer: string | null
     freetogame_profile_url: string | null
     game_url: string | null
     genre: string | null
-    game_id: number | null
+    id: number | null
     platform: string | null
     publisher: string | null
     release_date: string | null
@@ -3383,13 +3383,13 @@ export namespace Prisma {
   }
 
   export type SavedGameMaxAggregateOutputType = {
-    id: string | null
+    saved_id: string | null
     description: string | null
     developer: string | null
     freetogame_profile_url: string | null
     game_url: string | null
     genre: string | null
-    game_id: number | null
+    id: number | null
     platform: string | null
     publisher: string | null
     release_date: string | null
@@ -3401,13 +3401,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCountAggregateOutputType = {
-    id: number
+    saved_id: number
     description: number
     developer: number
     freetogame_profile_url: number
     game_url: number
     genre: number
-    game_id: number
+    id: number
     platform: number
     publisher: number
     release_date: number
@@ -3421,21 +3421,21 @@ export namespace Prisma {
 
 
   export type SavedGameAvgAggregateInputType = {
-    game_id?: true
+    id?: true
   }
 
   export type SavedGameSumAggregateInputType = {
-    game_id?: true
+    id?: true
   }
 
   export type SavedGameMinAggregateInputType = {
-    id?: true
+    saved_id?: true
     description?: true
     developer?: true
     freetogame_profile_url?: true
     game_url?: true
     genre?: true
-    game_id?: true
+    id?: true
     platform?: true
     publisher?: true
     release_date?: true
@@ -3447,13 +3447,13 @@ export namespace Prisma {
   }
 
   export type SavedGameMaxAggregateInputType = {
-    id?: true
+    saved_id?: true
     description?: true
     developer?: true
     freetogame_profile_url?: true
     game_url?: true
     genre?: true
-    game_id?: true
+    id?: true
     platform?: true
     publisher?: true
     release_date?: true
@@ -3465,13 +3465,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCountAggregateInputType = {
-    id?: true
+    saved_id?: true
     description?: true
     developer?: true
     freetogame_profile_url?: true
     game_url?: true
     genre?: true
-    game_id?: true
+    id?: true
     platform?: true
     publisher?: true
     release_date?: true
@@ -3570,13 +3570,13 @@ export namespace Prisma {
   }
 
   export type SavedGameGroupByOutputType = {
-    id: string
+    saved_id: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -3607,13 +3607,13 @@ export namespace Prisma {
 
 
   export type SavedGameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    saved_id?: boolean
     description?: boolean
     developer?: boolean
     freetogame_profile_url?: boolean
     game_url?: boolean
     genre?: boolean
-    game_id?: boolean
+    id?: boolean
     platform?: boolean
     publisher?: boolean
     release_date?: boolean
@@ -3629,13 +3629,13 @@ export namespace Prisma {
   }, ExtArgs["result"]["savedGame"]>
 
   export type SavedGameSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    saved_id?: boolean
     description?: boolean
     developer?: boolean
     freetogame_profile_url?: boolean
     game_url?: boolean
     genre?: boolean
-    game_id?: boolean
+    id?: boolean
     platform?: boolean
     publisher?: boolean
     release_date?: boolean
@@ -3648,13 +3648,13 @@ export namespace Prisma {
   }, ExtArgs["result"]["savedGame"]>
 
   export type SavedGameSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
+    saved_id?: boolean
     description?: boolean
     developer?: boolean
     freetogame_profile_url?: boolean
     game_url?: boolean
     genre?: boolean
-    game_id?: boolean
+    id?: boolean
     platform?: boolean
     publisher?: boolean
     release_date?: boolean
@@ -3667,13 +3667,13 @@ export namespace Prisma {
   }, ExtArgs["result"]["savedGame"]>
 
   export type SavedGameSelectScalar = {
-    id?: boolean
+    saved_id?: boolean
     description?: boolean
     developer?: boolean
     freetogame_profile_url?: boolean
     game_url?: boolean
     genre?: boolean
-    game_id?: boolean
+    id?: boolean
     platform?: boolean
     publisher?: boolean
     release_date?: boolean
@@ -3684,7 +3684,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type SavedGameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "description" | "developer" | "freetogame_profile_url" | "game_url" | "genre" | "game_id" | "platform" | "publisher" | "release_date" | "short_description" | "status" | "thumbnail" | "title" | "userId", ExtArgs["result"]["savedGame"]>
+  export type SavedGameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"saved_id" | "description" | "developer" | "freetogame_profile_url" | "game_url" | "genre" | "id" | "platform" | "publisher" | "release_date" | "short_description" | "status" | "thumbnail" | "title" | "userId", ExtArgs["result"]["savedGame"]>
   export type SavedGameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     minimum_system_requirements?: boolean | SavedGame$minimum_system_requirementsArgs<ExtArgs>
     screenshots?: boolean | SavedGame$screenshotsArgs<ExtArgs>
@@ -3706,13 +3706,13 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: string
+      saved_id: string
       description: string
       developer: string
       freetogame_profile_url: string
       game_url: string
       genre: string
-      game_id: number
+      id: number
       platform: string
       publisher: string
       release_date: string
@@ -3804,8 +3804,8 @@ export namespace Prisma {
      * // Get first 10 SavedGames
      * const savedGames = await prisma.savedGame.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const savedGameWithIdOnly = await prisma.savedGame.findMany({ select: { id: true } })
+     * // Only select the `saved_id`
+     * const savedGameWithSaved_idOnly = await prisma.savedGame.findMany({ select: { saved_id: true } })
      * 
      */
     findMany<T extends SavedGameFindManyArgs>(args?: SelectSubset<T, SavedGameFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -3849,9 +3849,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many SavedGames and only return the `id`
-     * const savedGameWithIdOnly = await prisma.savedGame.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many SavedGames and only return the `saved_id`
+     * const savedGameWithSaved_idOnly = await prisma.savedGame.createManyAndReturn({
+     *   select: { saved_id: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -3940,9 +3940,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more SavedGames and only return the `id`
-     * const savedGameWithIdOnly = await prisma.savedGame.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more SavedGames and only return the `saved_id`
+     * const savedGameWithSaved_idOnly = await prisma.savedGame.updateManyAndReturn({
+     *   select: { saved_id: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4147,13 +4147,13 @@ export namespace Prisma {
    * Fields of the SavedGame model
    */
   interface SavedGameFieldRefs {
-    readonly id: FieldRef<"SavedGame", 'String'>
+    readonly saved_id: FieldRef<"SavedGame", 'String'>
     readonly description: FieldRef<"SavedGame", 'String'>
     readonly developer: FieldRef<"SavedGame", 'String'>
     readonly freetogame_profile_url: FieldRef<"SavedGame", 'String'>
     readonly game_url: FieldRef<"SavedGame", 'String'>
     readonly genre: FieldRef<"SavedGame", 'String'>
-    readonly game_id: FieldRef<"SavedGame", 'Int'>
+    readonly id: FieldRef<"SavedGame", 'Int'>
     readonly platform: FieldRef<"SavedGame", 'String'>
     readonly publisher: FieldRef<"SavedGame", 'String'>
     readonly release_date: FieldRef<"SavedGame", 'String'>
@@ -5713,13 +5713,13 @@ export namespace Prisma {
 
 
   export const SavedGameScalarFieldEnum: {
-    id: 'id',
+    saved_id: 'saved_id',
     description: 'description',
     developer: 'developer',
     freetogame_profile_url: 'freetogame_profile_url',
     game_url: 'game_url',
     genre: 'genre',
-    game_id: 'game_id',
+    id: 'id',
     platform: 'platform',
     publisher: 'publisher',
     release_date: 'release_date',
@@ -5933,13 +5933,13 @@ export namespace Prisma {
     AND?: SavedGameWhereInput | SavedGameWhereInput[]
     OR?: SavedGameWhereInput[]
     NOT?: SavedGameWhereInput | SavedGameWhereInput[]
-    id?: StringFilter<"SavedGame"> | string
+    saved_id?: StringFilter<"SavedGame"> | string
     description?: StringFilter<"SavedGame"> | string
     developer?: StringFilter<"SavedGame"> | string
     freetogame_profile_url?: StringFilter<"SavedGame"> | string
     game_url?: StringFilter<"SavedGame"> | string
     genre?: StringFilter<"SavedGame"> | string
-    game_id?: IntFilter<"SavedGame"> | number
+    id?: IntFilter<"SavedGame"> | number
     platform?: StringFilter<"SavedGame"> | string
     publisher?: StringFilter<"SavedGame"> | string
     release_date?: StringFilter<"SavedGame"> | string
@@ -5954,13 +5954,13 @@ export namespace Prisma {
   }
 
   export type SavedGameOrderByWithRelationInput = {
-    id?: SortOrder
+    saved_id?: SortOrder
     description?: SortOrder
     developer?: SortOrder
     freetogame_profile_url?: SortOrder
     game_url?: SortOrder
     genre?: SortOrder
-    game_id?: SortOrder
+    id?: SortOrder
     platform?: SortOrder
     publisher?: SortOrder
     release_date?: SortOrder
@@ -5975,8 +5975,8 @@ export namespace Prisma {
   }
 
   export type SavedGameWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    game_id?: number
+    saved_id?: string
+    id?: number
     AND?: SavedGameWhereInput | SavedGameWhereInput[]
     OR?: SavedGameWhereInput[]
     NOT?: SavedGameWhereInput | SavedGameWhereInput[]
@@ -5996,16 +5996,16 @@ export namespace Prisma {
     minimum_system_requirements?: XOR<MinimumSystemRequirementsNullableScalarRelationFilter, MinimumSystemRequirementsWhereInput> | null
     screenshots?: ScreenshotListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "game_id">
+  }, "saved_id" | "id">
 
   export type SavedGameOrderByWithAggregationInput = {
-    id?: SortOrder
+    saved_id?: SortOrder
     description?: SortOrder
     developer?: SortOrder
     freetogame_profile_url?: SortOrder
     game_url?: SortOrder
     genre?: SortOrder
-    game_id?: SortOrder
+    id?: SortOrder
     platform?: SortOrder
     publisher?: SortOrder
     release_date?: SortOrder
@@ -6025,13 +6025,13 @@ export namespace Prisma {
     AND?: SavedGameScalarWhereWithAggregatesInput | SavedGameScalarWhereWithAggregatesInput[]
     OR?: SavedGameScalarWhereWithAggregatesInput[]
     NOT?: SavedGameScalarWhereWithAggregatesInput | SavedGameScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"SavedGame"> | string
+    saved_id?: StringWithAggregatesFilter<"SavedGame"> | string
     description?: StringWithAggregatesFilter<"SavedGame"> | string
     developer?: StringWithAggregatesFilter<"SavedGame"> | string
     freetogame_profile_url?: StringWithAggregatesFilter<"SavedGame"> | string
     game_url?: StringWithAggregatesFilter<"SavedGame"> | string
     genre?: StringWithAggregatesFilter<"SavedGame"> | string
-    game_id?: IntWithAggregatesFilter<"SavedGame"> | number
+    id?: IntWithAggregatesFilter<"SavedGame"> | number
     platform?: StringWithAggregatesFilter<"SavedGame"> | string
     publisher?: StringWithAggregatesFilter<"SavedGame"> | string
     release_date?: StringWithAggregatesFilter<"SavedGame"> | string
@@ -6203,13 +6203,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCreateInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -6223,13 +6223,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedCreateInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -6243,13 +6243,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -6263,13 +6263,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -6283,13 +6283,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCreateManyInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -6301,13 +6301,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -6318,13 +6318,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -6568,13 +6568,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCountOrderByAggregateInput = {
-    id?: SortOrder
+    saved_id?: SortOrder
     description?: SortOrder
     developer?: SortOrder
     freetogame_profile_url?: SortOrder
     game_url?: SortOrder
     genre?: SortOrder
-    game_id?: SortOrder
+    id?: SortOrder
     platform?: SortOrder
     publisher?: SortOrder
     release_date?: SortOrder
@@ -6586,17 +6586,17 @@ export namespace Prisma {
   }
 
   export type SavedGameAvgOrderByAggregateInput = {
-    game_id?: SortOrder
+    id?: SortOrder
   }
 
   export type SavedGameMaxOrderByAggregateInput = {
-    id?: SortOrder
+    saved_id?: SortOrder
     description?: SortOrder
     developer?: SortOrder
     freetogame_profile_url?: SortOrder
     game_url?: SortOrder
     genre?: SortOrder
-    game_id?: SortOrder
+    id?: SortOrder
     platform?: SortOrder
     publisher?: SortOrder
     release_date?: SortOrder
@@ -6608,13 +6608,13 @@ export namespace Prisma {
   }
 
   export type SavedGameMinOrderByAggregateInput = {
-    id?: SortOrder
+    saved_id?: SortOrder
     description?: SortOrder
     developer?: SortOrder
     freetogame_profile_url?: SortOrder
     game_url?: SortOrder
     genre?: SortOrder
-    game_id?: SortOrder
+    id?: SortOrder
     platform?: SortOrder
     publisher?: SortOrder
     release_date?: SortOrder
@@ -6626,7 +6626,7 @@ export namespace Prisma {
   }
 
   export type SavedGameSumOrderByAggregateInput = {
-    game_id?: SortOrder
+    id?: SortOrder
   }
 
   export type SavedGameListRelationFilter = {
@@ -6946,13 +6946,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCreateWithoutScreenshotsInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -6965,13 +6965,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedCreateWithoutScreenshotsInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -7000,13 +7000,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUpdateWithoutScreenshotsInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -7019,13 +7019,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedUpdateWithoutScreenshotsInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -7038,13 +7038,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCreateWithoutMinimum_system_requirementsInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -7057,13 +7057,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedCreateWithoutMinimum_system_requirementsInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -7092,13 +7092,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUpdateWithoutMinimum_system_requirementsInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -7111,13 +7111,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedUpdateWithoutMinimum_system_requirementsInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -7271,13 +7271,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCreateWithoutUserInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -7290,13 +7290,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedCreateWithoutUserInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -7338,13 +7338,13 @@ export namespace Prisma {
     AND?: SavedGameScalarWhereInput | SavedGameScalarWhereInput[]
     OR?: SavedGameScalarWhereInput[]
     NOT?: SavedGameScalarWhereInput | SavedGameScalarWhereInput[]
-    id?: StringFilter<"SavedGame"> | string
+    saved_id?: StringFilter<"SavedGame"> | string
     description?: StringFilter<"SavedGame"> | string
     developer?: StringFilter<"SavedGame"> | string
     freetogame_profile_url?: StringFilter<"SavedGame"> | string
     game_url?: StringFilter<"SavedGame"> | string
     genre?: StringFilter<"SavedGame"> | string
-    game_id?: IntFilter<"SavedGame"> | number
+    id?: IntFilter<"SavedGame"> | number
     platform?: StringFilter<"SavedGame"> | string
     publisher?: StringFilter<"SavedGame"> | string
     release_date?: StringFilter<"SavedGame"> | string
@@ -7376,13 +7376,13 @@ export namespace Prisma {
   }
 
   export type SavedGameCreateManyUserInput = {
-    id?: string
+    saved_id?: string
     description: string
     developer: string
     freetogame_profile_url: string
     game_url: string
     genre: string
-    game_id: number
+    id: number
     platform: string
     publisher: string
     release_date: string
@@ -7393,13 +7393,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -7412,13 +7412,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
@@ -7431,13 +7431,13 @@ export namespace Prisma {
   }
 
   export type SavedGameUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
+    saved_id?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     developer?: StringFieldUpdateOperationsInput | string
     freetogame_profile_url?: StringFieldUpdateOperationsInput | string
     game_url?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
-    game_id?: IntFieldUpdateOperationsInput | number
+    id?: IntFieldUpdateOperationsInput | number
     platform?: StringFieldUpdateOperationsInput | string
     publisher?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string

@@ -16,17 +16,17 @@ export type User = {
     email: string;
     password: string;
     confirmPassword?: string;
-    savedGames?: SavedGame[];
+    savedGames?: TSavedGame[];
 };
 
-export type SavedGame = {
-    id: string;
+export type TSavedGame = {
+    saved_id: string;
     description: string;
     developer: string;
     freetogame_profile_url: string;
     game_url: string;
     genre: string;
-    game_id: number;
+    id: number;
     minimum_system_requirements: Minimum_System_Requirements;
     platform: string;
     publisher: string;
@@ -36,7 +36,7 @@ export type SavedGame = {
     status: string;
     thumbnail: string;
     title: string;
-    user_id: string;
+    userId: string;
 };
 
 export type Game = {

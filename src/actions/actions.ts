@@ -1,6 +1,5 @@
 "use server";
 
-import { SavedGame } from "@/generated/prisma-client";
 import { prisma } from "@/lib/prisma";
 import {
     changeUsernameSchema,
@@ -153,7 +152,7 @@ export async function saveGameAction(email: string, data: TSavedGame) {
                         freetogame_profile_url: data.freetogame_profile_url,
                         game_url: data.game_url,
                         genre: data.genre,
-                        game_id: data.id,
+                        id: data.id,
 
                         minimum_system_requirements: {
                             create: {
@@ -192,3 +191,75 @@ export async function saveGameAction(email: string, data: TSavedGame) {
         throw error;
     }
 }
+
+export const getSavedGamesAction = async (email: string) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email,
+            },
+            include: {
+                savedGames: true,
+            },
+        });
+
+        if (!user) {
+            throw new Error("No account associated with that email");
+        }
+
+        return user.savedGames;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+export const unsaveGameAction = async (email: string, gameId: number) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                email: email,
+            },
+        });
+
+        if (!user) {
+            throw new Error("No account associated with that email");
+        }
+
+        const game = await prisma.savedGame.findFirst({
+            where: {
+                id: gameId,
+                userId: user.id,
+            },
+            include: {
+                minimum_system_requirements: true,
+                screenshots: true,
+            },
+        });
+
+        if (!game) {
+            throw new Error("Game not found");
+        }
+
+        await prisma.$transaction([
+            prisma.screenshot.deleteMany({
+                where: {
+                    savedGameId: game.saved_id,
+                },
+            }),
+            prisma.minimumSystemRequirements.delete({
+                where: {
+                    savedGameId: game.saved_id,
+                },
+            }),
+            prisma.savedGame.delete({
+                where: {
+                    id: game.id,
+                },
+            }),
+        ]);
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};

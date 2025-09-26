@@ -4,14 +4,22 @@ import { CustomButton } from "@/components/custom/c_button";
 import { useUserContext } from "@/contexts/user-context";
 import { H1Custom, H3Custom, H4Custom, PCustom } from "@/typography/custom";
 import { redirect } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
+import SavedList from "@/components/lists/saved-list";
 
 function ProfilePage() {
-    const { isLoggedIn, currentUser } = useUserContext();
+    const { isLoggedIn, currentUser, getSavedGames, savedGames } =
+        useUserContext();
 
     if (!isLoggedIn) {
         redirect("/signin");
     }
+
+    useEffect(() => {
+        if (currentUser) {
+            getSavedGames(currentUser);
+        }
+    }, []);
 
     return (
         <div className="p-4 flex flex-col gap-4 w-full mx-auto">
@@ -20,7 +28,7 @@ function ProfilePage() {
                     {currentUser?.username}
                 </H1Custom>
             </div>
-            <div className="flex flex-col gap-12 py-4 px-8 lg:flex-row">
+            <div className="flex flex-col gap-12 py-4 lg:px-8 lg:flex-row">
                 <div className="w-full relative lg:w-1/4">
                     <div className="mx-auto max-w-[320px] rounded-sm bg-card/90 blur-lg min-h-[400px]"></div>
                     <div className="absolute flex flex-col gap-4 py-8 max-w-[320px] top-0 left-1/2 -translate-x-1/2 lg:gap-8 lg:py-20">
@@ -30,10 +38,10 @@ function ProfilePage() {
                         <div className="flex flex-col gap-2 my-4 lg:my-2">
                             <H4Custom>Saved Games</H4Custom>
                             <ul>
-                                {currentUser?.savedGames?.length !==
-                                undefined ? (
-                                    <li className="text-center">
-                                        {currentUser?.savedGames?.length}
+                                {savedGames?.length > 0 ||
+                                savedGames?.length !== undefined ? (
+                                    <li className="text-center font-special text-2xl">
+                                        {savedGames?.length}
                                     </li>
                                 ) : (
                                     <li className="text-center">
@@ -51,8 +59,13 @@ function ProfilePage() {
                         </CustomButton>
                     </div>
                 </div>
-                <div className="w-full lg:w-3/4">
+                <div className="w-full flex flex-col gap-4 lg:w-3/4">
                     <H3Custom>Saved Games</H3Custom>
+                    {savedGames?.length > 0 ? (
+                        <SavedList games={savedGames} />
+                    ) : (
+                        <p>No saved games yet!</p>
+                    )}
                 </div>
             </div>
         </div>
