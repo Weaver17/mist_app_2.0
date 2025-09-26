@@ -14,11 +14,14 @@ import { useSignUpFormContext } from "@/hooks/use-auth-context";
 import AuthSignUpForm from "@/components/auth/auth-singup-form";
 import AuthSignUpInput from "@/components/auth/auth-signup-input";
 import { toast } from "sonner";
+import { useUserContext } from "@/contexts/user-context";
 
 // obi1@jedi.com
 
 function SignUpPage() {
     const signUpForm = useSignUpFormContext();
+
+    const { signUp } = useUserContext();
 
     const router = useRouter();
     const {
@@ -29,6 +32,7 @@ function SignUpPage() {
     const onSubmit = async (data: TSignUpSchema) => {
         try {
             await createUser(data);
+            await signUp(data);
             signUpForm.reset();
             router.push("/");
             toast.success(

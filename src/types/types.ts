@@ -11,7 +11,7 @@ export type TSignUpSchema = z.infer<typeof signUpSchema>;
 export type TChangeUsernameSchema = z.infer<typeof changeUsernameSchema>;
 
 export type User = {
-    id: string;
+    id?: string;
     username: string;
     email: string;
     password: string;
