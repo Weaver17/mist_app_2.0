@@ -40,6 +40,14 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                <link
+                    rel="icon"
+                    href="./favicon/icon.svg"
+                    type="image/svg"
+                    sizes="any"
+                />
+            </head>
             <body
                 className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased background relative`}
             >
