@@ -1,6 +1,7 @@
 "use client";
 import GamesSelect from "@/components/game-pages/games-select";
 import GameList from "@/components/lists/game-list";
+import LoadingSpinner from "@/components/loading/loading-spinner";
 import { getGamesByPop } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
@@ -17,7 +18,9 @@ function AllGamesPage() {
                 })
                 .catch(console.error);
         }
-        getGames();
+        setTimeout(() => {
+            getGames();
+        }, 1000);
     }, []);
 
     return (
@@ -28,7 +31,11 @@ function AllGamesPage() {
                 </H1Custom>
                 <GamesSelect />
             </div>
-            <GameList games={games} />
+            {games.length === 0 ? (
+                <LoadingSpinner />
+            ) : (
+                <GameList games={games} />
+            )}
         </div>
     );
 }
