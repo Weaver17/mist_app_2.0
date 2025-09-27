@@ -100,12 +100,14 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                                 ratio={16 / 9}
                                 className="w-full z-10!"
                             >
-                                <Image
-                                    src={featuredGame.thumbnail}
-                                    alt={featuredGame.title}
-                                    fill
-                                    className=" z-10!"
-                                />
+                                <Link href={`game/${featuredGame.id}`}>
+                                    <Image
+                                        src={featuredGame.thumbnail}
+                                        alt={featuredGame.title}
+                                        fill
+                                        className=" z-10!"
+                                    />
+                                </Link>
                             </CustomAspectRatio>
                         </div>
                         <div className="w-full md:w-1/2">
