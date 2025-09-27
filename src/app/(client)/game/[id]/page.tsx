@@ -87,7 +87,7 @@ async function GamePage({ params }: { params: Promise<{ id: number }> }) {
                                         {game.genre}
                                     </MutedCustom>
                                 </div>
-                                <div className="flex gap-2 justify-between md:w-1/2">
+                                <div className="flex flex-col items-center text-center gap-2 justify-between sm:flex-row md:w-1/2">
                                     <div className="flex flex-col gap-1">
                                         <MutedCustom className="featured-game-info-label">
                                             Publisher:
@@ -127,7 +127,7 @@ async function GamePage({ params }: { params: Promise<{ id: number }> }) {
                 {game.minimum_system_requirements ? (
                     <CustomCard>
                         <CustomCardContent>
-                            <div className="flex gap-2 justify-between ">
+                            <div className="flex flex-col gap-2 justify-between text-center md:flex-row">
                                 <div className="flex flex-col gap-1">
                                     <MutedCustom className="featured-game-info-label">
                                         Operating System:
