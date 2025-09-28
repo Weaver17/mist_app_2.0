@@ -1,5 +1,5 @@
 "use client";
-import { getSavedGamesAction } from "@/actions/actions";
+import { getSavedGamesAction, getUserBySlug } from "@/actions/actions";
 import { SavedGame } from "@/generated/prisma-client";
 import { User } from "@/types/types";
 import {
@@ -51,7 +51,9 @@ export function UserProvider({
         setIsLoading(true);
         try {
             setIsLoggedIn(true);
-            setCurrentUser(user);
+            getUserBySlug(user.slug!).then((user) => {
+                setCurrentUser(user);
+            });
         } catch (error) {
             console.error(error);
             throw error;

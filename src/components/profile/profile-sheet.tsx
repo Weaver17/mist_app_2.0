@@ -76,10 +76,11 @@ function ProfileSheet() {
                 </CustomSheetHeader>
                 {isLoggedIn ? (
                     <>
-                        {" "}
                         <div className="flex flex-col gap-8 w-3/4 mx-auto">
                             <CustomButton onClick={handleSheetBtnClick}>
-                                <Link href="/profile/17">Profile Page</Link>
+                                <Link href={`/profile/${currentUser?.slug}`}>
+                                    Profile Page
+                                </Link>
                             </CustomButton>
                             <EditDialog />
                         </div>
@@ -104,8 +105,11 @@ function ProfileSheet() {
                     </>
                 ) : (
                     <div className="flex flex-col gap-8 w-3/4 mx-auto">
-                        <CustomButton>
+                        <CustomButton asChild>
                             <Link href="/signin">Sign In</Link>
+                        </CustomButton>
+                        <CustomButton asChild variant="secondary">
+                            <Link href="/signup">Sign Up</Link>
                         </CustomButton>
                     </div>
                 )}

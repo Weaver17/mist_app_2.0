@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 import {
     changeUsernameSchema,
     signInSchema,
@@ -38,16 +39,33 @@ export async function createUser(data: TCreateUser) {
             throw new Error("Passwords do not match");
         }
 
+        const userSlug = slugify(safeData.username);
+
         // IMPORTANT: In a real application, you should hash the password before saving it.
         // Libraries like bcrypt are perfect for this.
         const user = await prisma.user.create({
             data: {
+                slug: userSlug,
                 username: safeData.username,
                 email: safeData.email,
                 password: safeData.password, // This should be a hashed password
             },
         });
         console.log("user created: ", user);
+        return user;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export async function getUserBySlug(slug: string) {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                slug: slug,
+            },
+        });
         return user;
     } catch (error) {
         console.error(error);

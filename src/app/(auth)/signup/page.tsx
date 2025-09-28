@@ -15,6 +15,7 @@ import AuthSignUpForm from "@/components/auth/auth-singup-form";
 import AuthSignUpInput from "@/components/auth/auth-signup-input";
 import { toast } from "sonner";
 import { useUserContext } from "@/contexts/user-context";
+import LoadingOverlay from "@/components/loading/loading-overlay";
 
 // obi1@jedi.com
 
@@ -46,6 +47,7 @@ function SignUpPage() {
 
     return (
         <div className="p-4 flex flex-col gap-4 w-full mx-auto md:p-12 lg:p-18">
+            {isSubmitting && <LoadingOverlay />}
             <CustomCard className="min-w-[260px]">
                 <CustomCardHeader className="border-b pb-2!">
                     <H1Custom className="text-center font-special">

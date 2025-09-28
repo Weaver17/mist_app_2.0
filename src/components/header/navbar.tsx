@@ -23,7 +23,7 @@ function Navbar() {
     const isMobile = useIsMobile();
     const [openMobile, setOpenMobile] = React.useState(false);
 
-    const { isLoggedIn } = useUserContext();
+    const { isLoggedIn, currentUser } = useUserContext();
 
     // Helper to toggle the sidebar.
     const toggleMobileNavbar = React.useCallback(() => {
@@ -81,7 +81,9 @@ function Navbar() {
                             <CustomNavigationMenuList className="flex flex-col items-center justify-center gap-2">
                                 {isLoggedIn ? (
                                     <CustomAvatar className="cursor-pointer">
-                                        <Link href="/profile/17">
+                                        <Link
+                                            href={`/profile/${currentUser?.slug}`}
+                                        >
                                             <CustomAvatarImage
                                                 src="https://www.freetogame.com/g/461/thumbnail.jpg"
                                                 alt="Avatar"

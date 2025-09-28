@@ -16,6 +16,7 @@ export type User = {
     email: string;
     password: string;
     confirmPassword?: string;
+    slug?: string;
     savedGames?: TSavedGame[];
 };
 

@@ -61,6 +61,7 @@ model User {
   email    String @unique
   username String
   password String
+  slug     String @unique
 
   savedGames SavedGame[]
 }
