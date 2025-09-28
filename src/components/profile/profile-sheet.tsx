@@ -19,8 +19,8 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { useUserContext } from "@/contexts/user-context";
 import EditDialog from "../auth/edit-username/edit-dialog";
-import SignOutBtn from "../buttons/sign-out-btn";
 import { User as CurrentUser } from "@/types/types";
+import SignOutDialog from "../auth/signout-dialog";
 
 function ProfileSheet() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -100,7 +100,7 @@ function ProfileSheet() {
                             </ul>
                         </div>
                         <CustomSheetFooter className="w-3/4 mx-auto">
-                            <SignOutBtn />
+                            <SignOutDialog />
                         </CustomSheetFooter>
                     </>
                 ) : (

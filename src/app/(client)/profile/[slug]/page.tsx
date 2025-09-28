@@ -4,10 +4,10 @@ import { useUserContext } from "@/contexts/user-context";
 import { H1Custom, H3Custom, H4Custom, PCustom } from "@/typography/custom";
 import React, { useEffect, useState } from "react";
 import SavedList from "@/components/lists/saved-list";
-import SignOutBtn from "@/components/buttons/sign-out-btn";
 import { getUserBySlug } from "@/actions/actions";
 import { User } from "@/types/types";
 import { useParams, redirect } from "next/navigation";
+import SignOutDialog from "@/components/auth/signout-dialog";
 
 function ProfilePage() {
     const { currentUser, getSavedGames, savedGames } = useUserContext();
@@ -65,7 +65,7 @@ function ProfilePage() {
                             </ul>
                         </div>
                         <EditDialog />
-                        <SignOutBtn />
+                        <SignOutDialog />
                     </div>
                 </div>
                 <div className="w-full flex flex-col gap-4 lg:w-3/4">
