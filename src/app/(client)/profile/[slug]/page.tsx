@@ -24,7 +24,7 @@ function ProfilePage() {
             }
         };
         fetchUser();
-    }, [params.slug]);
+    }, [params.slug, currentUser?.username]);
 
     useEffect(() => {
         if (profileUser) {

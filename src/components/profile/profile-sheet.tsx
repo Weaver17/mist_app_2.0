@@ -8,11 +8,7 @@ import {
     CustomSheetTitle,
     CustomSheetTrigger,
 } from "../custom/c_sheet";
-import {
-    CustomAvatar,
-    CustomAvatarImage,
-    CustomAvatarFallback,
-} from "../custom/c_avatar";
+import { CustomAvatar, CustomAvatarFallback } from "../custom/c_avatar";
 import { H2Custom, H3Custom } from "@/typography/custom";
 import { CustomButton } from "../custom/c_button";
 import Link from "next/link";
@@ -50,12 +46,13 @@ function ProfileSheet() {
     return (
         <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <CustomSheetTrigger asChild>
-                <CustomAvatar className="cursor-pointer rounded-none">
+                <CustomAvatar className="cursor-pointer rounded-none h-[50px] w-[50px]">
                     {isLoggedIn ? (
                         <CustomAspectRatio ratio={1}>
                             <Image
                                 src={userAvatar.src}
                                 alt={userAvatar.title}
+                                fill
                             />
                             <CustomAvatarFallback className="text-secondary">
                                 {currentUser?.username[0]}
@@ -100,7 +97,12 @@ function ProfileSheet() {
                                         key={game.id}
                                         className="text-center cursor-pointer font-special hover:underline hover:underline-offset-2"
                                     >
-                                        {game.title}
+                                        <Link
+                                            href={`/game/${game.id}`}
+                                            onClick={handleSheetBtnClick}
+                                        >
+                                            {game.title}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
