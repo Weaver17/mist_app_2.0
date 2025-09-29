@@ -9,6 +9,7 @@ import {
 } from "@/schema/auth";
 import { savedGameSchema } from "@/schema/game-schema";
 import { Screenshots } from "@/types/types";
+import { revalidatePath } from "next/cache";
 import z from "zod";
 
 type TCreateUser = z.infer<typeof signUpSchema>;
@@ -135,6 +136,9 @@ export async function changeUsername(
             "to: ",
             changedUser.username
         );
+
+        revalidatePath("/profile/[slug]");
+
         return changedUser;
     } catch (error) {
         console.error(error);
