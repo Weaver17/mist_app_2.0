@@ -25,7 +25,7 @@ function Home() {
     }, []);
 
     return (
-        <main className="flex flex-col p-4 gap-8 max-w-[1380px] mx-auto">
+        <main className="client-page">
             <Suspense fallback={<LoadingOverlay />}>
                 <Featured games={newestGames} />
             </Suspense>
