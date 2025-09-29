@@ -14,7 +14,7 @@ async function GamePage({ params }: { params: Promise<{ id: number }> }) {
     const game = (await getGameById(id)) as FeaturedGame;
 
     return (
-        <div className="p-4 flex flex-col gap-4 w-full mx-auto">
+        <div className="p-4 flex flex-col gap-4 max-w-[1380px] mx-auto lg:gap-8">
             <div className="border-b border-secondary pb-4  w-full mx-auto">
                 <H1Custom className="text-center font-special">
                     {game.title}

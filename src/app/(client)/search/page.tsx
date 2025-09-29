@@ -43,7 +43,7 @@ function SearchPage() {
     const gamesToShow = filteredGames.length > 0 ? filteredGames : games;
 
     return (
-        <div className="p-4 flex flex-col gap-4 w-full mx-auto">
+        <div className="client-page">
             <div className="pb-4 flex flex-col gap-4 w-full mx-auto border-b border-secondary">
                 <H1Custom className="text-center font-special">Search</H1Custom>
                 <CustomInput

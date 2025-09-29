@@ -14,7 +14,7 @@ function Footer() {
     const { isLoggedIn } = useUserContext();
 
     return (
-        <div className="relative mt-auto border-t-4 border-primary h-[400px] flex gap-4 justify-between bg-border p-12">
+        <div className="relative h-[400px] flex gap-4 justify-between p-12 max-w-[1380px] mx-auto">
             <Logo />
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-zinc-300 text-center text-xs font-semibold">
                 Developed by Andrew Weaver in 2025 with the help of{" "}
