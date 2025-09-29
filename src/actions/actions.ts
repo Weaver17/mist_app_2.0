@@ -203,7 +203,6 @@ export async function saveGameAction(email: string, data: TSavedGame) {
             },
         });
 
-        console.log(user.savedGames[0]);
         return user;
     } catch (error) {
         console.error(error);

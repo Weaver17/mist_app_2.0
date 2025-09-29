@@ -93,7 +93,7 @@ function GameCard({ game }: GameCardProps) {
                 )}
             </CustomCardHeader>
             <CustomCardContent className="flex flex-col gap-2 p-1!">
-                <Link href={`game/${game.id}`}>
+                <Link href={`/game/${game.id}`}>
                     <CustomAspectRatio
                         ratio={16 / 9}
                         className="w-full rounded-sm z-10!"
