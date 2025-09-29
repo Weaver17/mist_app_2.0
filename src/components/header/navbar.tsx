@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
     CustomNavigationMenu,
     CustomNavigationMenuList,
@@ -16,6 +16,9 @@ import {
     CustomAvatarImage,
 } from "../custom/c_avatar";
 import Link from "next/link";
+import { getAvatar } from "@/lib/utils";
+import { CustomAspectRatio } from "../custom/c_aspect-ratio";
+import Image from "next/image";
 
 const MOBILENAVBAR_KEYBOARD_SHORTCUT = "m";
 
@@ -27,10 +30,11 @@ function Navbar() {
 
     // Helper to toggle the sidebar.
     const toggleMobileNavbar = React.useCallback(() => {
+        // Removed 'React.'
         setOpenMobile((open) => !open);
     }, [setOpenMobile]);
 
-    // Adds a keyboard shortcut to toggle the sidebar.
+    // Adds a keyboard shortcut to toggle the mobile navbar.
     React.useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (
@@ -45,6 +49,9 @@ function Navbar() {
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [toggleMobileNavbar]);
+
+    // Get the user's avatar based on currentUser.avatar
+    const userAvatar = getAvatar(currentUser?.avatar);
 
     return (
         <nav className="font-special">
@@ -83,15 +90,18 @@ function Navbar() {
                                     <CustomAvatar className="cursor-pointer">
                                         <Link
                                             href={`/profile/${currentUser?.slug}`}
+                                            className="h-[50px] w-[50px]"
                                         >
-                                            <CustomAvatarImage
-                                                src="https://www.freetogame.com/g/461/thumbnail.jpg"
-                                                alt="Avatar"
-                                            />
+                                            <CustomAspectRatio ratio={1}>
+                                                <Image
+                                                    src={userAvatar.src}
+                                                    alt={userAvatar.title}
+                                                />
+                                                <CustomAvatarFallback className="text-secondary">
+                                                    {currentUser?.username[0]}
+                                                </CustomAvatarFallback>
+                                            </CustomAspectRatio>
                                         </Link>
-                                        <CustomAvatarFallback className="text-secondary">
-                                            AZ
-                                        </CustomAvatarFallback>
                                     </CustomAvatar>
                                 ) : (
                                     <>

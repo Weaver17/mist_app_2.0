@@ -5,9 +5,9 @@ import { H1Custom, H3Custom, H4Custom, PCustom } from "@/typography/custom";
 import React, { useEffect, useState } from "react";
 import SavedList from "@/components/lists/saved-list";
 import { getUserBySlug } from "@/actions/actions";
-import { User } from "@/types/types";
 import { useParams, redirect } from "next/navigation";
 import SignOutDialog from "@/components/auth/signout-dialog";
+import { User } from "@/generated/prisma-client";
 
 function ProfilePage() {
     const { currentUser, getSavedGames, savedGames } = useUserContext();

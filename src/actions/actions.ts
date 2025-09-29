@@ -46,6 +46,7 @@ export async function createUser(data: TCreateUser) {
         const user = await prisma.user.create({
             data: {
                 slug: userSlug,
+                avatar: safeData.avatar,
                 username: safeData.username,
                 email: safeData.email,
                 password: safeData.password, // This should be a hashed password

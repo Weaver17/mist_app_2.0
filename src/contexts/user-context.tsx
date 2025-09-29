@@ -1,7 +1,11 @@
 "use client";
-import { getSavedGamesAction, getUserBySlug } from "@/actions/actions";
-import { SavedGame } from "@/generated/prisma-client";
-import { User } from "@/types/types";
+import {
+    createUser,
+    getSavedGamesAction,
+    getUserBySlug,
+} from "@/actions/actions";
+import { SavedGame, User } from "@/generated/prisma-client";
+import { TUser } from "@/types/types";
 import {
     createContext,
     useMemo,
@@ -11,7 +15,7 @@ import {
 } from "react";
 
 interface UserContextType {
-    signUp: (user: User) => Promise<void>;
+    signUp: (user: TUser) => Promise<void>;
     login: (user: User) => Promise<void>;
     logout: () => void;
     editUsername: (username: string) => void;
@@ -35,10 +39,11 @@ export function UserProvider({
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [savedGames, setSavedGames] = useState<SavedGame[]>([]);
 
-    const signUp = useCallback(async (user: User) => {
+    const signUp = useCallback(async (user: TUser) => {
         setIsLoading(true);
         try {
-            await login(user);
+            await createUser(user);
+            setIsLoggedIn(true);
         } catch (error) {
             console.error(error);
             throw error;
@@ -51,7 +56,7 @@ export function UserProvider({
         setIsLoading(true);
         try {
             setIsLoggedIn(true);
-            getUserBySlug(user.slug!).then((user) => {
+            await getUserBySlug(user.slug).then((user: User | null) => {
                 setCurrentUser(user);
             });
         } catch (error) {

@@ -10,13 +10,25 @@ export type TSignUpSchema = z.infer<typeof signUpSchema>;
 
 export type TChangeUsernameSchema = z.infer<typeof changeUsernameSchema>;
 
-export type User = {
+export type TUser = {
     id?: string;
     username: string;
     email: string;
     password: string;
-    confirmPassword?: string;
+    confirmPassword: string;
     slug?: string;
+    avatar:
+        | "pacman"
+        | "joystick"
+        | "mouse"
+        | "modern-controller"
+        | "classic-controller"
+        | "dpad"
+        | "spaceship-green"
+        | "spaceship-red"
+        | "spaceship-blue"
+        | "spaceship-purple"
+        | "spaceship-orange";
     savedGames?: TSavedGame[];
 };
 
@@ -88,4 +100,11 @@ type Minimum_System_Requirements = {
 export type SelectOption = {
     title: string;
     slug: string;
+};
+
+export type TAvatarImg = {
+    id: string;
+    title: string;
+    alt: string;
+    src: string;
 };
