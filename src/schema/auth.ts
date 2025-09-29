@@ -10,6 +10,19 @@ export const signUpSchema = z.object({
     email: z.email(),
     password: z.string().min(8).max(24),
     confirmPassword: z.string().min(8).max(24),
+    avatar: z.enum([
+        "pacman",
+        "joystick",
+        "mouse",
+        "modern-controller",
+        "classic-controller",
+        "dpad",
+        "spaceship-green",
+        "spaceship-red",
+        "spaceship-blue",
+        "spaceship-purple",
+        "spaceship-orange",
+    ]),
 });
 
 export const changeUsernameSchema = z.object({

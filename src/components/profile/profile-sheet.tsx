@@ -19,8 +19,11 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { useUserContext } from "@/contexts/user-context";
 import EditDialog from "../auth/edit-username/edit-dialog";
-import SignOutBtn from "../buttons/sign-out-btn";
-import { User as CurrentUser } from "@/types/types";
+import SignOutDialog from "../auth/signout-dialog";
+import { User as CurrentUser } from "@/generated/prisma-client";
+import { getAvatar } from "@/lib/utils";
+import { CustomAspectRatio } from "../custom/c_aspect-ratio";
+import Image from "next/image";
 
 function ProfileSheet() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -41,20 +44,23 @@ function ProfileSheet() {
         }
     }, [currentUser, getSavedGames]);
 
+    // Get the user's avatar based on currentUser.avatar
+    const userAvatar = getAvatar(currentUser?.avatar);
+
     return (
         <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <CustomSheetTrigger asChild>
-                <CustomAvatar className="cursor-pointer">
+                <CustomAvatar className="cursor-pointer rounded-none">
                     {isLoggedIn ? (
-                        <>
-                            <CustomAvatarImage
-                                src="https://www.freetogame.com/g/461/thumbnail.jpg"
-                                alt="Avatar"
+                        <CustomAspectRatio ratio={1}>
+                            <Image
+                                src={userAvatar.src}
+                                alt={userAvatar.title}
                             />
                             <CustomAvatarFallback className="text-secondary">
-                                AZ
+                                {currentUser?.username[0]}
                             </CustomAvatarFallback>
-                        </>
+                        </CustomAspectRatio>
                     ) : (
                         <User
                             size={24}
@@ -76,10 +82,11 @@ function ProfileSheet() {
                 </CustomSheetHeader>
                 {isLoggedIn ? (
                     <>
-                        {" "}
                         <div className="flex flex-col gap-8 w-3/4 mx-auto">
                             <CustomButton onClick={handleSheetBtnClick}>
-                                <Link href="/profile/17">Profile Page</Link>
+                                <Link href={`/profile/${currentUser?.slug}`}>
+                                    Profile Page
+                                </Link>
                             </CustomButton>
                             <EditDialog />
                         </div>
@@ -99,13 +106,16 @@ function ProfileSheet() {
                             </ul>
                         </div>
                         <CustomSheetFooter className="w-3/4 mx-auto">
-                            <SignOutBtn />
+                            <SignOutDialog />
                         </CustomSheetFooter>
                     </>
                 ) : (
                     <div className="flex flex-col gap-8 w-3/4 mx-auto">
-                        <CustomButton>
+                        <CustomButton asChild>
                             <Link href="/signin">Sign In</Link>
+                        </CustomButton>
+                        <CustomButton asChild variant="secondary">
+                            <Link href="/signup">Sign Up</Link>
                         </CustomButton>
                     </div>
                 )}
