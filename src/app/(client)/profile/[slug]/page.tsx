@@ -8,6 +8,7 @@ import { getUserBySlug } from "@/actions/actions";
 import { useParams, redirect } from "next/navigation";
 import SignOutDialog from "@/components/auth/signout-dialog";
 import { User } from "@/generated/prisma-client";
+import FadingSidebar from "@/components/profile/fading-sidebar";
 
 function ProfilePage() {
     const { currentUser, getSavedGames, savedGames } = useUserContext();
@@ -44,8 +45,7 @@ function ProfilePage() {
             </div>
             <div className="flex flex-col gap-12 py-4 lg:px-8 lg:flex-row">
                 <div className="w-full relative lg:w-1/4">
-                    <div className="mx-auto max-w-[320px] rounded-sm bg-card/90 blur-lg min-h-[400px]"></div>
-                    <div className="absolute flex flex-col gap-4 py-8 max-w-[320px] top-0 left-1/2 -translate-x-1/2 lg:gap-8 lg:py-20">
+                    <FadingSidebar>
                         <PCustom className="text-center text-sm md:text-md">
                             {profileUser?.email}
                         </PCustom>
@@ -66,7 +66,7 @@ function ProfilePage() {
                         </div>
                         <EditDialog />
                         <SignOutDialog />
-                    </div>
+                    </FadingSidebar>
                 </div>
                 <div className="w-full flex flex-col gap-4 lg:w-3/4">
                     <H3Custom>Saved Games</H3Custom>
