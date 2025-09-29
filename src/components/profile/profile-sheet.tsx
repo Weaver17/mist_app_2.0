@@ -46,12 +46,13 @@ function ProfileSheet() {
     return (
         <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <CustomSheetTrigger asChild>
-                <CustomAvatar className="cursor-pointer rounded-none">
+                <CustomAvatar className="cursor-pointer rounded-none h-[50px] w-[50px]">
                     {isLoggedIn ? (
                         <CustomAspectRatio ratio={1}>
                             <Image
                                 src={userAvatar.src}
                                 alt={userAvatar.title}
+                                fill
                             />
                             <CustomAvatarFallback className="text-secondary">
                                 {currentUser?.username[0]}
