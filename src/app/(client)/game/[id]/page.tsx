@@ -1,6 +1,7 @@
 import { CustomAspectRatio } from "@/components/custom/c_aspect-ratio";
 import { CustomButton } from "@/components/custom/c_button";
 import { CustomCard, CustomCardContent } from "@/components/custom/c_card";
+import FadingSidebar from "@/components/profile/fading-sidebar";
 import { getGameById } from "@/lib/game-api";
 import images from "@/lib/images";
 import { FeaturedGame } from "@/types/types";
@@ -22,8 +23,7 @@ async function GamePage({ params }: { params: Promise<{ id: number }> }) {
             </div>
             <div className="flex flex-col gap-8 px-4 w-full mx-auto lg:flex-row">
                 <div className="w-full relative lg:w-1/3 xl:w-1/4">
-                    <div className="mx-auto max-w-[320px] rounded-sm bg-card/90 blur-lg h-[520px]"></div>
-                    <div className="absolute flex flex-col justify-evenly gap-4 py-6 h-[520px] max-w-[320px] top-0 left-1/2 -translate-x-1/2 lg:gap-8 lg:py-8">
+                    <FadingSidebar>
                         <CustomAspectRatio
                             ratio={16 / 9}
                             className=" rounded-sm z-10!"
@@ -72,7 +72,7 @@ async function GamePage({ params }: { params: Promise<{ id: number }> }) {
                                 />
                             </CustomButton>
                         </div>
-                    </div>
+                    </FadingSidebar>
                 </div>
 
                 <div className="w-full flex flex-col gap-4 lg:w-2/3 lg:ml-auto xl:w-3/4">

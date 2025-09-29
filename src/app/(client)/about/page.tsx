@@ -1,5 +1,6 @@
 import { CustomButton } from "@/components/custom/c_button";
 import { CustomCard, CustomCardContent } from "@/components/custom/c_card";
+import FadingSidebar from "@/components/profile/fading-sidebar";
 import { H1Custom, H3Custom, PCustom } from "@/typography/custom";
 import Link from "next/link";
 import React from "react";
@@ -12,8 +13,7 @@ function AboutPage() {
             </div>
             <div className="flex flex-col gap-12 py-4 border-b border-primary lg:px-8 lg:flex-row">
                 <div className="w-full relative lg:w-1/4">
-                    <div className="mx-auto max-w-[320px] rounded-sm bg-card/90 blur-lg min-h-[400px]"></div>
-                    <div className="absolute flex flex-col gap-4 py-8 max-w-[320px] top-0 left-1/2 -translate-x-1/2 lg:gap-8 lg:py-20">
+                    <FadingSidebar>
                         <H3Custom className="text-center! underline! text-sm! md:text-lg!">
                             My Saved Games:
                         </H3Custom>
@@ -24,7 +24,7 @@ function AboutPage() {
                             <li>Overwatch 2</li>
                             <li>Smite</li>
                         </ul>
-                    </div>
+                    </FadingSidebar>
                 </div>
                 <div className="w-full flex flex-col gap-4 lg:w-3/4">
                     <CustomCard>
