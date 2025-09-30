@@ -43,7 +43,6 @@ export function UserProvider({
         setIsLoading(true);
         try {
             await createUser(user);
-            setIsLoggedIn(true);
         } catch (error) {
             console.error(error);
             throw error;

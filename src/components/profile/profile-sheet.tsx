@@ -54,9 +54,9 @@ function ProfileSheet() {
                                 alt={userAvatar.title}
                                 fill
                             />
-                            <CustomAvatarFallback className="text-secondary">
+                            {/* <CustomAvatarFallback className="text-secondary">
                                 {currentUser?.username[0]}
-                            </CustomAvatarFallback>
+                            </CustomAvatarFallback> */}
                         </CustomAspectRatio>
                     ) : (
                         <User

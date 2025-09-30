@@ -11,6 +11,7 @@ import { savedGameSchema } from "@/schema/game-schema";
 import { Screenshots } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import z from "zod";
+import bcrypt from "bcryptjs";
 
 type TCreateUser = z.infer<typeof signUpSchema>;
 type TSignIn = z.infer<typeof signInSchema>;
@@ -40,17 +41,17 @@ export async function createUser(data: TCreateUser) {
             throw new Error("Passwords do not match");
         }
 
+        const hashedPassword = await bcrypt.hash(safeData.password, 10);
+
         const userSlug = slugify(safeData.username);
 
-        // IMPORTANT: In a real application, you should hash the password before saving it.
-        // Libraries like bcrypt are perfect for this.
         const user = await prisma.user.create({
             data: {
                 slug: userSlug,
                 avatar: safeData.avatar,
                 username: safeData.username,
                 email: safeData.email,
-                password: safeData.password, // This should be a hashed password
+                password: hashedPassword, // This should be a hashed password
             },
         });
         console.log("user created: ", user);
@@ -94,7 +95,7 @@ export async function signIn(data: TSignIn) {
             throw new Error("No account associated with that email");
         }
 
-        if (user.password !== safeData.password) {
+        if (!(await bcrypt.compare(safeData.password, user.password))) {
             throw new Error("Incorrect password");
         }
 

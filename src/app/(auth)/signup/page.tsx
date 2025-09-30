@@ -35,9 +35,9 @@ function SignUpPage() {
             console.log(data);
             await signUp(data);
             signUpForm.reset();
-            router.push("/");
+            router.push("/signin");
             toast.success(
-                "Signed Up Successfully! Sending you to the homepage..."
+                "Signed Up Successfully! Please sign in to continue..."
             );
         } catch (error) {
             console.error(error);
