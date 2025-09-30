@@ -1,7 +1,9 @@
 "use client";
+import ToTopBtn from "@/components/buttons/to-top-btn";
 import { CustomInput } from "@/components/custom/c_input";
 import GameList from "@/components/lists/game-list";
 import LoadingSpinner from "@/components/loading/loading-spinner";
+import { useToTopContext } from "@/contexts/to-top-context";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
@@ -11,6 +13,8 @@ function SearchPage() {
     const [games, setGames] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredGames, setFilteredGames] = useState([]);
+
+    const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();
 
     const handleSearch = (e: {
         target: { value: React.SetStateAction<string> };
@@ -42,6 +46,10 @@ function SearchPage() {
 
     const gamesToShow = filteredGames.length > 0 ? filteredGames : games;
 
+    useEffect(() => {
+        window.addEventListener("scroll", handleToTopBtn);
+    }, [handleToTopBtn]);
+
     return (
         <div className="client-page">
             <div className="pb-4 flex flex-col gap-4 w-full mx-auto border-b border-secondary">
@@ -59,6 +67,10 @@ function SearchPage() {
                     <GameList games={gamesToShow} />
                 )}
             </div>
+            <ToTopBtn
+                onToTopClick={onToTopClick}
+                scrollPosition={scrollPosition}
+            />
         </div>
     );
 }
