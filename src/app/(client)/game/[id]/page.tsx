@@ -20,14 +20,24 @@ function GamePage() {
     const [game, setGame] = useState<FeaturedGame>();
     const params = useParams<{ id: string }>();
 
-    const { currentUser, isLoggedIn, getSavedGames, unsaveGame, isGameSaved } =
-        useUserContext();
+    const {
+        currentUser,
+        isLoggedIn,
+        getSavedGames,
+        unsaveGame,
+        isGameSaved,
+        getSession,
+    } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     const onSaveGameClick = async (game: Game | SavedGame) => {
         const isSaved = isGameSaved(game.id);
         console.log(
             `${isSaved ? "unsaving" : "saving"} game...`,
-            currentUser?.username,
+            currentUser?.name,
             game
         );
         try {

@@ -4,27 +4,34 @@ import { useUserContext } from "@/contexts/user-context";
 import { H1Custom, H3Custom, H4Custom, PCustom } from "@/typography/custom";
 import React, { useEffect, useState } from "react";
 import SavedList from "@/components/lists/saved-list";
-import { getUserBySlug } from "@/actions/actions";
+import { getUserById } from "@/actions/actions";
 import { useParams, redirect } from "next/navigation";
 import SignOutDialog from "@/components/auth/signout-dialog";
 import { User } from "@/generated/prisma-client";
 import FadingSidebar from "@/components/profile/fading-sidebar";
+import SmallSpinner from "@/components/loading/small-spinner";
 
 function ProfilePage() {
     const { currentUser, getSavedGames, savedGames } = useUserContext();
     const [profileUser, setProfileUser] = useState<User | null>(null);
 
-    const params = useParams<{ slug: string }>();
+    const params = useParams<{ id: string }>();
+
+    const { getSession, isLoading } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     useEffect(() => {
         const fetchUser = async () => {
-            const user = await getUserBySlug(params.slug);
+            const user = await getUserById(params.id);
             if (user) {
                 setProfileUser(user);
             }
         };
         fetchUser();
-    }, [params.slug, currentUser?.username]);
+    }, [params.id, currentUser?.name]);
 
     useEffect(() => {
         if (profileUser) {
@@ -32,15 +39,11 @@ function ProfilePage() {
         }
     }, [profileUser, getSavedGames]);
 
-    if (!currentUser) {
-        return redirect("/signin");
-    }
-
     return (
         <div className="client-page">
             <div className="border-b border-secondary pb-4 flex flex-col gap-4 w-full mx-auto">
                 <H1Custom className="text-center font-special">
-                    {profileUser?.username}
+                    {isLoading ? <SmallSpinner /> : profileUser?.name}
                 </H1Custom>
             </div>
             <div className="flex flex-col gap-12 py-4 lg:px-8 lg:flex-row">

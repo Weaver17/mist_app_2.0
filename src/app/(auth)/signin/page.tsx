@@ -11,7 +11,6 @@ import AuthSignInInput from "@/components/auth/auth-signin-input";
 import { useSignInFormContext } from "@/hooks/use-auth-context";
 import { useRouter } from "next/navigation";
 import { TSignInSchema } from "@/types/types";
-import { signIn } from "@/actions/actions";
 import { toast } from "sonner";
 import { useUserContext } from "@/contexts/user-context";
 import LoadingOverlay from "@/components/loading/loading-overlay";
@@ -29,8 +28,8 @@ function SignInPage() {
 
     const onSubmit = async (data: TSignInSchema) => {
         try {
-            const user = await signIn(data);
-            await login(user);
+            console.log(data);
+            await login(data);
             signInForm.reset();
             router.push("/");
             toast.success(

@@ -5,9 +5,16 @@ import LoadingOverlay from "@/components/loading/loading-overlay";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { Suspense, useEffect, useState } from "react";
+import { useUserContext } from "@/contexts/user-context";
 
 function Home() {
     const [newestGames, setNewestGames] = useState<Game[]>([]);
+
+    const { getSession } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     useEffect(() => {
         async function getGames() {

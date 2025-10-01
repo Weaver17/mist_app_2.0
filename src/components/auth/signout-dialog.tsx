@@ -34,7 +34,7 @@ function SignOutDialog() {
                     Sign Out
                 </CustomDialogTitle>
                 <CustomDialogHeader className="text-center font-semibold">
-                    Are you sure you want to sign out, {currentUser?.username}?
+                    Are you sure you want to sign out, {currentUser?.name}?
                 </CustomDialogHeader>
                 <CustomSeparator />
                 <CustomDialogFooter className="mx-auto mt-4">
