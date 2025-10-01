@@ -1,12 +1,13 @@
 "use client";
 import {
     createUser,
+    fetchSession,
     getSavedGamesAction,
     getUserById,
     signIn,
 } from "@/actions/actions";
 import { SavedGame, User } from "@/generated/prisma-client";
-import { TSignInSchema, TUser } from "@/types/types";
+import { TNewUser, TSignInSchema } from "@/types/types";
 import {
     createContext,
     useMemo,
@@ -16,10 +17,15 @@ import {
 } from "react";
 
 interface UserContextType {
-    signUp: (user: TUser) => Promise<void>;
+    signUp: (
+        { name, email, image }: TNewUser,
+        password: string,
+        confirmPassword: string
+    ) => Promise<void>;
     login: (user: TSignInSchema) => Promise<void>;
     logout: () => void;
     editUsername: (username: string) => void;
+    getSession: () => Promise<void>;
     saveGame: (game: SavedGame) => Promise<void>;
     unsaveGame: (gameId: number) => Promise<void>;
     getSavedGames: (currentUser: User) => Promise<void>;
@@ -40,17 +46,28 @@ export function UserProvider({
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [savedGames, setSavedGames] = useState<SavedGame[]>([]);
 
-    const signUp = useCallback(async (user: TUser) => {
-        setIsLoading(true);
-        try {
-            await createUser(user);
-        } catch (error) {
-            console.error(error);
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+    const signUp = useCallback(
+        async (
+            { name, email, image }: TNewUser,
+            password: string,
+            confirmPassword: string
+        ) => {
+            setIsLoading(true);
+            try {
+                await createUser(
+                    { name, email, image },
+                    password,
+                    confirmPassword
+                );
+            } catch (error) {
+                console.error(error);
+                throw error;
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        []
+    );
 
     const login = async (user: TSignInSchema) => {
         setIsLoading(true);
@@ -72,6 +89,24 @@ export function UserProvider({
         try {
             setCurrentUser(null);
             setIsLoggedIn(false);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const getSession = async () => {
+        setIsLoading(true);
+        try {
+            await fetchSession().then((session) => {
+                if (!session) return;
+                getUserById(session.user.id).then((user) => {
+                    setCurrentUser(user);
+                    setIsLoggedIn(true);
+                });
+            });
         } catch (error) {
             console.error(error);
             throw error;
@@ -160,6 +195,7 @@ export function UserProvider({
             login,
             logout,
             editUsername,
+            getSession,
             saveGame,
             unsaveGame,
             getSavedGames,

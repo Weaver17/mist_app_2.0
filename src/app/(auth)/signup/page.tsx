@@ -32,8 +32,15 @@ function SignUpPage() {
 
     const onSubmit = async (data: TSignUpSchema) => {
         try {
-            console.log(data);
-            await signUp(data);
+            await signUp(
+                {
+                    name: data.name,
+                    email: data.email,
+                    image: data.image,
+                },
+                data.password,
+                data.confirmPassword
+            );
             signUpForm.reset();
             router.push("/signin");
             toast.success(

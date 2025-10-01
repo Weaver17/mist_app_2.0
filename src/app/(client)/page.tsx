@@ -5,10 +5,16 @@ import LoadingOverlay from "@/components/loading/loading-overlay";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { Suspense, useEffect, useState } from "react";
-import { authClient } from "../../../lib/auth-client";
+import { useUserContext } from "@/contexts/user-context";
 
 function Home() {
     const [newestGames, setNewestGames] = useState<Game[]>([]);
+
+    const { getSession } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     useEffect(() => {
         async function getGames() {
@@ -23,16 +29,6 @@ function Home() {
         setTimeout(() => {
             getGames();
         }, 1000);
-    }, []);
-
-    useEffect(() => {
-        async function getSession() {
-            const session = await authClient.getSession();
-            if (!session) {
-                console.log("No Session Found");
-            }
-        }
-        getSession();
     }, []);
 
     return (

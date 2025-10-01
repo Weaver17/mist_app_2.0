@@ -2,6 +2,7 @@
 import { CustomInput } from "@/components/custom/c_input";
 import GameList from "@/components/lists/game-list";
 import LoadingSpinner from "@/components/loading/loading-spinner";
+import { useUserContext } from "@/contexts/user-context";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
@@ -11,6 +12,12 @@ function SearchPage() {
     const [games, setGames] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredGames, setFilteredGames] = useState([]);
+
+    const { getSession } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     const handleSearch = (e: {
         target: { value: React.SetStateAction<string> };

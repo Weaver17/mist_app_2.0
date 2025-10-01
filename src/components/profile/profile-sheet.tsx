@@ -20,11 +20,12 @@ import { User as CurrentUser } from "@/generated/prisma-client";
 import { getAvatar } from "@/lib/utils";
 import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
+import SmallSpinner from "../loading/small-spinner";
 
 function ProfileSheet() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-    const { isLoggedIn, currentUser, getSavedGames, savedGames } =
+    const { isLoggedIn, currentUser, getSavedGames, savedGames, isLoading } =
         useUserContext();
 
     const handleSheetBtnClick = () => {
@@ -46,25 +47,29 @@ function ProfileSheet() {
     return (
         <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <CustomSheetTrigger asChild>
-                <CustomAvatar className="cursor-pointer rounded-none h-[50px] w-[50px]">
-                    {isLoggedIn ? (
-                        <CustomAspectRatio ratio={1}>
-                            <Image
-                                src={userAvatar.src}
-                                alt={userAvatar.title}
-                                fill
-                            />
-                            {/* <CustomAvatarFallback className="text-secondary">
+                {isLoading ? (
+                    <SmallSpinner />
+                ) : (
+                    <CustomAvatar className="cursor-pointer rounded-none h-[50px] w-[50px]">
+                        {isLoggedIn ? (
+                            <CustomAspectRatio ratio={1}>
+                                <Image
+                                    src={userAvatar.src}
+                                    alt={userAvatar.title}
+                                    fill
+                                />
+                                {/* <CustomAvatarFallback className="text-secondary">
                                 {currentUser?.username[0]}
                             </CustomAvatarFallback> */}
-                        </CustomAspectRatio>
-                    ) : (
-                        <User
-                            size={24}
-                            className="text-secondary mx-auto my-auto"
-                        />
-                    )}
-                </CustomAvatar>
+                            </CustomAspectRatio>
+                        ) : (
+                            <User
+                                size={24}
+                                className="text-secondary mx-auto my-auto"
+                            />
+                        )}
+                    </CustomAvatar>
+                )}
             </CustomSheetTrigger>
             <CustomSheetContent side="right" className="bg-card py-12">
                 <CustomSheetTitle className="hidden">

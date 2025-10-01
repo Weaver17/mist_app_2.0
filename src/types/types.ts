@@ -1,4 +1,5 @@
 import {
+    betterAtuhSignUpSchema,
     changeUsernameSchema,
     signInSchema,
     signUpSchema,
@@ -10,46 +11,12 @@ export type TSignInSchema = z.infer<typeof signInSchema>;
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
 export type TChangeUsernameSchema = z.infer<typeof changeUsernameSchema>;
 export type TSavedGameSchema = z.infer<typeof savedGameSchema>;
+export type TBetterAuthSignUpSchema = z.infer<typeof betterAtuhSignUpSchema>;
 
-export type TUser = {
-    id?: string;
+export type TNewUser = {
     name: string;
     email: string;
-    password: string;
-    confirmPassword: string;
-    image:
-        | "pacman"
-        | "joystick"
-        | "mouse"
-        | "modern-controller"
-        | "classic-controller"
-        | "dpad"
-        | "spaceship-green"
-        | "spaceship-red"
-        | "spaceship-blue"
-        | "spaceship-purple"
-        | "spaceship-orange";
-    savedGames?: TSavedGame[];
-};
-
-export type TSavedGame = {
-    saved_id: string;
-    description: string;
-    developer: string;
-    freetogame_profile_url: string;
-    game_url: string;
-    genre: string;
-    id: number;
-    minimum_system_requirements: Minimum_System_Requirements;
-    platform: string;
-    publisher: string;
-    release_date: string;
-    screenshots: Screenshots[];
-    short_description: string;
-    status: string;
-    thumbnail: string;
-    title: string;
-    userId: string;
+    image: string;
 };
 
 export type Game = {

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 import {
     Screenshots,
+    TBetterAuthSignUpSchema,
     TChangeUsernameSchema,
     TSavedGameSchema,
     TSignInSchema,
@@ -11,13 +12,24 @@ import {
 } from "@/types/types";
 import { auth } from "../../lib/auth";
 import { headers } from "next/headers";
-import { signInSchema, signUpSchema } from "@/schema/auth";
+import {
+    betterAtuhSignUpSchema,
+    signInSchema,
+    signUpSchema,
+} from "@/schema/auth";
 
-export async function createUser(data: TSignUpSchema) {
+export async function createUser(
+    { name, email, image }: TBetterAuthSignUpSchema,
+    password: string,
+    confirmPassword: string
+) {
     try {
         console.log("creating user...");
-        const safeData = signUpSchema.parse(data);
-        console.log(safeData);
+        const safeData = betterAtuhSignUpSchema.parse({
+            name,
+            email,
+            image,
+        });
 
         if (!safeData) {
             throw new Error("Invalid data");
@@ -43,21 +55,21 @@ export async function createUser(data: TSignUpSchema) {
             throw new Error("Username already in use");
         }
 
-        if (safeData.password !== safeData.confirmPassword) {
+        if (password !== confirmPassword) {
             throw new Error("Passwords do not match");
         }
 
-        const user = await auth.api.signUpEmail({
+        const data = await auth.api.signUpEmail({
             body: {
                 name: safeData.name,
                 email: safeData.email,
-                password: safeData.password,
+                password: password,
                 image: safeData.image,
             },
         });
 
-        console.log("user created: ", user);
-        // return user;
+        console.log("user created: ", data);
+        return data;
     } catch (error) {
         console.error(error);
         throw error;
@@ -81,16 +93,16 @@ export async function getUserById(id: string) {
     }
 }
 
-export async function signIn(data: TSignInSchema) {
+export async function signIn(formData: TSignInSchema) {
     try {
         console.log("signing in...");
-        const safeData = signInSchema.parse(data);
+        const safeData = signInSchema.parse(formData);
 
         if (!safeData) {
             throw new Error("Invalid data");
         }
 
-        const user = await auth.api.signInEmail({
+        const data = await auth.api.signInEmail({
             body: {
                 email: safeData.email,
                 password: safeData.password,
@@ -98,8 +110,8 @@ export async function signIn(data: TSignInSchema) {
             headers: await headers(),
         });
 
-        console.log("signed in: ", user);
-        return user;
+        console.log("signed in: ", data);
+        return data;
     } catch (error) {
         console.error(error);
         throw error;
@@ -143,6 +155,18 @@ export async function changeUsername(
         console.log("name changed from: ", user.name, "to: ", changedUser.name);
 
         return changedUser;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export async function fetchSession() {
+    try {
+        const session = await auth.api.getSession({
+            headers: await headers(),
+        });
+        return session;
     } catch (error) {
         console.error(error);
         throw error;

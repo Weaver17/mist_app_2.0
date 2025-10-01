@@ -26,7 +26,7 @@ function EditDialog() {
 
     const { currentUser, editUsername } = useUserContext();
 
-    const [usernameValue, setUsernameValue] = useState(currentUser!.name);
+    const [usernameValue, setUsernameValue] = useState(currentUser?.name);
 
     const editUsernameForm = useForm<TChangeUsernameSchema>({
         resolver: zodResolver(changeUsernameSchema),
