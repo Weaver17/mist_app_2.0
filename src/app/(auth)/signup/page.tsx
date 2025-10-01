@@ -63,10 +63,10 @@ function SignUpPage() {
                         <AuthSignUpInput
                             customForm={signUpForm}
                             label="Username"
-                            name="username"
+                            name="name"
                             placeholder="Choose a Username"
                             description="Min 4 characters"
-                            errorMessage={errors.username?.message}
+                            errorMessage={errors.name?.message}
                         />
                         <AuthSignUpInput
                             customForm={signUpForm}
@@ -98,8 +98,8 @@ function SignUpPage() {
                         <AvatarDialog
                             customForm={signUpForm}
                             label="Select Avatar"
-                            name="avatar"
-                            errorMessage={errors.avatar?.message}
+                            name="image"
+                            errorMessage={errors.image?.message}
                         />
                         <AuthSubmit
                             isSubmitting={isSubmitting}

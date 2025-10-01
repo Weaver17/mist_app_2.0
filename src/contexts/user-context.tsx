@@ -2,10 +2,11 @@
 import {
     createUser,
     getSavedGamesAction,
-    getUserBySlug,
+    getUserById,
+    signIn,
 } from "@/actions/actions";
 import { SavedGame, User } from "@/generated/prisma-client";
-import { TUser } from "@/types/types";
+import { TSignInSchema, TUser } from "@/types/types";
 import {
     createContext,
     useMemo,
@@ -16,7 +17,7 @@ import {
 
 interface UserContextType {
     signUp: (user: TUser) => Promise<void>;
-    login: (user: User) => Promise<void>;
+    login: (user: TSignInSchema) => Promise<void>;
     logout: () => void;
     editUsername: (username: string) => void;
     saveGame: (game: SavedGame) => Promise<void>;
@@ -51,12 +52,12 @@ export function UserProvider({
         }
     }, []);
 
-    const login = async (user: User) => {
+    const login = async (user: TSignInSchema) => {
         setIsLoading(true);
         try {
             setIsLoggedIn(true);
-            await getUserBySlug(user.slug).then((user: User | null) => {
-                setCurrentUser(user);
+            await signIn(user).then((user) => {
+                setCurrentUser(user.user as User);
             });
         } catch (error) {
             console.error(error);
@@ -80,14 +81,14 @@ export function UserProvider({
     };
 
     const editUsername = useCallback(
-        async (username: string) => {
+        async (name: string) => {
             setIsLoading(true);
             try {
                 if (!currentUser) {
-                    throw Error("Must be logged in to edit username");
+                    throw Error("Must be logged in to edit name");
                 }
 
-                setCurrentUser({ ...currentUser, username });
+                setCurrentUser({ ...currentUser, name });
             } catch (error) {
                 console.error(error);
                 throw error;

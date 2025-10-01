@@ -3,21 +3,21 @@ import {
     signInSchema,
     signUpSchema,
 } from "@/schema/auth";
+import { savedGameSchema } from "@/schema/game-schema";
 import z from "zod";
 
 export type TSignInSchema = z.infer<typeof signInSchema>;
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
-
 export type TChangeUsernameSchema = z.infer<typeof changeUsernameSchema>;
+export type TSavedGameSchema = z.infer<typeof savedGameSchema>;
 
 export type TUser = {
     id?: string;
-    username: string;
+    name: string;
     email: string;
     password: string;
     confirmPassword: string;
-    slug?: string;
-    avatar:
+    image:
         | "pacman"
         | "joystick"
         | "mouse"

@@ -26,12 +26,12 @@ function EditDialog() {
 
     const { currentUser, editUsername } = useUserContext();
 
-    const [usernameValue, setUsernameValue] = useState(currentUser!.username);
+    const [usernameValue, setUsernameValue] = useState(currentUser!.name);
 
     const editUsernameForm = useForm<TChangeUsernameSchema>({
         resolver: zodResolver(changeUsernameSchema),
         defaultValues: {
-            newUsername: currentUser?.username,
+            newName: currentUser?.name,
         },
     });
 
@@ -45,16 +45,16 @@ function EditDialog() {
         setIsEditDialogOpen(false);
     };
 
-    const onSubmit = async (data: { newUsername: string | undefined }) => {
+    const onSubmit = async (data: { newName: string | undefined }) => {
         try {
-            if (data.newUsername === undefined) {
+            if (data.newName === undefined) {
                 throw Error("Username must be more than 4 characters");
             }
             await changeUsername(currentUser!.email, {
-                newUsername: data.newUsername,
+                newName: data.newName,
             });
-            await editUsername(data.newUsername.trim());
-            setUsernameValue(data.newUsername.trim());
+            editUsername(data.newName.trim());
+            setUsernameValue(data.newName.trim());
         } catch (error) {
             console.error(error);
             throw error;
@@ -97,7 +97,7 @@ function EditDialog() {
                         <CustomSeparator className="mb-6" />
                         <FormField
                             control={editUsernameForm.control}
-                            name="newUsername"
+                            name="newName"
                             render={({ field }) => (
                                 <CustomInput
                                     className="rounded-none! border-t-0 border-r-0 border-b! border-l! border-foreground! font-mono"

@@ -1,72 +1,77 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { slugify } from "@/lib/utils";
+
 import {
-    changeUsernameSchema,
-    signInSchema,
-    signUpSchema,
-} from "@/schema/auth";
-import { savedGameSchema } from "@/schema/game-schema";
-import { Screenshots } from "@/types/types";
-import { revalidatePath } from "next/cache";
-import z from "zod";
-import bcrypt from "bcryptjs";
+    Screenshots,
+    TChangeUsernameSchema,
+    TSavedGameSchema,
+    TSignInSchema,
+    TSignUpSchema,
+} from "@/types/types";
+import { auth } from "../../lib/auth";
+import { headers } from "next/headers";
+import { signInSchema, signUpSchema } from "@/schema/auth";
 
-type TCreateUser = z.infer<typeof signUpSchema>;
-type TSignIn = z.infer<typeof signInSchema>;
-type TChangeUsername = z.infer<typeof changeUsernameSchema>;
-type TSavedGame = z.infer<typeof savedGameSchema>;
-
-export async function createUser(data: TCreateUser) {
+export async function createUser(data: TSignUpSchema) {
     try {
         console.log("creating user...");
         const safeData = signUpSchema.parse(data);
+        console.log(safeData);
 
         if (!safeData) {
             throw new Error("Invalid data");
         }
 
-        const existingUser = await prisma.user.findUnique({
+        const existingEmail = await prisma.user.findUnique({
             where: {
                 email: safeData.email,
             },
         });
 
-        if (existingUser) {
+        if (existingEmail) {
             throw new Error("Email already in use");
+        }
+
+        const existingName = await prisma.user.findFirst({
+            where: {
+                name: safeData.name,
+            },
+        });
+
+        if (existingName) {
+            throw new Error("Username already in use");
         }
 
         if (safeData.password !== safeData.confirmPassword) {
             throw new Error("Passwords do not match");
         }
 
-        const hashedPassword = await bcrypt.hash(safeData.password, 10);
-
-        const userSlug = slugify(safeData.username);
-
-        const user = await prisma.user.create({
-            data: {
-                slug: userSlug,
-                avatar: safeData.avatar,
-                username: safeData.username,
+        const user = await auth.api.signUpEmail({
+            body: {
+                name: safeData.name,
                 email: safeData.email,
-                password: hashedPassword, // This should be a hashed password
+                password: safeData.password,
+                image: safeData.image,
             },
         });
+
         console.log("user created: ", user);
-        return user;
+        // return user;
     } catch (error) {
         console.error(error);
         throw error;
     }
 }
 
-export async function getUserBySlug(slug: string) {
+export async function getUserById(id: string) {
     try {
         const user = await prisma.user.findUnique({
             where: {
-                slug: slug,
+                id: id,
+            },
+            include: {
+                savedGames: true,
             },
         });
         return user;
@@ -76,7 +81,7 @@ export async function getUserBySlug(slug: string) {
     }
 }
 
-export async function signIn(data: TSignIn) {
+export async function signIn(data: TSignInSchema) {
     try {
         console.log("signing in...");
         const safeData = signInSchema.parse(data);
@@ -85,19 +90,13 @@ export async function signIn(data: TSignIn) {
             throw new Error("Invalid data");
         }
 
-        const user = await prisma.user.findUnique({
-            where: {
+        const user = await auth.api.signInEmail({
+            body: {
                 email: safeData.email,
+                password: safeData.password,
             },
+            headers: await headers(),
         });
-
-        if (!user) {
-            throw new Error("No account associated with that email");
-        }
-
-        if (!(await bcrypt.compare(safeData.password, user.password))) {
-            throw new Error("Incorrect password");
-        }
 
         console.log("signed in: ", user);
         return user;
@@ -109,7 +108,7 @@ export async function signIn(data: TSignIn) {
 
 export async function changeUsername(
     email: string,
-    newUsername: TChangeUsername
+    newName: TChangeUsernameSchema
 ) {
     try {
         const user = await prisma.user.findUnique({
@@ -122,23 +121,26 @@ export async function changeUsername(
             throw new Error("No account associated with that email");
         }
 
+        const existingName = await prisma.user.findFirst({
+            where: {
+                name: newName.newName,
+            },
+        });
+
+        if (existingName) {
+            throw new Error("Username already in use");
+        }
+
         const changedUser = await prisma.user.update({
             where: {
                 email: email,
             },
             data: {
-                username: newUsername.newUsername,
+                name: newName.newName,
             },
         });
 
-        console.log(
-            "username changed from: ",
-            user.username,
-            "to: ",
-            changedUser.username
-        );
-
-        revalidatePath("/profile/[slug]");
+        console.log("name changed from: ", user.name, "to: ", changedUser.name);
 
         return changedUser;
     } catch (error) {
@@ -147,7 +149,7 @@ export async function changeUsername(
     }
 }
 
-export async function saveGameAction(email: string, data: TSavedGame) {
+export async function saveGameAction(email: string, data: TSavedGameSchema) {
     try {
         const user = await prisma.user.findUnique({
             where: {

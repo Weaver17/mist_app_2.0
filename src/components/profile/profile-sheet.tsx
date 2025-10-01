@@ -41,7 +41,7 @@ function ProfileSheet() {
     }, [currentUser, getSavedGames]);
 
     // Get the user's avatar based on currentUser.avatar
-    const userAvatar = getAvatar(currentUser?.avatar);
+    const userAvatar = getAvatar(currentUser?.image);
 
     return (
         <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -69,19 +69,19 @@ function ProfileSheet() {
             <CustomSheetContent side="right" className="bg-card py-12">
                 <CustomSheetTitle className="hidden">
                     {currentUser
-                        ? `${currentUser.username}'s Info`
+                        ? `${currentUser.name}'s Info`
                         : "Sign In to View Your Info"}
                 </CustomSheetTitle>
                 <CustomSheetHeader>
                     <H2Custom className="text-center text-2xl! font-special">
-                        {currentUser ? currentUser.username : ""}
+                        {currentUser ? currentUser.name : ""}
                     </H2Custom>
                 </CustomSheetHeader>
                 {isLoggedIn ? (
                     <>
                         <div className="flex flex-col gap-8 w-3/4 mx-auto">
                             <CustomButton onClick={handleSheetBtnClick}>
-                                <Link href={`/profile/${currentUser?.slug}`}>
+                                <Link href={`/profile/${currentUser?.id}`}>
                                     Profile Page
                                 </Link>
                             </CustomButton>

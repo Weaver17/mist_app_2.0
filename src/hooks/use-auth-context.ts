@@ -19,10 +19,11 @@ export function useSignUpFormContext() {
     const signUpForm = useForm<TSignUpSchema>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
-            username: "",
+            name: "",
             email: "",
             password: "",
             confirmPassword: "",
+            image: "pacman",
         },
     });
 

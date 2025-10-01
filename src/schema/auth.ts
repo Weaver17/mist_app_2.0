@@ -6,11 +6,11 @@ export const signInSchema = z.object({
 });
 
 export const signUpSchema = z.object({
-    username: z.string().min(4).max(16),
+    name: z.string().min(4).max(24),
     email: z.email(),
     password: z.string().min(8).max(24),
     confirmPassword: z.string().min(8).max(24),
-    avatar: z.enum([
+    image: z.enum([
         "pacman",
         "joystick",
         "mouse",
@@ -26,5 +26,5 @@ export const signUpSchema = z.object({
 });
 
 export const changeUsernameSchema = z.object({
-    newUsername: z.string().min(4).max(16),
+    newName: z.string().min(4).max(16),
 });

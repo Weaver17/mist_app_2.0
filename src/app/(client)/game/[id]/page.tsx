@@ -27,7 +27,7 @@ function GamePage() {
         const isSaved = isGameSaved(game.id);
         console.log(
             `${isSaved ? "unsaving" : "saving"} game...`,
-            currentUser?.username,
+            currentUser?.name,
             game
         );
         try {
