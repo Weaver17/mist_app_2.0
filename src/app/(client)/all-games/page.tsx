@@ -4,6 +4,7 @@ import GamesSelect from "@/components/game-pages/games-select";
 import GameList from "@/components/lists/game-list";
 import LoadingSpinner from "@/components/loading/loading-spinner";
 import { useToTopContext } from "@/contexts/to-top-context";
+import { useUserContext } from "@/contexts/user-context";
 import { getGamesByPop } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
@@ -13,6 +14,12 @@ function AllGamesPage() {
     const [games, setGames] = useState<Game[]>([]);
 
     const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();
+
+    const { getSession } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     useEffect(() => {
         async function getGames() {

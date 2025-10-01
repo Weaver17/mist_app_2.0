@@ -7,11 +7,18 @@ import { useToTopContext } from "@/contexts/to-top-context";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { Suspense, useEffect, useState } from "react";
+import { useUserContext } from "@/contexts/user-context";
 
 function Home() {
     const [newestGames, setNewestGames] = useState<Game[]>([]);
 
     const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();
+
+    const { getSession } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     useEffect(() => {
         async function getGames() {

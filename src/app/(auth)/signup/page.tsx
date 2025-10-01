@@ -32,12 +32,19 @@ function SignUpPage() {
 
     const onSubmit = async (data: TSignUpSchema) => {
         try {
-            console.log(data);
-            await signUp(data);
+            await signUp(
+                {
+                    name: data.name,
+                    email: data.email,
+                    image: data.image,
+                },
+                data.password,
+                data.confirmPassword
+            );
             signUpForm.reset();
-            router.push("/");
+            router.push("/signin");
             toast.success(
-                "Signed Up Successfully! Sending you to the homepage..."
+                "Signed Up Successfully! Please sign in to continue..."
             );
         } catch (error) {
             console.error(error);
@@ -63,10 +70,10 @@ function SignUpPage() {
                         <AuthSignUpInput
                             customForm={signUpForm}
                             label="Username"
-                            name="username"
+                            name="name"
                             placeholder="Choose a Username"
                             description="Min 4 characters"
-                            errorMessage={errors.username?.message}
+                            errorMessage={errors.name?.message}
                         />
                         <AuthSignUpInput
                             customForm={signUpForm}
@@ -98,8 +105,8 @@ function SignUpPage() {
                         <AvatarDialog
                             customForm={signUpForm}
                             label="Select Avatar"
-                            name="avatar"
-                            errorMessage={errors.avatar?.message}
+                            name="image"
+                            errorMessage={errors.image?.message}
                         />
                         <AuthSubmit
                             isSubmitting={isSubmitting}

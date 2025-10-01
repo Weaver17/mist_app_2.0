@@ -129,10 +129,47 @@ exports.Prisma.SavedGameScalarFieldEnum = {
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  username: 'username',
+  name: 'name',
+  image: 'image',
+  emailVerified: 'emailVerified',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  expiresAt: 'expiresAt',
+  token: 'token',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  userId: 'userId'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  providerId: 'providerId',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  idToken: 'idToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  refreshTokenExpiresAt: 'refreshTokenExpiresAt',
+  scope: 'scope',
   password: 'password',
-  slug: 'slug',
-  avatar: 'avatar'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -155,7 +192,10 @@ exports.Prisma.ModelName = {
   Screenshot: 'Screenshot',
   MinimumSystemRequirements: 'MinimumSystemRequirements',
   SavedGame: 'SavedGame',
-  User: 'User'
+  User: 'User',
+  Session: 'Session',
+  Account: 'Account',
+  Verification: 'Verification'
 };
 /**
  * Create the Client
@@ -204,13 +244,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma-client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"MIST_SQL_DB_PRISMA_DATABASE_URL\")\n}\n\nmodel Screenshot {\n  id    Int    @unique\n  image String\n\n  savedGame   SavedGame @relation(fields: [savedGameId], references: [saved_id])\n  savedGameId String\n}\n\nmodel MinimumSystemRequirements {\n  id        String  @id @default(cuid())\n  os        String?\n  graphics  String?\n  memory    String?\n  storage   String?\n  processor String?\n\n  savedGame   SavedGame @relation(fields: [savedGameId], references: [saved_id])\n  savedGameId String    @unique\n}\n\nmodel SavedGame {\n  saved_id                    String                     @id @default(cuid())\n  description                 String\n  developer                   String\n  freetogame_profile_url      String\n  game_url                    String\n  genre                       String\n  id                          Int                        @unique\n  minimum_system_requirements MinimumSystemRequirements?\n  platform                    String\n  publisher                   String\n  release_date                String\n  screenshots                 Screenshot[]\n  short_description           String\n  status                      String\n  thumbnail                   String\n  title                       String\n\n  user   User   @relation(fields: [userId], references: [id])\n  userId String\n}\n\nmodel User {\n  id       String @id @default(cuid())\n  email    String @unique\n  username String\n  password String\n  slug     String @unique\n  avatar   String\n\n  savedGames SavedGame[]\n}\n",
-  "inlineSchemaHash": "338125a90373962b3a4e1e0a5662cce1c3c2b8ad4ccae2694bc2fde5dd9008c1",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma-client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"MIST_SQL_DB_PRISMA_DATABASE_URL\")\n}\n\nmodel Screenshot {\n  id    Int    @unique\n  image String\n\n  savedGame   SavedGame @relation(fields: [savedGameId], references: [saved_id])\n  savedGameId String\n}\n\nmodel MinimumSystemRequirements {\n  id        String  @id @default(cuid())\n  os        String?\n  graphics  String?\n  memory    String?\n  storage   String?\n  processor String?\n\n  savedGame   SavedGame @relation(fields: [savedGameId], references: [saved_id])\n  savedGameId String    @unique\n}\n\nmodel SavedGame {\n  saved_id                    String                     @id @default(cuid())\n  description                 String\n  developer                   String\n  freetogame_profile_url      String\n  game_url                    String\n  genre                       String\n  id                          Int                        @unique\n  minimum_system_requirements MinimumSystemRequirements?\n  platform                    String\n  publisher                   String\n  release_date                String\n  screenshots                 Screenshot[]\n  short_description           String\n  status                      String\n  thumbnail                   String\n  title                       String\n\n  user   User   @relation(fields: [userId], references: [id])\n  userId String\n}\n\nmodel User {\n  id    String @id @default(cuid())\n  email String @unique\n  name  String @unique\n  image String\n\n  savedGames SavedGame[]\n\n  emailVerified Boolean   @default(false)\n  createdAt     DateTime  @default(now())\n  updatedAt     DateTime  @default(now()) @updatedAt\n  sessions      Session[]\n  accounts      Account[]\n\n  @@map(\"user\")\n}\n\nmodel Session {\n  id        String   @id\n  expiresAt DateTime\n  token     String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  ipAddress String?\n  userAgent String?\n  userId    String\n  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@unique([token])\n  @@map(\"session\")\n}\n\nmodel Account {\n  id                    String    @id\n  accountId             String\n  providerId            String\n  userId                String\n  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)\n  accessToken           String?\n  refreshToken          String?\n  idToken               String?\n  accessTokenExpiresAt  DateTime?\n  refreshTokenExpiresAt DateTime?\n  scope                 String?\n  password              String?\n  createdAt             DateTime  @default(now())\n  updatedAt             DateTime  @updatedAt\n\n  @@map(\"account\")\n}\n\nmodel Verification {\n  id         String   @id\n  identifier String\n  value      String\n  expiresAt  DateTime\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @default(now()) @updatedAt\n\n  @@map(\"verification\")\n}\n",
+  "inlineSchemaHash": "273112c85887265a6eb02c9cd0803c6ab96b41438397f5e667c98a8afdc015bb",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Screenshot\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"savedGame\",\"kind\":\"object\",\"type\":\"SavedGame\",\"relationName\":\"SavedGameToScreenshot\"},{\"name\":\"savedGameId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"MinimumSystemRequirements\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"os\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"graphics\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"memory\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"storage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"processor\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"savedGame\",\"kind\":\"object\",\"type\":\"SavedGame\",\"relationName\":\"MinimumSystemRequirementsToSavedGame\"},{\"name\":\"savedGameId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"SavedGame\":{\"fields\":[{\"name\":\"saved_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"developer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"freetogame_profile_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"game_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"genre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"minimum_system_requirements\",\"kind\":\"object\",\"type\":\"MinimumSystemRequirements\",\"relationName\":\"MinimumSystemRequirementsToSavedGame\"},{\"name\":\"platform\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"publisher\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"release_date\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"screenshots\",\"kind\":\"object\",\"type\":\"Screenshot\",\"relationName\":\"SavedGameToScreenshot\"},{\"name\":\"short_description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"thumbnail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SavedGameToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"avatar\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"savedGames\",\"kind\":\"object\",\"type\":\"SavedGame\",\"relationName\":\"SavedGameToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Screenshot\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"savedGame\",\"kind\":\"object\",\"type\":\"SavedGame\",\"relationName\":\"SavedGameToScreenshot\"},{\"name\":\"savedGameId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"MinimumSystemRequirements\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"os\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"graphics\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"memory\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"storage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"processor\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"savedGame\",\"kind\":\"object\",\"type\":\"SavedGame\",\"relationName\":\"MinimumSystemRequirementsToSavedGame\"},{\"name\":\"savedGameId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"SavedGame\":{\"fields\":[{\"name\":\"saved_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"developer\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"freetogame_profile_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"game_url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"genre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"minimum_system_requirements\",\"kind\":\"object\",\"type\":\"MinimumSystemRequirements\",\"relationName\":\"MinimumSystemRequirementsToSavedGame\"},{\"name\":\"platform\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"publisher\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"release_date\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"screenshots\",\"kind\":\"object\",\"type\":\"Screenshot\",\"relationName\":\"SavedGameToScreenshot\"},{\"name\":\"short_description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"thumbnail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SavedGameToUser\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"image\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"savedGames\",\"kind\":\"object\",\"type\":\"SavedGame\",\"relationName\":\"SavedGameToUser\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"sessions\",\"kind\":\"object\",\"type\":\"Session\",\"relationName\":\"SessionToUser\"},{\"name\":\"accounts\",\"kind\":\"object\",\"type\":\"Account\",\"relationName\":\"AccountToUser\"}],\"dbName\":\"user\"},\"Session\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"ipAddress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userAgent\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SessionToUser\"}],\"dbName\":\"session\"},\"Account\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accountId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"AccountToUser\"},{\"name\":\"accessToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"refreshToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"idToken\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accessTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"refreshTokenExpiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"scope\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"account\"},\"Verification\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"value\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expiresAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":\"verification\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

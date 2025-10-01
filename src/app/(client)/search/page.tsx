@@ -4,6 +4,7 @@ import { CustomInput } from "@/components/custom/c_input";
 import GameList from "@/components/lists/game-list";
 import LoadingSpinner from "@/components/loading/loading-spinner";
 import { useToTopContext } from "@/contexts/to-top-context";
+import { useUserContext } from "@/contexts/user-context";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
@@ -15,6 +16,12 @@ function SearchPage() {
     const [filteredGames, setFilteredGames] = useState([]);
 
     const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();
+
+    const { getSession } = useUserContext();
+
+    useEffect(() => {
+        getSession();
+    }, []);
 
     const handleSearch = (e: {
         target: { value: React.SetStateAction<string> };

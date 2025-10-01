@@ -1,5 +1,4 @@
 "use client";
-import React, { useEffect } from "react";
 import {
     CustomNavigationMenu,
     CustomNavigationMenuList,
@@ -10,32 +9,29 @@ import { CustomButton } from "../custom/c_button";
 import NavLink from "./navlink";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useUserContext } from "@/contexts/user-context";
-import {
-    CustomAvatar,
-    CustomAvatarFallback,
-    CustomAvatarImage,
-} from "../custom/c_avatar";
+import { CustomAvatar, CustomAvatarFallback } from "../custom/c_avatar";
 import Link from "next/link";
 import { getAvatar } from "@/lib/utils";
 import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
+import { useState, useCallback, useEffect } from "react";
 
 const MOBILENAVBAR_KEYBOARD_SHORTCUT = "m";
 
 function Navbar() {
     const isMobile = useIsMobile();
-    const [openMobile, setOpenMobile] = React.useState(false);
+    const [openMobile, setOpenMobile] = useState(false);
 
     const { isLoggedIn, currentUser } = useUserContext();
 
     // Helper to toggle the sidebar.
-    const toggleMobileNavbar = React.useCallback(() => {
-        // Removed 'React.'
+    const toggleMobileNavbar = useCallback(() => {
+        // Removed ''
         setOpenMobile((open) => !open);
     }, [setOpenMobile]);
 
     // Adds a keyboard shortcut to toggle the mobile navbar.
-    React.useEffect(() => {
+    useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (
                 event.key === MOBILENAVBAR_KEYBOARD_SHORTCUT &&
@@ -51,7 +47,7 @@ function Navbar() {
     }, [toggleMobileNavbar]);
 
     // Get the user's avatar based on currentUser.avatar
-    const userAvatar = getAvatar(currentUser?.avatar);
+    const userAvatar = getAvatar(currentUser?.image);
 
     return (
         <nav className="font-special">
@@ -89,7 +85,7 @@ function Navbar() {
                                 {isLoggedIn ? (
                                     <CustomAvatar className="cursor-pointer">
                                         <Link
-                                            href={`/profile/${currentUser?.slug}`}
+                                            href={`/profile/${currentUser?.id}`}
                                             className="h-[50px] w-[50px]"
                                         >
                                             <CustomAspectRatio ratio={1}>
@@ -98,7 +94,7 @@ function Navbar() {
                                                     alt={userAvatar.title}
                                                 />
                                                 <CustomAvatarFallback className="text-secondary">
-                                                    {currentUser?.username[0]}
+                                                    {currentUser?.name[0]}
                                                 </CustomAvatarFallback>
                                             </CustomAspectRatio>
                                         </Link>

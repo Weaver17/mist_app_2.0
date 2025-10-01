@@ -6,25 +6,19 @@ export const signInSchema = z.object({
 });
 
 export const signUpSchema = z.object({
-    username: z.string().min(4).max(16),
+    name: z.string().min(4).max(24),
     email: z.email(),
     password: z.string().min(8).max(24),
     confirmPassword: z.string().min(8).max(24),
-    avatar: z.enum([
-        "pacman",
-        "joystick",
-        "mouse",
-        "modern-controller",
-        "classic-controller",
-        "dpad",
-        "spaceship-green",
-        "spaceship-red",
-        "spaceship-blue",
-        "spaceship-purple",
-        "spaceship-orange",
-    ]),
+    image: z.string(),
+});
+
+export const betterAtuhSignUpSchema = z.object({
+    name: z.string().min(4).max(24),
+    email: z.email(),
+    image: z.string(),
 });
 
 export const changeUsernameSchema = z.object({
-    newUsername: z.string().min(4).max(16),
+    newName: z.string().min(4).max(16),
 });

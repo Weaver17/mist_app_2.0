@@ -6,8 +6,9 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function slugify(username: string): string {
-    const slug = username.trim().toLowerCase().replace(/\s+/g, "-");
+export function slugify(name: string): string {
+    if (name === undefined) return "";
+    const slug = name.trim().toLowerCase().replace(/\s+/g, "-");
     const randomNum = Math.floor(Math.random() * 900) + 100;
     return `${slug}${randomNum}`;
 }

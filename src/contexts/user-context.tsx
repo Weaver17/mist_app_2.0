@@ -1,11 +1,13 @@
 "use client";
 import {
     createUser,
+    fetchSession,
     getSavedGamesAction,
-    getUserBySlug,
+    getUserById,
+    signIn,
 } from "@/actions/actions";
 import { SavedGame, User } from "@/generated/prisma-client";
-import { TUser } from "@/types/types";
+import { TNewUser, TSignInSchema } from "@/types/types";
 import {
     createContext,
     useMemo,
@@ -15,10 +17,15 @@ import {
 } from "react";
 
 interface UserContextType {
-    signUp: (user: TUser) => Promise<void>;
-    login: (user: User) => Promise<void>;
+    signUp: (
+        { name, email, image }: TNewUser,
+        password: string,
+        confirmPassword: string
+    ) => Promise<void>;
+    login: (user: TSignInSchema) => Promise<void>;
     logout: () => void;
     editUsername: (username: string) => void;
+    getSession: () => Promise<void>;
     saveGame: (game: SavedGame) => Promise<void>;
     unsaveGame: (gameId: number) => Promise<void>;
     getSavedGames: (currentUser: User) => Promise<void>;
@@ -39,25 +46,35 @@ export function UserProvider({
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [savedGames, setSavedGames] = useState<SavedGame[]>([]);
 
-    const signUp = useCallback(async (user: TUser) => {
-        setIsLoading(true);
-        try {
-            await createUser(user);
-            setIsLoggedIn(true);
-        } catch (error) {
-            console.error(error);
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
+    const signUp = useCallback(
+        async (
+            { name, email, image }: TNewUser,
+            password: string,
+            confirmPassword: string
+        ) => {
+            setIsLoading(true);
+            try {
+                await createUser(
+                    { name, email, image },
+                    password,
+                    confirmPassword
+                );
+            } catch (error) {
+                console.error(error);
+                throw error;
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        []
+    );
 
-    const login = async (user: User) => {
+    const login = async (user: TSignInSchema) => {
         setIsLoading(true);
         try {
             setIsLoggedIn(true);
-            await getUserBySlug(user.slug).then((user: User | null) => {
-                setCurrentUser(user);
+            await signIn(user).then((user) => {
+                setCurrentUser(user.user as User);
             });
         } catch (error) {
             console.error(error);
@@ -80,15 +97,33 @@ export function UserProvider({
         }
     };
 
+    const getSession = async () => {
+        setIsLoading(true);
+        try {
+            await fetchSession().then((session) => {
+                if (!session) return;
+                getUserById(session.user.id).then((user) => {
+                    setCurrentUser(user);
+                    setIsLoggedIn(true);
+                });
+            });
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const editUsername = useCallback(
-        async (username: string) => {
+        async (name: string) => {
             setIsLoading(true);
             try {
                 if (!currentUser) {
-                    throw Error("Must be logged in to edit username");
+                    throw Error("Must be logged in to edit name");
                 }
 
-                setCurrentUser({ ...currentUser, username });
+                setCurrentUser({ ...currentUser, name });
             } catch (error) {
                 console.error(error);
                 throw error;
@@ -160,6 +195,7 @@ export function UserProvider({
             login,
             logout,
             editUsername,
+            getSession,
             saveGame,
             unsaveGame,
             getSavedGames,
