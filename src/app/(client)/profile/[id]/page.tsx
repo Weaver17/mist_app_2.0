@@ -9,11 +9,15 @@ import { useParams, redirect } from "next/navigation";
 import SignOutDialog from "@/components/auth/signout-dialog";
 import { User } from "@/generated/prisma-client";
 import FadingSidebar from "@/components/profile/fading-sidebar";
+import { useToTopContext } from "@/contexts/to-top-context";
+import ToTopBtn from "@/components/buttons/to-top-btn";
 import SmallSpinner from "@/components/loading/small-spinner";
 
 function ProfilePage() {
     const { currentUser, getSavedGames, savedGames } = useUserContext();
     const [profileUser, setProfileUser] = useState<User | null>(null);
+
+    const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();
 
     const params = useParams<{ id: string }>();
 
@@ -38,6 +42,14 @@ function ProfilePage() {
             getSavedGames(profileUser);
         }
     }, [profileUser, getSavedGames]);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleToTopBtn);
+    }, [handleToTopBtn]);
+
+    if (!currentUser) {
+        return redirect("/signin");
+    }
 
     return (
         <div className="client-page">
@@ -80,6 +92,10 @@ function ProfilePage() {
                     )}
                 </div>
             </div>
+            <ToTopBtn
+                onToTopClick={onToTopClick}
+                scrollPosition={scrollPosition}
+            />
         </div>
     );
 }

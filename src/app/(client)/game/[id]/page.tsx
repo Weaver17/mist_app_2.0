@@ -1,10 +1,12 @@
 "use client";
 import { saveGameAction, unsaveGameAction } from "@/actions/actions";
+import ToTopBtn from "@/components/buttons/to-top-btn";
 import { CustomAspectRatio } from "@/components/custom/c_aspect-ratio";
 import { CustomButton } from "@/components/custom/c_button";
 import { CustomCard, CustomCardContent } from "@/components/custom/c_card";
 import LoadingOverlay from "@/components/loading/loading-overlay";
 import FadingSidebar from "@/components/profile/fading-sidebar";
+import { useToTopContext } from "@/contexts/to-top-context";
 import { useUserContext } from "@/contexts/user-context";
 import { SavedGame } from "@/generated/prisma-client";
 import { getGameById } from "@/lib/game-api";
@@ -32,6 +34,8 @@ function GamePage() {
     useEffect(() => {
         getSession();
     }, []);
+
+    const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();
 
     const onSaveGameClick = async (game: Game | SavedGame) => {
         const isSaved = isGameSaved(game.id);
@@ -65,6 +69,10 @@ function GamePage() {
 
         getGame();
     });
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleToTopBtn);
+    }, [handleToTopBtn]);
 
     return (
         <div className="p-4 flex flex-col gap-4 max-w-[1380px] mx-auto lg:gap-8">
@@ -295,6 +303,10 @@ function GamePage() {
                     </div>
                 </>
             )}
+            <ToTopBtn
+                onToTopClick={onToTopClick}
+                scrollPosition={scrollPosition}
+            />
         </div>
     );
 }
