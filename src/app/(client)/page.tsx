@@ -30,9 +30,7 @@ function Home() {
                     console.log(error);
                 });
         }
-        setTimeout(() => {
-            getGames();
-        }, 1000);
+        getGames();
     }, []);
 
     useEffect(() => {

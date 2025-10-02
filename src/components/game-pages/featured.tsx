@@ -42,15 +42,13 @@ function Featured({ games }: FeaturedProps) {
                 console.error(error);
             }
         };
-        setTimeout(() => {
-            fetchFeaturedGame();
-        }, 1000);
+        fetchFeaturedGame();
     }, [games]);
 
     return (
         <div className="flex flex-col gap-2 md:gap-4">
             <H1Custom className="pb-2 font-special border-b border-secondary">
-                Featured Game
+                Today&apos;s Featured Game
             </H1Custom>
             {!featuredGame ? (
                 <LoadingSpinner />

@@ -63,4 +63,4 @@ export const PLATFORMS = [
 export const DEFAULT_VISIBLE_COUNT = 12;
 export const VISIBLE_COUNT_ADD = 6;
 
-export const FEATURED_GAME_TIME = 10 * 60 * 1000;
+export const FEATURED_GAME_TIME = 24 * 60 * 60 * 1000;
