@@ -49,7 +49,7 @@ index.ts
 
 /generated
 
-/src/generated/*
+src/generated
 
 .vercel
 
