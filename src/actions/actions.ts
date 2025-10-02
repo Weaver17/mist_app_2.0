@@ -19,7 +19,6 @@ export async function createUser(
     confirmPassword: string
 ) {
     try {
-        console.log("creating user...");
         const safeData = betterAtuhSignUpSchema.parse({
             name,
             email,
@@ -63,7 +62,6 @@ export async function createUser(
             },
         });
 
-        console.log("user created: ", data);
         return data;
     } catch (error) {
         console.error(error);
@@ -90,7 +88,6 @@ export async function getUserById(id: string) {
 
 export async function signIn(formData: TSignInSchema) {
     try {
-        console.log("signing in...");
         const safeData = signInSchema.parse(formData);
 
         if (!safeData) {
@@ -105,7 +102,6 @@ export async function signIn(formData: TSignInSchema) {
             headers: await headers(),
         });
 
-        console.log("signed in: ", data);
         return data;
     } catch (error) {
         console.error(error);
@@ -157,8 +153,6 @@ export async function changeUsername(
                 name: newName.newName,
             },
         });
-
-        console.log("name changed from: ", user.name, "to: ", changedUser.name);
 
         return changedUser;
     } catch (error) {

@@ -40,11 +40,7 @@ function GamePage() {
 
     const onSaveGameClick = async (game: Game | SavedGame) => {
         const isSaved = isGameSaved(game.id);
-        console.log(
-            `${isSaved ? "unsaving" : "saving"} game...`,
-            currentUser?.name,
-            game
-        );
+
         try {
             if (isSaved) {
                 await unsaveGameAction(currentUser!.email, game.id);

@@ -28,7 +28,6 @@ function SignInPage() {
 
     const onSubmit = async (data: TSignInSchema) => {
         try {
-            console.log(data);
             await login(data);
             signInForm.reset();
             router.push("/");
