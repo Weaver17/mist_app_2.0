@@ -13,9 +13,9 @@ import { CustomButton } from "../custom/c_button";
 import images from "@/lib/images";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/user-context";
-import { SavedGame } from "@/generated/prisma-client";
 import { saveGameAction, unsaveGameAction } from "@/actions/actions";
 import { getGameById } from "@/lib/game-api";
+import { SavedGame } from "../../../generated/prisma-client";
 
 type FeaturedCardProps = {
     featuredGame: FeaturedGame;
@@ -167,7 +167,7 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                                 target="_blank"
                                 className="font-bold"
                             >
-                                Play Now
+                                Download and Play
                             </Link>
                         </CustomButton>
                     </div>
