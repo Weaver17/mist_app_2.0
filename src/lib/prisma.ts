@@ -1,6 +1,6 @@
 // lib/prisma.ts
 
-import { PrismaClient } from "@/generated/prisma-client";
+import { PrismaClient } from "../../generated/prisma-client";
 
 const connectionString = `${process.env.MIST_SQL_DB_PRISMA_DATABASE_URL}`;
 
