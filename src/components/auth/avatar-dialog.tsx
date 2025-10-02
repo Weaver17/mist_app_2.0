@@ -76,9 +76,6 @@ function AvatarDialog({
                                             <FormControl>
                                                 <CustomRadioGroupItem
                                                     value={avatar.alt}
-                                                    onClick={() => {
-                                                        console.log(avatar.alt);
-                                                    }}
                                                 />
                                             </FormControl>
                                             <FormLabel asChild>
