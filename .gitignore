@@ -48,8 +48,6 @@ index.ts
 
 /prisma/migrations
 
-/generated/prisma
-
 .vercel
 
 todo.txt

@@ -6,7 +6,6 @@ import {
     getUserById,
     signIn,
 } from "@/actions/actions";
-import { SavedGame, User } from "@/generated/prisma-client";
 import { TNewUser, TSignInSchema } from "@/types/types";
 import {
     createContext,
@@ -15,6 +14,7 @@ import {
     useContext,
     useCallback,
 } from "react";
+import { SavedGame, User } from "../../generated/prisma-client";
 
 interface UserContextType {
     signUp: (
