@@ -4,7 +4,7 @@ import GameCard from "../cards/game-card";
 import { useState } from "react";
 import { DEFAULT_VISIBLE_COUNT, VISIBLE_COUNT_ADD } from "@/lib/constants";
 import ShowMoreBtn from "../buttons/show-more-btn";
-import { SavedGame } from "@/generated/prisma-client";
+import { SavedGame } from "../../../generated/prisma-client";
 
 type SavedListProps = {
     games: Game[] | SavedGame[];

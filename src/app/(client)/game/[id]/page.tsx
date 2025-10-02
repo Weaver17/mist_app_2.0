@@ -8,7 +8,6 @@ import LoadingOverlay from "@/components/loading/loading-overlay";
 import FadingSidebar from "@/components/profile/fading-sidebar";
 import { useToTopContext } from "@/contexts/to-top-context";
 import { useUserContext } from "@/contexts/user-context";
-import { SavedGame } from "@/generated/prisma-client";
 import { getGameById } from "@/lib/game-api";
 import images from "@/lib/images";
 import { FeaturedGame, Game } from "@/types/types";
@@ -17,6 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { SavedGame } from "../../../../../generated/prisma-client";
 
 function GamePage() {
     const [game, setGame] = useState<FeaturedGame>();
@@ -33,6 +33,7 @@ function GamePage() {
 
     useEffect(() => {
         getSession();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();

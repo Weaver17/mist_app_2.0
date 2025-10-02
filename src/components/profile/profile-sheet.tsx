@@ -8,7 +8,7 @@ import {
     CustomSheetTitle,
     CustomSheetTrigger,
 } from "../custom/c_sheet";
-import { CustomAvatar, CustomAvatarFallback } from "../custom/c_avatar";
+import { CustomAvatar } from "../custom/c_avatar";
 import { H2Custom, H3Custom } from "@/typography/custom";
 import { CustomButton } from "../custom/c_button";
 import Link from "next/link";
@@ -16,7 +16,7 @@ import { User } from "lucide-react";
 import { useUserContext } from "@/contexts/user-context";
 import EditDialog from "../auth/edit-username/edit-dialog";
 import SignOutDialog from "../auth/signout-dialog";
-import { User as CurrentUser } from "@/generated/prisma-client";
+import { User as CurrentUser } from "../../../generated/prisma-client";
 import { getAvatar } from "@/lib/utils";
 import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";

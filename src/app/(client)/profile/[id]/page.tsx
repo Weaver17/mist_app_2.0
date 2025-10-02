@@ -7,11 +7,11 @@ import SavedList from "@/components/lists/saved-list";
 import { getUserById } from "@/actions/actions";
 import { useParams, redirect } from "next/navigation";
 import SignOutDialog from "@/components/auth/signout-dialog";
-import { User } from "@/generated/prisma-client";
 import FadingSidebar from "@/components/profile/fading-sidebar";
 import { useToTopContext } from "@/contexts/to-top-context";
 import ToTopBtn from "@/components/buttons/to-top-btn";
 import SmallSpinner from "@/components/loading/small-spinner";
+import { User } from "../../../../../generated/prisma-client";
 
 function ProfilePage() {
     const { currentUser, getSavedGames, savedGames } = useUserContext();
@@ -25,6 +25,7 @@ function ProfilePage() {
 
     useEffect(() => {
         getSession();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

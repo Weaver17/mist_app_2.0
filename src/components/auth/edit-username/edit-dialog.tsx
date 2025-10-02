@@ -22,6 +22,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 function EditDialog() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
     const { currentUser, editUsername } = useUserContext();

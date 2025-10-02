@@ -15,7 +15,6 @@ import { TAvatarImg, TSignUpSchema } from "@/types/types";
 import { UseFormReturn } from "react-hook-form";
 import {
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,

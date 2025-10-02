@@ -16,8 +16,8 @@ import { useUserContext } from "@/contexts/user-context";
 import { saveGameAction, unsaveGameAction } from "@/actions/actions";
 import { getGameById } from "@/lib/game-api";
 import { useEffect } from "react";
-import { SavedGame } from "@/generated/prisma-client";
 import Link from "next/link";
+import { SavedGame } from "../../../generated/prisma-client";
 
 type GameCardProps = {
     game: Game | SavedGame;

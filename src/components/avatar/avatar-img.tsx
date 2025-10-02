@@ -1,7 +1,6 @@
 "use client";
 import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
-import { TAvatarImg, TSignUpSchema } from "@/types/types";
 
 import {
     CustomTooltip,

@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { CustomButton } from "../custom/c_button";
 
 type ToTopBtnProps = {
