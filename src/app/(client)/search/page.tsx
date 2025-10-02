@@ -1,7 +1,7 @@
 "use client";
 import ToTopBtn from "@/components/buttons/to-top-btn";
 import { CustomInput } from "@/components/custom/c_input";
-import GameList from "@/components/lists/game-list";
+import Search from "@/components/game-pages/search-page";
 import LoadingSpinner from "@/components/loading/loading-spinner";
 import { useToTopContext } from "@/contexts/to-top-context";
 import { useUserContext } from "@/contexts/user-context";
@@ -68,10 +68,13 @@ function SearchPage() {
                 />
             </div>
             <div>
-                {gamesToShow.length === 0 ? (
+                {games.length === 0 ? (
                     <LoadingSpinner />
                 ) : (
-                    <GameList games={gamesToShow} />
+                    <Search
+                        gamesToShow={gamesToShow}
+                        filteredGames={filteredGames}
+                    />
                 )}
             </div>
             <ToTopBtn
