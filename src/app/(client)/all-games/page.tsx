@@ -5,13 +5,14 @@ import GameList from "@/components/lists/game-list";
 import LoadingSpinner from "@/components/loading/loading-spinner";
 import { useToTopContext } from "@/contexts/to-top-context";
 import { useUserContext } from "@/contexts/user-context";
-import { getGamesByPop } from "@/lib/game-api";
+import { getGamesByPop, getGamesBySort } from "@/lib/game-api";
 import { Game } from "@/types/types";
 import { H1Custom } from "@/typography/custom";
 import React, { useEffect, useState } from "react";
 
 function AllGamesPage() {
     const [games, setGames] = useState<Game[]>([]);
+    const [sortBy, setSortBy] = useState("popularity");
 
     const { scrollPosition, handleToTopBtn, onToTopClick } = useToTopContext();
 
@@ -23,14 +24,22 @@ function AllGamesPage() {
 
     useEffect(() => {
         async function getGames() {
-            await getGamesByPop()
-                .then((data) => {
-                    setGames(data);
-                })
-                .catch(console.error);
+            if (sortBy === "popularity") {
+                await getGamesByPop()
+                    .then((data) => {
+                        setGames(data);
+                    })
+                    .catch(console.error);
+            } else {
+                getGamesBySort(sortBy)
+                    .then((data) => {
+                        setGames(data);
+                    })
+                    .catch(console.error);
+            }
         }
         getGames();
-    }, []);
+    }, [sortBy]);
 
     useEffect(() => {
         window.addEventListener("scroll", handleToTopBtn);
@@ -42,7 +51,7 @@ function AllGamesPage() {
                 <H1Custom className="text-center font-special">
                     All Games
                 </H1Custom>
-                <GamesSelect />
+                <GamesSelect sortBy={sortBy} setSortBy={setSortBy} />
             </div>
             {games.length === 0 ? (
                 <LoadingSpinner />
