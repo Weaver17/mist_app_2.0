@@ -8,15 +8,10 @@ import {
     TChangeUsernameSchema,
     TSavedGameSchema,
     TSignInSchema,
-    TSignUpSchema,
 } from "@/types/types";
 import { auth } from "../../lib/auth";
 import { headers } from "next/headers";
-import {
-    betterAtuhSignUpSchema,
-    signInSchema,
-    signUpSchema,
-} from "@/schema/auth";
+import { betterAtuhSignUpSchema, signInSchema } from "@/schema/auth";
 
 export async function createUser(
     { name, email, image }: TBetterAuthSignUpSchema,
@@ -112,6 +107,17 @@ export async function signIn(formData: TSignInSchema) {
 
         console.log("signed in: ", data);
         return data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export async function signOut() {
+    try {
+        await auth.api.signOut({
+            headers: await headers(),
+        });
     } catch (error) {
         console.error(error);
         throw error;

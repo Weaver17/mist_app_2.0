@@ -5,6 +5,7 @@ import {
     getSavedGamesAction,
     getUserById,
     signIn,
+    signOut,
 } from "@/actions/actions";
 import { TNewUser, TSignInSchema } from "@/types/types";
 import {
@@ -87,6 +88,7 @@ export function UserProvider({
     const logout = async () => {
         setIsLoading(true);
         try {
+            await signOut();
             setCurrentUser(null);
             setIsLoggedIn(false);
         } catch (error) {
