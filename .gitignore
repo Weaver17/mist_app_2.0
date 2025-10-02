@@ -45,8 +45,6 @@ next-env.d.ts
 
 index.ts
 
-/prisma/migrations
-
 .vercel
 
 todo.txt
