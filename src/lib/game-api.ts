@@ -29,3 +29,15 @@ export const getGameById = (id: number) => {
 export const getGamesByPop = () => {
     return request(`${gameUrl}/games?sort-by=popularity`, { headers });
 };
+
+export const getGamesByPlatform = (platform: string) => {
+    return request(`${gameUrl}/games?platform=${platform}`, { headers });
+};
+
+export const getGamesBySort = (sortType: string) => {
+    return request(`${gameUrl}/games?sort-by=${sortType}`, { headers });
+};
+
+export const getGamesByCategory = (category: string) => {
+    return request(`${gameUrl}/games?category=${category}`, { headers });
+};
