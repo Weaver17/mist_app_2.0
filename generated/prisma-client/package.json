@@ -1,5 +1,5 @@
 {
-  "name": "prisma-client-b6552d9f78889b4ddc1eebc9a7ec411b9ca2e58b86160f66a8f7dbf2954dc8b0",
+  "name": "prisma-client-98e3e0c83ae5669fd85a938c7b1ea58c9f1ef9dca51fbcbd9917913b1424c0cc",
   "main": "index.js",
   "types": "index.d.ts",
   "browser": "default.js",
@@ -154,7 +154,7 @@
   "version": "6.16.2",
   "sideEffects": false,
   "imports": {
-    "#wasm-engine-loader": {
+    "#wasm-compiler-loader": {
       "edge-light": "./wasm-edge-light-loader.mjs",
       "workerd": "./wasm-worker-loader.mjs",
       "worker": "./wasm-worker-loader.mjs",
