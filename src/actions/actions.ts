@@ -1,7 +1,5 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-
 import {
     Screenshots,
     TBetterAuthSignUpSchema,
@@ -12,6 +10,7 @@ import {
 import { auth } from "../../lib/auth";
 import { headers } from "next/headers";
 import { betterAtuhSignUpSchema, signInSchema } from "@/schema/auth";
+import prisma from "@/lib/prisma";
 
 export async function createUser(
     { name, email, image }: TBetterAuthSignUpSchema,
