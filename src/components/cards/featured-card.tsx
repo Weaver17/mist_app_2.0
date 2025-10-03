@@ -38,7 +38,6 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                 await getSavedGames(currentUser!);
             }
         } catch (error) {
-            console.error(error);
             throw error;
         }
     };
