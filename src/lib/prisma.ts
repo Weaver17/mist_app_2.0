@@ -7,6 +7,8 @@ const connectionString =
         ? process.env.DATABASE_URL
         : process.env.MIST_SQL_DB_PRISMA_DATABASE_URL;
 
+console.log(connectionString);
+
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 const prisma =
