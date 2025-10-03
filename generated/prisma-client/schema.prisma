@@ -12,7 +12,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("MIST_SQL_DB_PRISMA_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Screenshot {
