@@ -28,7 +28,7 @@ function Home() {
                     setNewestGames(data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
         getGames();
