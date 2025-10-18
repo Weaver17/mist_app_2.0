@@ -1,6 +1,6 @@
 "use client";
 import { FeaturedGame, Game } from "@/types/types";
-import { H1Custom } from "@/typography/custom";
+import { H1 } from "@/typography/custom";
 import { useEffect, useState } from "react";
 import FeaturedCard from "../cards/featured-card";
 import { FEATURED_GAME_TIME } from "@/lib/constants";
@@ -47,9 +47,9 @@ function Featured({ games }: FeaturedProps) {
 
     return (
         <div className="flex flex-col gap-2 md:gap-4">
-            <H1Custom className="pb-2 font-special border-b border-secondary">
+            <H1 className="pb-2 font-special border-b border-secondary">
                 Today&apos;s Featured Game
-            </H1Custom>
+            </H1>
             {!featuredGame ? (
                 <LoadingSpinner />
             ) : (

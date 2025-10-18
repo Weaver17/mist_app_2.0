@@ -1,21 +1,21 @@
 "use client";
 import React, { useEffect } from "react";
-import {
-    CustomCard,
-    CustomCardContent,
-    CustomCardHeader,
-} from "../custom/c_card";
 import { FeaturedGame, Game } from "@/types/types";
-import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
-import { H3Custom, MutedCustom, PCustom } from "@/typography/custom";
-import { CustomButton } from "../custom/c_button";
+import { H3, Muted, P } from "@/typography/custom";
 import images from "@/lib/images";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/user-context";
 import { saveGameAction, unsaveGameAction } from "@/actions/actions";
 import { getGameById } from "@/lib/game-api";
 import { SavedGame } from "../../../generated/prisma-client";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+} from "../custom/components/cards/c_card";
+import { Button } from "../custom/components/buttons/c_button";
+import { AspectRatio } from "../custom/components/c_aspect-ratio";
 
 type FeaturedCardProps = {
     featuredGame: FeaturedGame;
@@ -52,13 +52,13 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
     }, [currentUser, getSavedGames]);
     return (
         <div className="w-full mx-auto xl:max-w-5/6">
-            <CustomCard className="py-2 gap-0!">
-                <CustomCardHeader className="flex justify-between items-center gap-2 pb-2">
-                    <H3Custom className="font-special text-lg font-semibold truncate md:text-2xl lg:text-4xl">
+            <Card className="py-2 gap-0!">
+                <CardHeader className="flex justify-between items-center gap-2 pb-2">
+                    <H3 className="font-special text-lg font-semibold truncate md:text-2xl lg:text-4xl">
                         {featuredGame.title}
-                    </H3Custom>
+                    </H3>
                     {isLoggedIn ? (
-                        <CustomButton
+                        <Button
                             size="sm"
                             variant="ghost"
                             className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
@@ -71,9 +71,9 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                                 height={18}
                                 priority
                             />
-                        </CustomButton>
+                        </Button>
                     ) : (
-                        <CustomButton
+                        <Button
                             size="sm"
                             variant="ghost"
                             disabled
@@ -86,13 +86,13 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                                 height={18}
                                 priority
                             />
-                        </CustomButton>
+                        </Button>
                     )}
-                </CustomCardHeader>
-                <CustomCardContent className="p-0! flex flex-col gap-2">
+                </CardHeader>
+                <CardContent className="p-0! flex flex-col gap-2">
                     <div className="flex flex-col pb-2 gap-2 border-b border-primary md:flex-row">
                         <div className="w-full md:w-1/2">
-                            <CustomAspectRatio
+                            <AspectRatio
                                 ratio={16 / 9}
                                 className="w-full z-10!"
                             >
@@ -104,56 +104,56 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                                         className=" z-10!"
                                     />
                                 </Link>
-                            </CustomAspectRatio>
+                            </AspectRatio>
                         </div>
                         <div className="w-full md:w-1/2">
-                            <PCustom className="text-xs font-semibold">
+                            <P className="text-xs font-semibold whitespace-break-spaces">
                                 {featuredGame.description}
-                            </PCustom>
+                            </P>
                         </div>
                     </div>
                     <div className="flex flex-col pb-2 gap-4 border-b border-primary md:flex-row-reverse md:justify-between">
                         <div className="flex gap-2 justify-between md:w-1/2">
                             <div className="flex flex-col gap-1">
-                                <MutedCustom className="featured-game-info-label">
+                                <Muted className="featured-game-info-label">
                                     Publisher:
-                                </MutedCustom>
-                                <PCustom className="featured-game-info">
+                                </Muted>
+                                <P className="featured-game-info">
                                     {featuredGame.publisher}
-                                </PCustom>
+                                </P>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <MutedCustom className="featured-game-info-label">
+                                <Muted className="featured-game-info-label">
                                     Developer:
-                                </MutedCustom>
-                                <PCustom className="featured-game-info">
+                                </Muted>
+                                <P className="featured-game-info">
                                     {featuredGame.publisher}
-                                </PCustom>
+                                </P>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <MutedCustom className="featured-game-info-label">
+                                <Muted className="featured-game-info-label">
                                     Release Date:
-                                </MutedCustom>
-                                <PCustom className="featured-game-info">
+                                </Muted>
+                                <P className="featured-game-info">
                                     {featuredGame.release_date}
-                                </PCustom>
+                                </P>
                             </div>
                         </div>
                         <div className="flex gap-2 justify-evenly md:flex-col md:w-1/2">
                             <div className="flex flex-col gap-1">
-                                <MutedCustom className="font-semibold">
+                                <Muted className="font-semibold">
                                     {featuredGame.platform}
-                                </MutedCustom>
+                                </Muted>
                             </div>
                             <div>
-                                <MutedCustom className="font-semibold">
+                                <Muted className="font-semibold">
                                     {featuredGame.genre}
-                                </MutedCustom>
+                                </Muted>
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col justify-between items-center">
-                        <CustomButton
+                        <Button
                             size="sm"
                             variant="secondary"
                             className="w-full md:w-1/4 md:mx-auto"
@@ -165,10 +165,10 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                             >
                                 Download and Play
                             </Link>
-                        </CustomButton>
+                        </Button>
                     </div>
-                </CustomCardContent>
-            </CustomCard>
+                </CardContent>
+            </Card>
         </div>
     );
 }

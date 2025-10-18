@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export function H1Custom({
+export function H1({
     children,
     className,
 }: Readonly<{
@@ -20,7 +20,7 @@ export function H1Custom({
     );
 }
 
-export function H2Custom({
+export function H2({
     children,
     className,
 }: Readonly<{
@@ -39,7 +39,7 @@ export function H2Custom({
     );
 }
 
-export function H3Custom({
+export function H3({
     children,
     className,
 }: Readonly<{
@@ -58,7 +58,7 @@ export function H3Custom({
     );
 }
 
-export function H4Custom({
+export function H4({
     children,
     className,
 }: Readonly<{
@@ -77,7 +77,7 @@ export function H4Custom({
     );
 }
 
-export function H5Custom({
+export function H5({
     children,
     className,
 }: Readonly<{
@@ -96,7 +96,7 @@ export function H5Custom({
     );
 }
 
-export function H6Custom({
+export function H6({
     children,
     className,
 }: Readonly<{
@@ -115,7 +115,7 @@ export function H6Custom({
     );
 }
 
-export function PCustom({
+export function P({
     children,
     className,
 }: Readonly<{
@@ -129,7 +129,7 @@ export function PCustom({
     );
 }
 
-export function BlockquoteCustom({
+export function Blockquote({
     children,
     className,
 }: Readonly<{
@@ -143,7 +143,7 @@ export function BlockquoteCustom({
     );
 }
 
-export function TableCustom({ className }: { className?: string }) {
+export function Table({ className }: { className?: string }) {
     return (
         <div className={cn("my-6 w-full overflow-y-auto", className)}>
             <table className="w-full">
@@ -188,7 +188,7 @@ export function TableCustom({ className }: { className?: string }) {
     );
 }
 
-export function ListCustom({
+export function List({
     children,
     className,
 }: Readonly<{
@@ -202,7 +202,7 @@ export function ListCustom({
     );
 }
 
-export function InlineCodeCustom({
+export function InlineCode({
     children,
     className,
 }: Readonly<{
@@ -221,7 +221,7 @@ export function InlineCodeCustom({
     );
 }
 
-export function LeadCustom({
+export function Lead({
     children,
     className,
 }: Readonly<{
@@ -235,7 +235,7 @@ export function LeadCustom({
     );
 }
 
-export function LargeCustom({
+export function Large({
     children,
     className,
 }: Readonly<{
@@ -250,7 +250,7 @@ export function LargeCustom({
     );
 }
 
-export function SmallCustom({
+export function Small({
     children,
     className,
 }: Readonly<{
@@ -264,7 +264,7 @@ export function SmallCustom({
     );
 }
 
-export function MutedCustom({
+export function Muted({
     children,
     className,
 }: Readonly<{

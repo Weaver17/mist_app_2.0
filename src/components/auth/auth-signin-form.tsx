@@ -1,8 +1,8 @@
 "use client";
 
 import { TSignInSchema } from "@/types/types";
-import { Form } from "../ui/form";
 import { UseFormReturn } from "react-hook-form";
+import { Form } from "../custom/components/form/c_form";
 
 type AuthSignInFormProps = {
     customForm: UseFormReturn<TSignInSchema>;

@@ -1,6 +1,6 @@
 import { Game } from "@/types/types";
 import GameList from "../lists/game-list";
-import { H3Custom } from "@/typography/custom";
+import { H3 } from "@/typography/custom";
 
 type SearchPageProps = {
     gamesToShow: Game[];
@@ -11,7 +11,7 @@ function Search({ gamesToShow, filteredGames }: SearchPageProps) {
     return (
         <>
             {filteredGames && filteredGames.length === 0 ? (
-                <H3Custom className="text-center">No games found</H3Custom>
+                <H3 className="text-center">No games found</H3>
             ) : (
                 <GameList games={gamesToShow} />
             )}

@@ -1,13 +1,12 @@
 "use client";
-import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
-
 import {
-    CustomTooltip,
-    CustomTooltipContent,
-    CustomTooltipTrigger,
-} from "../custom/c_tooltip";
-import { CustomButton } from "../custom/c_button";
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "../custom/components/c_tooltip";
+import { Button } from "../custom/components/buttons/c_button";
+import { AspectRatio } from "../custom/components/c_aspect-ratio";
 
 type AvatarImgProps = {
     src: string;
@@ -18,27 +17,27 @@ type AvatarImgProps = {
 function AvatarImg({ src, alt, title }: AvatarImgProps) {
     return (
         <div className="h-[50px] w-[50px]">
-            <CustomTooltip>
-                <CustomTooltipTrigger asChild>
-                    <CustomButton
-                        className="h-[50px] w-[50px]"
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button
+                        className="h-[50px] w-[50px] bg-transparent hover:bg-transparent"
                         size="icon"
                         variant="link"
                     >
-                        <CustomAspectRatio ratio={1}>
+                        <AspectRatio ratio={1}>
                             <Image
                                 src={src}
                                 fill
                                 alt={alt}
                                 className="object-center"
                             />
-                        </CustomAspectRatio>
-                    </CustomButton>
-                </CustomTooltipTrigger>
-                <CustomTooltipContent>
+                        </AspectRatio>
+                    </Button>
+                </TooltipTrigger>
+                <TooltipContent>
                     <p>{title}</p>
-                </CustomTooltipContent>
-            </CustomTooltip>
+                </TooltipContent>
+            </Tooltip>
         </div>
     );
 }

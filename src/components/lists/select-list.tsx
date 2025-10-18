@@ -1,5 +1,5 @@
 import React from "react";
-import { CustomSelectContent, CustomSelectItem } from "../custom/c_select";
+import { SelectContent, SelectItem } from "../custom/c_select";
 import { SelectOption } from "@/types/types";
 
 type SelectListProps = {
@@ -8,13 +8,13 @@ type SelectListProps = {
 
 function SelectList({ options }: SelectListProps) {
     return (
-        <CustomSelectContent className="rounded-none border-2">
+        <SelectContent className="rounded-none border-2">
             {options.map((option) => (
-                <CustomSelectItem key={option.title} value={option.slug}>
+                <SelectItem key={option.title} value={option.slug}>
                     {option.title}
-                </CustomSelectItem>
+                </SelectItem>
             ))}
-        </CustomSelectContent>
+        </SelectContent>
     );
 }
 

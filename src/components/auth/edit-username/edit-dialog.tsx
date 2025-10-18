@@ -1,23 +1,24 @@
 "use client";
 import { changeUsername } from "@/actions/actions";
-import { CustomButton } from "@/components/custom/c_button";
+import { Button } from "@/components/custom/components/buttons/c_button";
+import { Form, FormField } from "@/components/custom/components/form/c_form";
+import { Input } from "@/components/custom/components/form/c_input";
 import {
-    CustomDialog,
-    CustomDialogClose,
-    CustomDialogContent,
-    CustomDialogDescription,
-    CustomDialogFooter,
-    CustomDialogHeader,
-    CustomDialogTitle,
-    CustomDialogTrigger,
-} from "@/components/custom/c_dialog";
-import { CustomInput } from "@/components/custom/c_input";
-import { CustomSeparator } from "@/components/custom/c_separator";
-import { Form, FormField } from "@/components/ui/form";
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/custom/components/modals/c_dialog";
+
 import { useUserContext } from "@/contexts/user-context";
 import { changeUsernameSchema } from "@/schema/auth";
 import { TChangeUsernameSchema } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Separator } from "@radix-ui/react-select";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -65,17 +66,17 @@ function EditDialog() {
     };
 
     return (
-        <CustomDialog>
-            <CustomDialogTrigger asChild>
-                <CustomButton
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button
                     onClick={handleEditClick}
                     variant="secondary"
                     className="w-full"
                 >
                     Change Username
-                </CustomButton>
-            </CustomDialogTrigger>
-            <CustomDialogContent
+                </Button>
+            </DialogTrigger>
+            <DialogContent
                 aria-describedby="edit-username"
                 className="bg-card!"
             >
@@ -85,52 +86,52 @@ function EditDialog() {
                         onSubmit={handleSubmit(onSubmit)}
                         action=""
                     >
-                        <CustomDialogTitle className="hidden">
+                        <DialogTitle className="hidden">
                             Edit Username
-                        </CustomDialogTitle>
-                        <CustomDialogHeader className="text-sm font-special md:text-lg lg:text-2xl">
+                        </DialogTitle>
+                        <DialogHeader className="text-sm font-special md:text-lg lg:text-2xl">
                             Edit Username
-                        </CustomDialogHeader>
-                        <CustomDialogDescription>
+                        </DialogHeader>
+                        <DialogDescription>
                             Edit your username here. Click save to apply
                             changes.
-                        </CustomDialogDescription>
-                        <CustomSeparator className="mb-6" />
+                        </DialogDescription>
+                        <Separator className="mb-6" />
                         <FormField
                             control={editUsernameForm.control}
                             name="newName"
                             render={({ field }) => (
-                                <CustomInput
+                                <Input
                                     className="rounded-none! border-t-0 border-r-0 border-b! border-l! border-foreground! font-mono"
                                     defaultValue={usernameValue}
                                     onChange={field.onChange}
                                 />
                             )}
                         />
-                        <CustomDialogFooter className="mt-4 justify-center!">
-                            <CustomDialogClose asChild>
-                                <CustomButton
+                        <DialogFooter className="mt-4 justify-center!">
+                            <DialogClose asChild>
+                                <Button
                                     type="button"
                                     variant="outline"
                                     className="bg-muted-dark/50! hover:bg-card!"
                                     onClick={handleEditClose}
                                 >
                                     Cancel
-                                </CustomButton>
-                            </CustomDialogClose>
-                            <CustomDialogClose asChild>
-                                <CustomButton
+                                </Button>
+                            </DialogClose>
+                            <DialogClose asChild>
+                                <Button
                                     type="submit"
                                     className="bg-primary! hover:bg-secondary!"
                                 >
                                     Save
-                                </CustomButton>
-                            </CustomDialogClose>
-                        </CustomDialogFooter>
+                                </Button>
+                            </DialogClose>
+                        </DialogFooter>
                     </form>
                 </Form>
-            </CustomDialogContent>
-        </CustomDialog>
+            </DialogContent>
+        </Dialog>
     );
 }
 

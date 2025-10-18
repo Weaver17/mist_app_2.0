@@ -1,14 +1,5 @@
 import React from "react";
-import {
-    CustomDialog,
-    CustomDialogClose,
-    CustomDialogContent,
-    CustomDialogHeader,
-    CustomDialogTitle,
-    CustomDialogTrigger,
-} from "../custom/c_dialog";
-import { CustomButton } from "../custom/c_button";
-import { CustomSeparator } from "../custom/c_separator";
+
 import AvatarImg from "../avatar/avatar-img";
 import avatars from "@/lib/avatars";
 import { TAvatarImg, TSignUpSchema } from "@/types/types";
@@ -19,11 +10,21 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../ui/form";
+} from "../custom/components/form/c_form";
+import { Button } from "../custom/components/buttons/c_button";
 import {
-    CustomRadioGroup,
-    CustomRadioGroupItem,
-} from "../custom/c_radio-group";
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../custom/components/modals/c_dialog";
+import { Separator } from "../custom/components/c_separator";
+import {
+    RadioGroup,
+    RadioGroupItem,
+} from "../custom/components/form/c_radio-group";
 
 type AvatarDialogProps = {
     customForm: UseFormReturn<TSignUpSchema>;
@@ -44,26 +45,24 @@ function AvatarDialog({
             name={name}
             render={({ field }) => (
                 <FormItem>
-                    <CustomDialog>
-                        <CustomDialogTrigger asChild>
-                            <CustomButton
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button
                                 asChild
                                 variant="link"
                                 className="text-foreground! p-0! mr-auto font-mono! font-semibold!"
                             >
                                 <FormLabel>{label}</FormLabel>
-                            </CustomButton>
-                        </CustomDialogTrigger>
-                        <CustomDialogContent className="bg-border! border-card! text-card!">
-                            <CustomDialogTitle className="hidden">
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="bg-border! border-card! text-card!">
+                            <DialogTitle className="hidden">
                                 Select Avatar
-                            </CustomDialogTitle>
-                            <CustomDialogHeader>
-                                Select an Avatar:
-                            </CustomDialogHeader>
-                            <CustomSeparator className="bg-card!" />
+                            </DialogTitle>
+                            <DialogHeader>Select an Avatar:</DialogHeader>
+                            <Separator className="bg-card!" />
                             <FormControl>
-                                <CustomRadioGroup
+                                <RadioGroup
                                     onValueChange={field.onChange}
                                     value={field.value}
                                     className="grid grid-cols-3 gap-4 mx-auto"
@@ -74,7 +73,7 @@ function AvatarDialog({
                                             className="flex gap-1 items-center"
                                         >
                                             <FormControl>
-                                                <CustomRadioGroupItem
+                                                <RadioGroupItem
                                                     value={avatar.alt}
                                                 />
                                             </FormControl>
@@ -87,14 +86,14 @@ function AvatarDialog({
                                             </FormLabel>
                                         </FormItem>
                                     ))}
-                                </CustomRadioGroup>
+                                </RadioGroup>
                             </FormControl>
-                            <CustomSeparator className="bg-card!" />
-                            <CustomDialogClose asChild>
-                                <CustomButton>Confirm</CustomButton>
-                            </CustomDialogClose>
-                        </CustomDialogContent>
-                    </CustomDialog>
+                            <Separator className="bg-card!" />
+                            <DialogClose asChild>
+                                <Button>Confirm</Button>
+                            </DialogClose>
+                        </DialogContent>
+                    </Dialog>
                     {errorMessage && <FormMessage>{errorMessage}</FormMessage>}
                 </FormItem>
             )}

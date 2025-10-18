@@ -1,13 +1,13 @@
 "use client";
 import ToTopBtn from "@/components/buttons/to-top-btn";
-import { CustomInput } from "@/components/custom/c_input";
+import { Input } from "@/components/custom/components/form/c_input";
 import Search from "@/components/game-pages/search-page";
 import LoadingSpinner from "@/components/loading/loading-spinner";
 import { useToTopContext } from "@/contexts/to-top-context";
 import { useUserContext } from "@/contexts/user-context";
 import { getGamesByReleaseDate } from "@/lib/game-api";
 import { Game } from "@/types/types";
-import { H1Custom } from "@/typography/custom";
+import { H1 } from "@/typography/custom";
 import React, { useEffect, useState } from "react";
 
 function SearchPage() {
@@ -61,8 +61,8 @@ function SearchPage() {
     return (
         <div className="client-page">
             <div className="pb-4 flex flex-col gap-4 w-full mx-auto border-b border-secondary">
-                <H1Custom className="text-center font-special">Search</H1Custom>
-                <CustomInput
+                <H1 className="text-center font-special">Search</H1>
+                <Input
                     className="mx-auto rounded-none! border-t-0 border-r-0 border-b! border-l! border-foreground! shadow-none! sm:w-1/2"
                     placeholder="Search"
                     onChange={handleSearch}

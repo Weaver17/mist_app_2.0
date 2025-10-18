@@ -1,16 +1,6 @@
 "use client";
-import {
-    CustomCard,
-    CustomCardContent,
-    CustomCardDescription,
-    CustomCardFooter,
-    CustomCardHeader,
-} from "../custom/c_card";
-import Image from "next/image";
-import { H5Custom, MutedCustom } from "@/typography/custom";
-import { CustomAspectRatio } from "../custom/c_aspect-ratio";
+
 import { Game } from "@/types/types";
-import { CustomButton } from "../custom/c_button";
 import images from "@/lib/images";
 import { useUserContext } from "@/contexts/user-context";
 import { saveGameAction, unsaveGameAction } from "@/actions/actions";
@@ -18,6 +8,17 @@ import { getGameById } from "@/lib/game-api";
 import { useEffect } from "react";
 import Link from "next/link";
 import { SavedGame } from "../../../generated/prisma-client";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+} from "../custom/components/cards/c_card";
+import { Button } from "../custom/components/buttons/c_button";
+import { AspectRatio } from "../custom/components/c_aspect-ratio";
+import { H5, Muted } from "@/typography/custom";
+import Image from "next/image";
 
 type GameCardProps = {
     game: Game | SavedGame;
@@ -53,11 +54,11 @@ function GameCard({ game }: GameCardProps) {
         }
     }, [currentUser, getSavedGames]);
     return (
-        <CustomCard className="w-[280px] h-[300px] py-2 gap-0!">
-            <CustomCardHeader className="pr-1! font-special text-lg flex justify-between items-center">
-                <H5Custom className="truncate">{game.title}</H5Custom>
+        <Card className="w-[280px] h-[300px] py-2 gap-0!">
+            <CardHeader className="pr-1! font-special text-lg flex justify-between items-center">
+                <H5 className="truncate">{game.title}</H5>
                 {isLoggedIn ? (
-                    <CustomButton
+                    <Button
                         size="sm"
                         variant="ghost"
                         className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
@@ -70,9 +71,9 @@ function GameCard({ game }: GameCardProps) {
                             height={18}
                             priority
                         />
-                    </CustomButton>
+                    </Button>
                 ) : (
-                    <CustomButton
+                    <Button
                         size="sm"
                         variant="ghost"
                         disabled
@@ -85,12 +86,12 @@ function GameCard({ game }: GameCardProps) {
                             height={18}
                             priority
                         />
-                    </CustomButton>
+                    </Button>
                 )}
-            </CustomCardHeader>
-            <CustomCardContent className="flex flex-col gap-2 p-1!">
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2 p-1!">
                 <Link href={`/game/${game.id}`}>
-                    <CustomAspectRatio
+                    <AspectRatio
                         ratio={16 / 9}
                         className="w-full rounded-sm z-10!"
                     >
@@ -100,21 +101,17 @@ function GameCard({ game }: GameCardProps) {
                             fill
                             className="rounded-sm z-10!"
                         />
-                    </CustomAspectRatio>
+                    </AspectRatio>
                 </Link>
-                <CustomCardDescription className="text-xs font-semibold h-[80px] overflow-hidden">
+                <CardDescription className="text-xs font-semibold h-[80px] overflow-hidden">
                     {game.short_description}
-                </CustomCardDescription>
-            </CustomCardContent>
-            <CustomCardFooter className="mt-auto flex justify-between items-center gap-2">
-                <MutedCustom className="text-xs font-semibold">
-                    {game.platform}
-                </MutedCustom>
-                <MutedCustom className="text-xs font-semibold">
-                    {game.genre}
-                </MutedCustom>
-            </CustomCardFooter>
-        </CustomCard>
+                </CardDescription>
+            </CardContent>
+            <CardFooter className="mt-auto flex justify-between items-center gap-2">
+                <Muted className="text-xs font-semibold">{game.platform}</Muted>
+                <Muted className="text-xs font-semibold">{game.genre}</Muted>
+            </CardFooter>
+        </Card>
     );
 }
 

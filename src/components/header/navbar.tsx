@@ -1,20 +1,21 @@
 "use client";
-import {
-    CustomNavigationMenu,
-    CustomNavigationMenuList,
-    CustomNavigationMenuItem,
-} from "../custom/c_navigation-menu";
+
 import { Menu, X } from "lucide-react";
-import { CustomButton } from "../custom/c_button";
 import NavLink from "./navlink";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useUserContext } from "@/contexts/user-context";
-import { CustomAvatar, CustomAvatarFallback } from "../custom/c_avatar";
 import Link from "next/link";
 import { getAvatar } from "@/lib/utils";
-import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuList,
+} from "../custom/components/c_navigation-menu";
+import { Button } from "../custom/components/buttons/c_button";
+import { Avatar, AvatarFallback } from "../custom/components/c_avatar";
+import { AspectRatio } from "../custom/components/c_aspect-ratio";
 
 const MOBILENAVBAR_KEYBOARD_SHORTCUT = "m";
 
@@ -52,25 +53,25 @@ function Navbar() {
     return (
         <nav className="font-special">
             {isMobile ? (
-                <CustomNavigationMenu viewport={false} className="relative">
+                <NavigationMenu viewport={false} className="relative">
                     {isMobile && openMobile ? (
-                        <CustomButton
+                        <Button
                             size="icon"
                             variant="ghost"
                             onClick={() => toggleMobileNavbar()}
                             className="z-[60]"
                         >
                             <X className="size-6" />
-                        </CustomButton>
+                        </Button>
                     ) : (
-                        <CustomButton
+                        <Button
                             size="icon"
                             variant="ghost"
                             onClick={() => toggleMobileNavbar()}
                             className="z[60]"
                         >
                             <Menu className="size-8" />
-                        </CustomButton>
+                        </Button>
                     )}
 
                     <div
@@ -81,93 +82,93 @@ function Navbar() {
                         }`}
                     >
                         {isMobile && openMobile ? (
-                            <CustomNavigationMenuList className="flex flex-col items-center justify-center gap-2">
+                            <NavigationMenuList className="flex flex-col items-center justify-center gap-2">
                                 {isLoggedIn ? (
-                                    <CustomAvatar className="cursor-pointer">
+                                    <Avatar className="cursor-pointer">
                                         <Link
                                             href={`/profile/${currentUser?.id}`}
                                             className="h-[50px] w-[50px]"
                                         >
-                                            <CustomAspectRatio ratio={1}>
+                                            <AspectRatio ratio={1}>
                                                 <Image
                                                     src={userAvatar.src}
                                                     alt={userAvatar.title}
                                                 />
-                                                <CustomAvatarFallback className="text-secondary">
+                                                <AvatarFallback className="text-secondary">
                                                     {currentUser?.name[0]}
-                                                </CustomAvatarFallback>
-                                            </CustomAspectRatio>
+                                                </AvatarFallback>
+                                            </AspectRatio>
                                         </Link>
-                                    </CustomAvatar>
+                                    </Avatar>
                                 ) : (
                                     <>
-                                        <CustomNavigationMenuItem>
+                                        <NavigationMenuItem>
                                             <NavLink
                                                 href="/signin"
                                                 text="Sign In"
                                                 color="text-primary!"
                                             />
-                                        </CustomNavigationMenuItem>
-                                        <CustomNavigationMenuItem>
+                                        </NavigationMenuItem>
+                                        <NavigationMenuItem>
                                             <NavLink
                                                 href="/signup"
                                                 text="Sign Up"
                                                 color="text-foreground!"
                                             />
-                                        </CustomNavigationMenuItem>
+                                        </NavigationMenuItem>
                                     </>
                                 )}
 
-                                <CustomNavigationMenuItem>
+                                <NavigationMenuItem>
                                     <NavLink
                                         href="/search"
                                         text="Search"
                                         color="text-foreground!"
                                     />
-                                </CustomNavigationMenuItem>
-                                <CustomNavigationMenuItem>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
                                     <NavLink
                                         href="/all-games"
                                         text="All Games"
                                         color="text-foreground!"
                                     />
-                                </CustomNavigationMenuItem>
-                            </CustomNavigationMenuList>
+                                </NavigationMenuItem>
+                            </NavigationMenuList>
                         ) : (
                             <></>
                         )}
                     </div>
-                </CustomNavigationMenu>
+                </NavigationMenu>
             ) : (
-                <CustomNavigationMenu
+                <NavigationMenu
                     viewport={false}
                     className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2"
                 >
-                    <CustomNavigationMenuList className="flex gap-2 bg-border rounded-lg  shadow-md p-4">
+                    <NavigationMenuList className="flex gap-2 bg-border rounded-lg  shadow-md p-4">
                         {isLoggedIn ? (
                             <></>
                         ) : (
                             <>
-                                <CustomNavigationMenuItem>
+                                <NavigationMenuItem>
                                     <NavLink
                                         href="/signin"
                                         text="Sign In"
                                         color="text-primary!"
                                     />
-                                </CustomNavigationMenuItem>
-                                <CustomNavigationMenuItem>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
                                     <NavLink href="/signup" text="Sign Up" />
-                                </CustomNavigationMenuItem>
+                                </NavigationMenuItem>
                             </>
                         )}
-                        <CustomNavigationMenuItem>
+                        <NavigationMenuItem>
                             <NavLink href="/search" text="Search" />
-                        </CustomNavigationMenuItem>
-                        <CustomNavigationMenuItem>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
                             <NavLink href="/all-games" text="All Games" />
-                        </CustomNavigationMenuItem>
-                    </CustomNavigationMenuList>
-                </CustomNavigationMenu>
+                        </NavigationMenuItem>
+                    </NavigationMenuList>
+                </NavigationMenu>
             )}
         </nav>
     );

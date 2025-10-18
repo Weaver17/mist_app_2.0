@@ -1,6 +1,6 @@
 import { Game } from "@/types/types";
 import GamesList from "../lists/game-list";
-import { H2Custom } from "@/typography/custom";
+import { H2 } from "@/typography/custom";
 import LoadingSpinner from "../loading/loading-spinner";
 
 type NewestGamesProps = {
@@ -10,9 +10,7 @@ type NewestGamesProps = {
 function NewestGames({ games }: NewestGamesProps) {
     return (
         <div className="">
-            <H2Custom className="font-special my-4 border-secondary">
-                Newest Games
-            </H2Custom>
+            <H2 className="font-special my-4 border-secondary">Newest Games</H2>
             {games.length === 0 ? (
                 <LoadingSpinner />
             ) : (
