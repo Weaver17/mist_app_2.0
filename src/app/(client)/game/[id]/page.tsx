@@ -18,6 +18,7 @@ import { SavedGame } from "../../../../../generated/prisma-client";
 import { AspectRatio } from "@/components/custom/components/c_aspect-ratio";
 import { Button } from "@/components/custom/components/buttons/c_button";
 import { Card, CardContent } from "@/components/custom/components/cards/c_card";
+import { motion } from "motion/react";
 
 function GamePage() {
     const [game, setGame] = useState<FeaturedGame>();
@@ -73,7 +74,13 @@ function GamePage() {
     }, [handleToTopBtn]);
 
     return (
-        <div className="p-4 flex flex-col gap-4 max-w-[1380px] mx-auto lg:gap-8">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9 }}
+            viewport={{ once: true }}
+            className="p-4 flex flex-col gap-4 max-w-[1380px] mx-auto lg:gap-8"
+        >
             {!game ? (
                 <LoadingOverlay />
             ) : (
@@ -303,7 +310,7 @@ function GamePage() {
                 onToTopClick={onToTopClick}
                 scrollPosition={scrollPosition}
             />
-        </div>
+        </motion.div>
     );
 }
 

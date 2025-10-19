@@ -104,7 +104,7 @@ function GameCard({ game }: GameCardProps) {
                         />
                     </AspectRatio>
                 </Link>
-                <CardDescription className="text-xs font-semibold h-[80px] overflow-hidden">
+                <CardDescription className="text-xs text-foreground font-semibold h-[80px] overflow-hidden">
                     {game.short_description}
                 </CardDescription>
             </CardContent>

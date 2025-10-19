@@ -1,6 +1,6 @@
 import React from "react";
-import { SelectContent, SelectItem } from "../custom/c_select";
 import { SelectOption } from "@/types/types";
+import { SelectContent, SelectItem } from "../custom/components/form/c_select";
 
 type SelectListProps = {
     options: SelectOption[];
@@ -8,7 +8,7 @@ type SelectListProps = {
 
 function SelectList({ options }: SelectListProps) {
     return (
-        <SelectContent className="rounded-none border-2">
+        <SelectContent className="rounded-none bg-card">
             {options.map((option) => (
                 <SelectItem key={option.title} value={option.slug}>
                     {option.title}
