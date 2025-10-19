@@ -5,6 +5,10 @@ import { useState } from "react";
 import { DEFAULT_VISIBLE_COUNT, VISIBLE_COUNT_ADD } from "@/lib/constants";
 import ShowMoreBtn from "../buttons/show-more-btn";
 import { SavedGame } from "../../../generated/prisma-client";
+import {
+    AnimatedList,
+    AnimatedListItem,
+} from "../custom/components/animated/c_animated-list";
 
 type SavedListProps = {
     games: Game[] | SavedGame[];
@@ -18,13 +22,13 @@ function SavedList({ games }: SavedListProps) {
     };
     return (
         <div className="flex flex-col items-center justify-center gap-4">
-            <ul className="mx-auto grid grid-cols-1  gap-4  grid2:grid-cols-2 grid4:grid-cols-3">
+            <AnimatedList className="mx-auto grid grid-cols-1  gap-4  grid2:grid-cols-2 grid4:grid-cols-3">
                 {games.slice(0, visibleCount).map((game) => (
-                    <li key={game.id}>
+                    <AnimatedListItem key={game.id}>
                         <GameCard game={game} />
-                    </li>
+                    </AnimatedListItem>
                 ))}
-            </ul>
+            </AnimatedList>
             <div className="">
                 {visibleCount < games.length && (
                     <ShowMoreBtn onShowMoreClick={onShowMoreClick} />

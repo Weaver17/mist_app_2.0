@@ -31,7 +31,7 @@ export interface AnimatedListProps extends ComponentPropsWithoutRef<"div"> {
 }
 
 export const AnimatedList = React.memo(
-    ({ children, className, delay = 1000, ...props }: AnimatedListProps) => {
+    ({ children, className, delay = 300, ...props }: AnimatedListProps) => {
         const [index, setIndex] = useState(0);
         const childrenArray = useMemo(
             () => React.Children.toArray(children),
@@ -51,7 +51,7 @@ export const AnimatedList = React.memo(
         }, [index, delay, childrenArray.length]);
 
         const itemsToShow = useMemo(() => {
-            const result = childrenArray.slice(0, index + 1).reverse();
+            const result = childrenArray.slice(0, index + 1);
             return result;
         }, [index, childrenArray]);
 
