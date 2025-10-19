@@ -16,6 +16,9 @@ import {
 } from "../custom/components/cards/c_card";
 import { Button } from "../custom/components/buttons/c_button";
 import { AspectRatio } from "../custom/components/c_aspect-ratio";
+import { RainbowButton } from "../custom/components/buttons/c_rainbow-button";
+import { motion } from "motion/react";
+import { ShineBorder } from "../custom/components/animated/c_shine-border";
 
 type FeaturedCardProps = {
     featuredGame: FeaturedGame;
@@ -51,8 +54,14 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
         }
     }, [currentUser, getSavedGames]);
     return (
-        <div className="w-full mx-auto xl:max-w-5/6">
-            <Card className="py-2 gap-0!">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9 }}
+            viewport={{ once: true }}
+            className="w-full mx-auto xl:max-w-5/6"
+        >
+            <Card className="py-2 gap-0! relative">
                 <CardHeader className="flex justify-between items-center gap-2 pb-2">
                     <H3 className="font-special text-lg font-semibold truncate md:text-2xl lg:text-4xl">
                         {featuredGame.title}
@@ -153,11 +162,7 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                         </div>
                     </div>
                     <div className="flex flex-col justify-between items-center">
-                        <Button
-                            size="sm"
-                            variant="secondary"
-                            className="w-full md:w-1/4 md:mx-auto"
-                        >
+                        <RainbowButton>
                             <Link
                                 href={`${featuredGame.game_url}`}
                                 target="_blank"
@@ -165,11 +170,12 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                             >
                                 Download and Play
                             </Link>
-                        </Button>
+                        </RainbowButton>
                     </div>
                 </CardContent>
+                <ShineBorder shineColor="#0284b8" />
             </Card>
-        </div>
+        </motion.div>
     );
 }
 

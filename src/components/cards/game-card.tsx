@@ -19,6 +19,7 @@ import { Button } from "../custom/components/buttons/c_button";
 import { AspectRatio } from "../custom/components/c_aspect-ratio";
 import { H5, Muted } from "@/typography/custom";
 import Image from "next/image";
+import { ShineBorder } from "../custom/components/animated/c_shine-border";
 
 type GameCardProps = {
     game: Game | SavedGame;
@@ -54,7 +55,7 @@ function GameCard({ game }: GameCardProps) {
         }
     }, [currentUser, getSavedGames]);
     return (
-        <Card className="w-[280px] h-[300px] py-2 gap-0!">
+        <Card className="w-[280px] h-[300px] py-2 gap-0! relative">
             <CardHeader className="pr-1! font-special text-lg flex justify-between items-center">
                 <H5 className="truncate">{game.title}</H5>
                 {isLoggedIn ? (
@@ -111,6 +112,7 @@ function GameCard({ game }: GameCardProps) {
                 <Muted className="text-xs font-semibold">{game.platform}</Muted>
                 <Muted className="text-xs font-semibold">{game.genre}</Muted>
             </CardFooter>
+            <ShineBorder shineColor="#0284b8" duration={30} borderWidth={2} />
         </Card>
     );
 }

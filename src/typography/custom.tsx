@@ -271,7 +271,5 @@ export function Muted({
     children: React.ReactNode;
     className?: string;
 }>) {
-    return (
-        <p className={cn("text-muted-dark text-sm", className)}>{children}</p>
-    );
+    return <p className={cn("text-muted text-sm", className)}>{children}</p>;
 }

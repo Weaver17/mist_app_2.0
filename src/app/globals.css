@@ -264,7 +264,7 @@
     --primary: #0284b8;
     --primary-foreground: #d9d9d9;
     --secondary: #e8c902;
-    --secondary-foreground: #d9d9d9;
+    --secondary-foreground: oklch(0.141 0.005 285.823);
     --muted-foreground: #e5e5e5;
     --muted: #767474;
     --accent: #2f9cc7;
@@ -284,6 +284,11 @@
     --sidebar-accent: #e8c902;
     --sidebar-border: oklch(0.141 0.005 285.823);
     --sidebar-ring: #02a9ec;
+    --color-1: oklch(66.2% 0.225 25.9);
+    --color-2: oklch(60.4% 0.26 302);
+    --color-3: oklch(69.6% 0.165 251);
+    --color-4: oklch(80.2% 0.134 225);
+    --color-5: oklch(90.7% 0.231 133);
 }
 
 @layer base {

@@ -6,6 +6,7 @@ import FeaturedCard from "../cards/featured-card";
 import { FEATURED_GAME_TIME } from "@/lib/constants";
 import { getGameById } from "@/lib/game-api";
 import LoadingSpinner from "../loading/loading-spinner";
+import { motion } from "motion/react";
 
 type FeaturedProps = {
     games: Game[];
@@ -46,7 +47,13 @@ function Featured({ games }: FeaturedProps) {
     }, [games]);
 
     return (
-        <div className="flex flex-col gap-2 md:gap-4">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9 }}
+            viewport={{ once: true }}
+            className="flex flex-col gap-2 md:gap-4"
+        >
             <H1 className="pb-2 font-special border-b border-secondary">
                 Today&apos;s Featured Game
             </H1>
@@ -55,7 +62,7 @@ function Featured({ games }: FeaturedProps) {
             ) : (
                 <FeaturedCard featuredGame={featuredGame} />
             )}
-        </div>
+        </motion.div>
     );
 }
 
