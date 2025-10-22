@@ -195,7 +195,7 @@
 
 /* @custom-variant dark (&:is(.dark *)); */
 
-@theme inline {
+@theme {
     --breakpoint-grid2: 580px;
     --breakpoint-grid3: 940px;
     --breakpoint-grid4: 1280px;
