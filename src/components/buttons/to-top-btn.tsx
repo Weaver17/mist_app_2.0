@@ -1,4 +1,4 @@
-import { CustomButton } from "../custom/c_button";
+import { Button } from "../custom/components/buttons/c_button";
 
 type ToTopBtnProps = {
     onToTopClick: () => void;
@@ -7,7 +7,7 @@ type ToTopBtnProps = {
 
 function ToTopBtn({ onToTopClick, scrollPosition }: ToTopBtnProps) {
     return (
-        <CustomButton
+        <Button
             onClick={onToTopClick}
             type="button"
             className={`fixed bottom-[32px] left-[65px] z-20 opacity-50 ${
@@ -15,7 +15,7 @@ function ToTopBtn({ onToTopClick, scrollPosition }: ToTopBtnProps) {
             } hover:opacity-100`}
         >
             To Top
-        </CustomButton>
+        </Button>
     );
 }
 

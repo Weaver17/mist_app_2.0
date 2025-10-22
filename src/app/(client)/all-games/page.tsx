@@ -7,7 +7,7 @@ import { useToTopContext } from "@/contexts/to-top-context";
 import { useUserContext } from "@/contexts/user-context";
 import { getGamesByPop, getGamesBySort } from "@/lib/game-api";
 import { Game } from "@/types/types";
-import { H1Custom } from "@/typography/custom";
+import { H1 } from "@/typography/custom";
 import React, { useEffect, useState } from "react";
 
 function AllGamesPage() {
@@ -49,9 +49,7 @@ function AllGamesPage() {
     return (
         <div className="client-page">
             <div className="border-b border-secondary pb-4 flex flex-col gap-4 w-full mx-auto">
-                <H1Custom className="text-center font-special">
-                    All Games
-                </H1Custom>
+                <H1 className="text-center font-special">All Games</H1>
                 <GamesSelect sortBy={sortBy} setSortBy={setSortBy} />
             </div>
             {games.length === 0 ? (

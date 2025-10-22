@@ -1,11 +1,11 @@
-import { CustomButton } from "@/components/custom/c_button";
+import { Button } from "@/components/custom/components/buttons/c_button";
 import {
-    CustomCard,
-    CustomCardContent,
-    CustomCardHeader,
-} from "@/components/custom/c_card";
+    Card,
+    CardContent,
+    CardHeader,
+} from "@/components/custom/components/cards/c_card";
 import FadingSidebar from "@/components/profile/fading-sidebar";
-import { H1Custom, H3Custom, PCustom } from "@/typography/custom";
+import { H1, H3, P } from "@/typography/custom";
 import Link from "next/link";
 import React from "react";
 
@@ -13,14 +13,14 @@ function AboutPage() {
     return (
         <div className="client-page">
             <div className="border-b border-secondary pb-4 flex flex-col gap-4 w-full mx-auto">
-                <H1Custom className="text-center font-special">About</H1Custom>
+                <H1 className="text-center font-special">About</H1>
             </div>
             <div className="flex flex-col gap-12 py-4 border-b border-primary lg:px-8 lg:flex-row">
                 <div className="w-full relative lg:w-1/4">
                     <FadingSidebar>
-                        <H3Custom className="text-center! underline! text-sm! md:text-lg!">
+                        <H3 className="text-center! underline! text-sm! md:text-lg!">
                             My Saved Games:
-                        </H3Custom>
+                        </H3>
                         <ul className="space-y-4 text-center font-special whitespace-nowrap">
                             <li>
                                 <Link href="/game/599">Marvel Rivals</Link>
@@ -41,35 +41,35 @@ function AboutPage() {
                     </FadingSidebar>
                 </div>
                 <div className="w-full flex flex-col gap-4 lg:w-3/4">
-                    <CustomCard>
-                        <CustomCardContent>
+                    <Card>
+                        <CardContent>
                             <div className="flex flex-col pb-2 gap-4 border-b border-primary md:flex-row md:justify-end">
-                                <CustomButton asChild variant="link">
+                                <Button asChild variant="link">
                                     <Link
                                         href="https://github.com/Weaver17"
                                         target="_blank"
                                     >
                                         GitHub
                                     </Link>
-                                </CustomButton>
-                                <CustomButton asChild variant="link">
+                                </Button>
+                                <Button asChild variant="link">
                                     <Link
                                         href="https://www.linkedin.com/in/andrew-weaver-1725-profile/"
                                         target="_blank"
                                     >
                                         LinkedIn
                                     </Link>
-                                </CustomButton>
-                                <CustomButton asChild variant="link">
+                                </Button>
+                                <Button asChild variant="link">
                                     <Link
                                         href="https://elevate-auto-detailing.com/"
                                         target="_blank"
                                     >
                                         Elevate Auto Detailing
                                     </Link>
-                                </CustomButton>
+                                </Button>
                             </div>
-                            <PCustom>
+                            <P>
                                 Hello there! My name is Andrew Weaver and I
                                 originally created this web page for a final
                                 project for TripleTen&apos;s Full Stack
@@ -87,25 +87,25 @@ function AboutPage() {
                                 also own my own car detailing business, so if
                                 anyone is around Columbus, Ohio, feel free to
                                 check it out!
-                            </PCustom>
-                        </CustomCardContent>
-                    </CustomCard>
+                            </P>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
             <div className="flex flex-col gap-4 md:px-12">
-                <CustomCard>
-                    <CustomCardContent>
-                        <CustomCardHeader className="py-4 border-b border-primary">
-                            <CustomButton asChild variant="link">
+                <Card>
+                    <CardContent>
+                        <CardHeader className="py-4 border-b border-primary">
+                            <Button asChild variant="link">
                                 <Link
                                     href="https://www.freetogame.com/"
                                     target="_blank"
                                 >
                                     FreeToGame.com
                                 </Link>
-                            </CustomButton>
-                        </CustomCardHeader>
-                        <PCustom>
+                            </Button>
+                        </CardHeader>
+                        <P>
                             FreeToGame.com is essentially this webpage except it
                             is way better in every way, but this one is nice,
                             too. It is is a gaming platform that brings together
@@ -119,9 +119,9 @@ function AboutPage() {
                             account. This Free-To-Play Games Database API
                             provides developers and enthusiasts with valuable
                             data to enhance their gaming projects.
-                        </PCustom>
-                    </CustomCardContent>
-                </CustomCard>
+                        </P>
+                    </CardContent>
+                </Card>
             </div>
         </div>
     );

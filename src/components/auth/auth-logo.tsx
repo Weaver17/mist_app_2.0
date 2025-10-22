@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import Logo from "../header/logo";
-import {
-    CustomCard,
-    CustomCardContent,
-    CustomCardFooter,
-} from "../custom/c_card";
-import { MutedCustom } from "@/typography/custom";
+import { Muted } from "@/typography/custom";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+} from "../custom/components/cards/c_card";
 
 function AuthLogo() {
     const isMobile = useIsMobile();
@@ -19,8 +19,8 @@ function AuthLogo() {
                 <></>
             ) : (
                 <div className="p-4 flex flex-col gap-4 w-5/6 mx-auto md:w-full md:p-12 lg:p-18">
-                    <CustomCard>
-                        <CustomCardContent className="flex flex-col gap-8">
+                    <Card>
+                        <CardContent className="flex flex-col gap-8">
                             <div className="flex justify-center items-center border-b pb-4">
                                 <Logo />
                             </div>
@@ -38,9 +38,9 @@ function AuthLogo() {
                                     </li>
                                 </ul>
                             </div>
-                        </CustomCardContent>
-                        <CustomCardFooter className="mx-auto">
-                            <MutedCustom className="text-center">
+                        </CardContent>
+                        <CardFooter className="mx-auto">
+                            <Muted className="text-center">
                                 Made with help from{" "}
                                 <Link
                                     className="underline underline-offset-4 hover:text-foreground"
@@ -48,9 +48,9 @@ function AuthLogo() {
                                 >
                                     www.freetogame.com
                                 </Link>
-                            </MutedCustom>
-                        </CustomCardFooter>
-                    </CustomCard>
+                            </Muted>
+                        </CardFooter>
+                    </Card>
                 </div>
             )}
         </>

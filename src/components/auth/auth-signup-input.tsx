@@ -1,4 +1,7 @@
 import React from "react";
+
+import { UseFormReturn } from "react-hook-form";
+import { TSignUpSchema } from "@/types/types";
 import {
     FormControl,
     FormDescription,
@@ -6,10 +9,8 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../ui/form";
-import { CustomInput } from "../custom/c_input";
-import { UseFormReturn } from "react-hook-form";
-import { TSignUpSchema } from "@/types/types";
+} from "../custom/components/form/c_form";
+import { SquareInput } from "../custom/components/form/c_input";
 
 type AuthSignUpInputProps = {
     customForm: UseFormReturn<TSignUpSchema>;
@@ -40,8 +41,7 @@ function AuthSignUpInput({
                         {label}
                     </FormLabel>
                     <FormControl>
-                        <CustomInput
-                            className="rounded-none! border-t-0 border-r-0 border-b! border-l! border-foreground! font-mono"
+                        <SquareInput
                             placeholder={placeholder || ""}
                             {...field}
                             type={type || "text"}

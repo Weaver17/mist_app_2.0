@@ -1,6 +1,6 @@
 import React from "react";
-import { CustomNavigationMenuLink } from "../custom/c_navigation-menu";
 import Link from "next/link";
+import { NavigationMenuLink } from "../custom/components/c_navigation-menu";
 
 type NavListProps = {
     href: string;
@@ -10,7 +10,7 @@ type NavListProps = {
 
 function NavLink({ href, text, color }: NavListProps) {
     return (
-        <CustomNavigationMenuLink
+        <NavigationMenuLink
             className="focus:bg-transparent! focus:text-secondary! focus-visible:ring-transparent! focus-visible:outline-1!"
             asChild
         >
@@ -20,7 +20,7 @@ function NavLink({ href, text, color }: NavListProps) {
             >
                 {text}
             </Link>
-        </CustomNavigationMenuLink>
+        </NavigationMenuLink>
     );
 }
 

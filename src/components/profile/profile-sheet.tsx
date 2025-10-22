@@ -1,16 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-    CustomSheet,
-    CustomSheetContent,
-    CustomSheetFooter,
-    CustomSheetHeader,
-    CustomSheetTitle,
-    CustomSheetTrigger,
-} from "../custom/c_sheet";
-import { CustomAvatar } from "../custom/c_avatar";
-import { H2Custom, H3Custom } from "@/typography/custom";
-import { CustomButton } from "../custom/c_button";
+
+import { H2, H3 } from "@/typography/custom";
 import Link from "next/link";
 import { User } from "lucide-react";
 import { useUserContext } from "@/contexts/user-context";
@@ -18,9 +9,19 @@ import EditDialog from "../auth/edit-username/edit-dialog";
 import SignOutDialog from "../auth/signout-dialog";
 import { User as CurrentUser } from "../../../generated/prisma-client";
 import { getAvatar } from "@/lib/utils";
-import { CustomAspectRatio } from "../custom/c_aspect-ratio";
 import Image from "next/image";
 import SmallSpinner from "../loading/small-spinner";
+import {
+    Sheet,
+    SheetContent,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "../custom/components/modals/c_sheet";
+import { Avatar } from "../custom/components/c_avatar";
+import { AspectRatio } from "../custom/components/c_aspect-ratio";
+import { Button } from "../custom/components/buttons/c_button";
 
 function ProfileSheet() {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -45,57 +46,57 @@ function ProfileSheet() {
     const userAvatar = getAvatar(currentUser?.image);
 
     return (
-        <CustomSheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <CustomSheetTrigger asChild>
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild className="[box-shadow:(0,0,0)]">
                 {isLoading ? (
                     <SmallSpinner />
                 ) : (
-                    <CustomAvatar className="cursor-pointer rounded-none h-[50px] w-[50px]">
+                    <Avatar className="cursor-pointer rounded-none h-[50px] w-[50px]">
                         {isLoggedIn ? (
-                            <CustomAspectRatio ratio={1}>
+                            <AspectRatio ratio={1}>
                                 <Image
                                     src={userAvatar.src}
                                     alt={userAvatar.title}
                                     fill
                                 />
-                                {/* <CustomAvatarFallback className="text-secondary">
+                                {/* <AvatarFallback className="text-secondary">
                                 {currentUser?.username[0]}
-                            </CustomAvatarFallback> */}
-                            </CustomAspectRatio>
+                            </AvatarFallback> */}
+                            </AspectRatio>
                         ) : (
                             <User
                                 size={24}
                                 className="text-secondary mx-auto my-auto"
                             />
                         )}
-                    </CustomAvatar>
+                    </Avatar>
                 )}
-            </CustomSheetTrigger>
-            <CustomSheetContent side="right" className="bg-card py-12">
-                <CustomSheetTitle className="hidden">
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-card py-12">
+                <SheetTitle className="hidden">
                     {currentUser
                         ? `${currentUser.name}'s Info`
                         : "Sign In to View Your Info"}
-                </CustomSheetTitle>
-                <CustomSheetHeader>
-                    <H2Custom className="text-center text-2xl! font-special">
+                </SheetTitle>
+                <SheetHeader>
+                    <H2 className="text-center text-2xl! font-special">
                         {currentUser ? currentUser.name : ""}
-                    </H2Custom>
-                </CustomSheetHeader>
+                    </H2>
+                </SheetHeader>
                 {isLoggedIn ? (
                     <>
                         <div className="flex flex-col gap-8 w-3/4 mx-auto">
-                            <CustomButton onClick={handleSheetBtnClick}>
+                            <Button onClick={handleSheetBtnClick}>
                                 <Link href={`/profile/${currentUser?.id}`}>
                                     Profile Page
                                 </Link>
-                            </CustomButton>
+                            </Button>
                             <EditDialog />
                         </div>
                         <div className="flex flex-col gap-2 w-3/4 mx-auto">
-                            <H3Custom className="text-center border-b pb-2!">
+                            <H3 className="text-center border-b pb-2!">
                                 Saved Games
-                            </H3Custom>
+                            </H3>
                             <ul className="flex flex-col gap-4 mx-auto">
                                 {savedGames.map((game) => (
                                     <li
@@ -112,22 +113,22 @@ function ProfileSheet() {
                                 ))}
                             </ul>
                         </div>
-                        <CustomSheetFooter className="w-3/4 mx-auto">
+                        <SheetFooter className="w-3/4 mx-auto">
                             <SignOutDialog />
-                        </CustomSheetFooter>
+                        </SheetFooter>
                     </>
                 ) : (
                     <div className="flex flex-col gap-8 w-3/4 mx-auto">
-                        <CustomButton asChild>
+                        <Button asChild>
                             <Link href="/signin">Sign In</Link>
-                        </CustomButton>
-                        <CustomButton asChild variant="secondary">
+                        </Button>
+                        <Button asChild variant="secondary">
                             <Link href="/signup">Sign Up</Link>
-                        </CustomButton>
+                        </Button>
                     </div>
                 )}
-            </CustomSheetContent>
-        </CustomSheet>
+            </SheetContent>
+        </Sheet>
     );
 }
 

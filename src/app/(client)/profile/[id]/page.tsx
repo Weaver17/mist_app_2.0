@@ -1,7 +1,7 @@
 "use client";
 import EditDialog from "@/components/auth/edit-username/edit-dialog";
 import { useUserContext } from "@/contexts/user-context";
-import { H1Custom, H3Custom, H4Custom, PCustom } from "@/typography/custom";
+import { H1, H3, H4, P } from "@/typography/custom";
 import React, { useEffect, useState } from "react";
 import SavedList from "@/components/lists/saved-list";
 import { getUserById } from "@/actions/actions";
@@ -55,18 +55,18 @@ function ProfilePage() {
     return (
         <div className="client-page">
             <div className="border-b border-secondary pb-4 flex flex-col gap-4 w-full mx-auto">
-                <H1Custom className="text-center font-special">
+                <H1 className="text-center font-special">
                     {isLoading ? <SmallSpinner /> : profileUser?.name}
-                </H1Custom>
+                </H1>
             </div>
             <div className="flex flex-col gap-12 py-4 lg:px-8 lg:flex-row">
                 <div className="w-full relative lg:w-1/4">
                     <FadingSidebar>
-                        <PCustom className="text-center text-sm md:text-md">
+                        <P className="text-center text-sm md:text-md">
                             {profileUser?.email}
-                        </PCustom>
+                        </P>
                         <div className="flex flex-col gap-2 my-4 lg:my-2">
-                            <H4Custom>Saved Games</H4Custom>
+                            <H4>Saved Games</H4>
                             <ul>
                                 {savedGames?.length > 0 ||
                                 savedGames?.length !== undefined ? (
@@ -85,7 +85,7 @@ function ProfilePage() {
                     </FadingSidebar>
                 </div>
                 <div className="w-full flex flex-col gap-4 lg:w-3/4">
-                    <H3Custom>Saved Games</H3Custom>
+                    <H3>Saved Games</H3>
                     {savedGames?.length > 0 ? (
                         <SavedList games={savedGames} />
                     ) : (
