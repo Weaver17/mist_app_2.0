@@ -193,7 +193,7 @@
     margin-inline: auto;
 }
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {
     --breakpoint-grid2: 580px;
@@ -235,8 +235,8 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
-    --animate-marquee: marquee var(--duration) infinite linear;
-    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+    /* --animate-marquee: marquee var(--duration) infinite linear;
+    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite; */
 }
 
 :root {
@@ -289,7 +289,7 @@
 
 /* ---break---  */
 
-@theme inline {
+/* @theme inline {
     --animate-shine: shine var(--duration) infinite linear;
     @keyframes shine {
         0% {
@@ -402,7 +402,7 @@
             opacity: 0;
         }
     }
-}
+} */
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
