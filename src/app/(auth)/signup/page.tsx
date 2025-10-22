@@ -1,10 +1,5 @@
 "use client";
-import { H1Custom } from "@/typography/custom";
-import {
-    CustomCard,
-    CustomCardContent,
-    CustomCardHeader,
-} from "@/components/custom/c_card";
+import { H1 } from "@/typography/custom";
 import React from "react";
 import AuthSubmit from "@/components/auth/auth-submit";
 import { TSignUpSchema } from "@/types/types";
@@ -16,6 +11,12 @@ import { toast } from "sonner";
 import { useUserContext } from "@/contexts/user-context";
 import LoadingOverlay from "@/components/loading/loading-overlay";
 import AvatarDialog from "@/components/auth/avatar-dialog";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+} from "@/components/custom/components/cards/c_card";
+import { BorderBeam } from "@/components/custom/components/animated/c_border-beam";
 
 // obi1@jedi.com
 
@@ -55,13 +56,11 @@ function SignUpPage() {
     return (
         <div className="p-4 flex flex-col gap-4 w-full mx-auto md:p-12 lg:p-18">
             {isSubmitting && <LoadingOverlay />}
-            <CustomCard className="min-w-[260px]">
-                <CustomCardHeader className="border-b pb-2!">
-                    <H1Custom className="text-center font-special">
-                        Sign Up
-                    </H1Custom>
-                </CustomCardHeader>
-                <CustomCardContent>
+            <Card className="min-w-[260px] relative">
+                <CardHeader className="border-b pb-2!">
+                    <H1 className="text-center font-special">Sign Up</H1>
+                </CardHeader>
+                <CardContent>
                     <AuthSignUpForm
                         onSubmit={onSubmit}
                         handleSubmit={handleSubmit}
@@ -116,8 +115,9 @@ function SignUpPage() {
                             linkText="Sign In"
                         />
                     </AuthSignUpForm>
-                </CustomCardContent>
-            </CustomCard>
+                </CardContent>
+                <BorderBeam colorFrom="#0284b8" colorTo="#e8c902" />
+            </Card>
         </div>
     );
 }

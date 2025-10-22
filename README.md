@@ -84,6 +84,10 @@ Profile Sidebar
 
 ![Desktop Profile Sidebar](./src/assets/screenshots/signedOut-sheet.png)
 
+Sign Out Dialog
+
+![Desktop Sign Out Dialog](./src/assets/screenshots/desktop-signOutModal.png)
+
 Sign In Page
 
 ![Desktop Sign In Page](./src/assets/screenshots/desktop-signIn.png)
@@ -144,12 +148,6 @@ Profile Page
 
 ![Mobile Profile Page](./src/assets/screenshots/mobile-profile.png)
 
-Mobile Menu
-
-![Mobile Menu Signed In](./src/assets/screenshots/signedIn-menu.png)
-
-![Mobile Menu Signed Out](./src/assets/screenshots/signedOut-menu.png)
-
 Sign In Page
 
 ![Mobile Sign In Page](./src/assets/screenshots/mobile-signIn.png)
@@ -161,3 +159,4 @@ Sign Up Page
 **Future Updates**
 
 -   Category page and sort games by category
+-   Dark Mode

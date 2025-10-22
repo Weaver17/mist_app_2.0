@@ -2,13 +2,14 @@
 import React from "react";
 import Logo from "../header/logo";
 import Link from "next/link";
-import {
-    CustomNavigationMenu,
-    CustomNavigationMenuList,
-    CustomNavigationMenuItem,
-} from "../custom/c_navigation-menu";
+
 import NavLink from "../header/navlink";
 import { useUserContext } from "@/contexts/user-context";
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuList,
+} from "../custom/components/c_navigation-menu";
 
 function Footer() {
     const { isLoggedIn } = useUserContext();
@@ -27,35 +28,35 @@ function Footer() {
                 </Link>
             </div>
             <div className="font-special">
-                <CustomNavigationMenu viewport={false} className="">
-                    <CustomNavigationMenuList className="flex flex-col gap-2 p-4">
+                <NavigationMenu viewport={false} className="">
+                    <NavigationMenuList className="flex flex-col gap-2 p-4">
                         {isLoggedIn ? (
                             <></>
                         ) : (
                             <>
-                                <CustomNavigationMenuItem>
+                                <NavigationMenuItem>
                                     <NavLink
                                         href="/signin"
                                         text="Sign In"
                                         color="text-primary!"
                                     />
-                                </CustomNavigationMenuItem>
-                                <CustomNavigationMenuItem>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
                                     <NavLink href="/signup" text="Sign Up" />
-                                </CustomNavigationMenuItem>
+                                </NavigationMenuItem>
                             </>
                         )}
-                        <CustomNavigationMenuItem>
+                        <NavigationMenuItem>
                             <NavLink href="/search" text="Search" />
-                        </CustomNavigationMenuItem>
-                        <CustomNavigationMenuItem>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
                             <NavLink href="/all-games" text="All Games" />
-                        </CustomNavigationMenuItem>
-                        <CustomNavigationMenuItem>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
                             <NavLink href="/about" text="About" />
-                        </CustomNavigationMenuItem>
-                    </CustomNavigationMenuList>
-                </CustomNavigationMenu>
+                        </NavigationMenuItem>
+                    </NavigationMenuList>
+                </NavigationMenu>
             </div>
         </div>
     );

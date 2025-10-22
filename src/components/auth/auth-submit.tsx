@@ -1,7 +1,7 @@
 import React from "react";
-import { CustomButton } from "../custom/c_button";
-import { MutedCustom } from "@/typography/custom";
+import { Muted } from "@/typography/custom";
 import Link from "next/link";
+import { Button } from "../custom/components/buttons/c_button";
 
 type AuthSubmitProps = {
     isSubmitting: boolean;
@@ -20,10 +20,10 @@ function AuthSubmit({
 }: AuthSubmitProps) {
     return (
         <>
-            <CustomButton className="w-full text-muted-light font-special">
+            <Button className="w-full  font-special">
                 {isSubmitting ? submittingText : buttonText}
-            </CustomButton>
-            <MutedCustom className="text-center">
+            </Button>
+            <Muted className="text-center">
                 Already have an account?{" "}
                 <Link
                     href={linkHref}
@@ -31,7 +31,7 @@ function AuthSubmit({
                 >
                     {linkText}
                 </Link>
-            </MutedCustom>
+            </Muted>
         </>
     );
 }

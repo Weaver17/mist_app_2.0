@@ -1,10 +1,5 @@
 "use client";
-import { H1Custom } from "@/typography/custom";
-import {
-    CustomCard,
-    CustomCardContent,
-    CustomCardHeader,
-} from "@/components/custom/c_card";
+import { H1 } from "@/typography/custom";
 import AuthSubmit from "@/components/auth/auth-submit";
 import AuthSignInForm from "@/components/auth/auth-signin-form";
 import AuthSignInInput from "@/components/auth/auth-signin-input";
@@ -14,6 +9,12 @@ import { TSignInSchema } from "@/types/types";
 import { toast } from "sonner";
 import { useUserContext } from "@/contexts/user-context";
 import LoadingOverlay from "@/components/loading/loading-overlay";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+} from "@/components/custom/components/cards/c_card";
+import { BorderBeam } from "@/components/custom/components/animated/c_border-beam";
 
 function SignInPage() {
     const signInForm = useSignInFormContext();
@@ -43,13 +44,11 @@ function SignInPage() {
     return (
         <div className="p-4 flex flex-col gap-4 w-full mx-auto md:p-12 lg:p-18">
             {isSubmitting && <LoadingOverlay />}
-            <CustomCard>
-                <CustomCardHeader className="border-b pb-2!">
-                    <H1Custom className="text-center font-special">
-                        Sign In
-                    </H1Custom>
-                </CustomCardHeader>
-                <CustomCardContent>
+            <Card className="relative">
+                <CardHeader className="border-b pb-2! ">
+                    <H1 className="text-center font-special">Sign In</H1>
+                </CardHeader>
+                <CardContent>
                     <AuthSignInForm
                         onSubmit={onSubmit}
                         handleSubmit={handleSubmit}
@@ -79,8 +78,9 @@ function SignInPage() {
                             linkText="Sign Up"
                         />
                     </AuthSignInForm>
-                </CustomCardContent>
-            </CustomCard>
+                </CardContent>
+                <BorderBeam colorFrom="#0284b8" colorTo="#e8c902" />
+            </Card>
         </div>
     );
 }
