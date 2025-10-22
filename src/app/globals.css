@@ -164,10 +164,10 @@
     );
     --tw-font-weight: var(--font-weight-semibold) /* 600 */;
 
-    @property --tw-font-weight {
+    /* @property --tw-font-weight {
         syntax: "*";
         inherits: false;
-    }
+    } */
 }
 
 .featured-game-info {
@@ -180,10 +180,10 @@
     --tw-font-weight: var(--font-weight-semibold) /* 600 */;
     font-weight: var(--font-weight-semibold) /* 600 */;
 
-    @property --tw-font-weight {
+    /* @property --tw-font-weight {
         syntax: "*";
         inherits: false;
-    }
+    } */
 }
 
 .games-select-trigger {
