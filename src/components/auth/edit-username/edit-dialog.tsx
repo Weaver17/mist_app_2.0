@@ -2,7 +2,7 @@
 import { changeUsername } from "@/actions/actions";
 import { Button } from "@/components/custom/components/buttons/c_button";
 import { Form, FormField } from "@/components/custom/components/form/c_form";
-import { Input } from "@/components/custom/components/form/c_input";
+import { SquareInput } from "@/components/custom/components/form/c_input";
 import {
     Dialog,
     DialogClose,
@@ -101,8 +101,8 @@ function EditDialog() {
                             control={editUsernameForm.control}
                             name="newName"
                             render={({ field }) => (
-                                <Input
-                                    className="rounded-none! border-t-0 border-r-0 border-b! border-l! border-foreground! font-mono"
+                                <SquareInput
+                                    className="font-mono"
                                     defaultValue={usernameValue}
                                     onChange={field.onChange}
                                 />

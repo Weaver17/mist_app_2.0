@@ -57,7 +57,7 @@ function Navbar() {
                     {isMobile && openMobile ? (
                         <Button
                             size="icon"
-                            variant="ghost"
+                            variant="shadowless"
                             onClick={() => toggleMobileNavbar()}
                             className="z-[60]"
                         >
@@ -66,7 +66,7 @@ function Navbar() {
                     ) : (
                         <Button
                             size="icon"
-                            variant="ghost"
+                            variant="shadowless"
                             onClick={() => toggleMobileNavbar()}
                             className="z[60]"
                         >

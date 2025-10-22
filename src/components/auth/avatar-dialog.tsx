@@ -46,10 +46,10 @@ function AvatarDialog({
             render={({ field }) => (
                 <FormItem>
                     <Dialog>
-                        <DialogTrigger asChild>
+                        <DialogTrigger asChild className="[box-shadow:(0,0,0)]">
                             <Button
                                 asChild
-                                variant="link"
+                                variant="shadowless"
                                 className="text-foreground! p-0! mr-auto font-mono! font-semibold!"
                             >
                                 <FormLabel>{label}</FormLabel>
