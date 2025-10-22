@@ -163,11 +163,6 @@
         var(--text-xs--line-height) /* calc(1 / 0.75) ≈ 1.3333 */
     );
     --tw-font-weight: var(--font-weight-semibold) /* 600 */;
-
-    /* @property --tw-font-weight {
-        syntax: "*";
-        inherits: false;
-    } */
 }
 
 .featured-game-info {
@@ -179,11 +174,6 @@
     );
     --tw-font-weight: var(--font-weight-semibold) /* 600 */;
     font-weight: var(--font-weight-semibold) /* 600 */;
-
-    /* @property --tw-font-weight {
-        syntax: "*";
-        inherits: false;
-    } */
 }
 
 .games-select-trigger {
@@ -193,7 +183,7 @@
     margin-inline: auto;
 }
 
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:is(.dark *));
 
 @theme {
     --breakpoint-grid2: 580px;
@@ -235,8 +225,8 @@
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
-    /* --animate-marquee: marquee var(--duration) infinite linear;
-    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite; */
+    --animate-marquee: marquee var(--duration) infinite linear;
+    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
 }
 
 :root {
@@ -289,7 +279,7 @@
 
 /* ---break---  */
 
-/* @theme inline {
+@theme {
     --animate-shine: shine var(--duration) infinite linear;
     @keyframes shine {
         0% {
@@ -402,7 +392,7 @@
             opacity: 0;
         }
     }
-} */
+}
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
