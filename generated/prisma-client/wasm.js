@@ -208,7 +208,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\jrw04\\projects\\JavaScript\\React\\Next_JS\\mist_app_2.0\\generated\\prisma-client",
+      "value": "/vercel/sandbox/primary/generated/prisma-client",
       "fromEnvVar": null
     },
     "config": {
@@ -217,17 +217,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "rhel-openssl-3.0.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\jrw04\\projects\\JavaScript\\React\\Next_JS\\mist_app_2.0\\prisma\\schema.prisma",
+    "sourceFilePath": "/vercel/sandbox/primary/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.16.2",
