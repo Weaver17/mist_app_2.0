@@ -9,7 +9,7 @@ function ClientLayout({ children }: Readonly<{ children: ReactNode }>) {
                 <Header />
             </div>
             {children}
-            <div className="border-t-4 border-primary bg-border mt-auto">
+            <div className="border-t-4 border-primary bg-zinc-950 mt-auto">
                 <Footer />
             </div>
         </div>

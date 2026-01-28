@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function Logo() {
     return (
-        <Link href="/" className="shadow-lg bg-border rounded-sm p-2">
+        <Link href="/" className="shadow-lg bg-zinc-950 rounded-sm p-2">
             <Image
                 src={images.logo2}
                 alt="Mist Logo"

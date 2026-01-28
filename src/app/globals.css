@@ -271,12 +271,12 @@
 .dark {
     --radius: 0.625rem;
     --duration: 30s;
-    --background: #57bfe820;
-    --foreground: oklch(0.141 0.005 285.823);
-    --card: #f6f6f6;
-    --card-foreground: oklch(0.141 0.005 285.823);
-    --popover: #d9d9d9;
-    --popover-foreground: oklch(0.141 0.005 285.823);
+    --background: #262626;
+    --foreground: #f6f6f6;
+    --card: #262626;
+    --card-foreground: #f6f6f6;
+    --popover: #262626;
+    --popover-foreground: #f6f6f6;
     --primary: #0284b8;
     --primary-foreground: #d9d9d9;
     --secondary: #e8c902;
@@ -286,7 +286,7 @@
     --accent: #2f9cc7;
     --accent-foreground: #d9d9d9;
     --destructive: oklch(0.577 0.245 27.325);
-    --border: #0d0c0c;
+    --border: #0284b8;
     --input: #d9d9d9;
     --ring: #02a9ec;
     --chart-1: oklch(0.646 0.222 41.116);

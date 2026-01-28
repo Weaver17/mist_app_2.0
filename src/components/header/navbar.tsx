@@ -145,7 +145,7 @@ function Navbar() {
                     viewport={false}
                     className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2"
                 >
-                    <NavigationMenuList className="flex gap-2 bg-border rounded-lg  shadow-md p-4">
+                    <NavigationMenuList className="flex gap-2 bg-zinc-950 rounded-lg  shadow-md p-4">
                         {isLoggedIn ? (
                             <></>
                         ) : (

@@ -173,6 +173,7 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                         </RainbowButton>
                     </div>
                 </CardContent>
+
                 <ShineBorder shineColor="#0284b8" />
             </Card>
         </motion.div>

@@ -1,9 +1,13 @@
 import AuthLogo from "@/components/auth/auth-logo";
+import { AnimatedThemeToggler } from "@/components/custom/theme/c_animated-theme-toggler";
 import React, { ReactNode } from "react";
 
 function AuthLayout({ children }: Readonly<{ children: ReactNode }>) {
     return (
-        <div className=" flex flex-col-reverse justify-center items-center gap-0 lg:min-h-screen lg:max-w-[1380px] lg:mx-auto lg:flex-row">
+        <div className="relative flex flex-col-reverse justify-center items-center gap-0 lg:min-h-screen lg:max-w-[1380px] lg:mx-auto lg:flex-row">
+            <div className="absolute top-4 right-0">
+                <AnimatedThemeToggler />
+            </div>
             <div className="lg:w-1/2">
                 <AuthLogo />
             </div>
