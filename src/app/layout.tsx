@@ -10,6 +10,7 @@ import { Toaster } from "sonner";
 import { UserProvider } from "@/contexts/user-context";
 import LoadingOverlay from "@/components/loading/loading-overlay";
 import { ToTopProvider } from "@/contexts/to-top-context";
+import { ThemeProvider } from "@/components/custom/theme/c_theme-provider";
 
 const fontSans = font_sans({
     variable: "--font-font-sans",
@@ -50,16 +51,26 @@ export default function RootLayout({
                 />
             </head>
             <body
-                className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased background relative`}
+                className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased bg-zinc-300 relative dark:bg-zinc-800`}
+                suppressHydrationWarning
             >
-                <UserProvider>
-                    <ToTopProvider>
-                        <Suspense fallback={<LoadingOverlay />}>
-                            {children}
-                        </Suspense>
-                        <Toaster position="top-center" />
-                    </ToTopProvider>
-                </UserProvider>
+                <div className="bg-gradient-to-b from-primary/10 to-primary/80">
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="light"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <UserProvider>
+                            <ToTopProvider>
+                                <Suspense fallback={<LoadingOverlay />}>
+                                    {children}
+                                </Suspense>
+                                <Toaster position="top-center" />
+                            </ToTopProvider>
+                        </UserProvider>
+                    </ThemeProvider>
+                </div>
             </body>
         </html>
     );

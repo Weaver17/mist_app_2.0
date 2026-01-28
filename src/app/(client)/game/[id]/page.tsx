@@ -61,7 +61,7 @@ function GamePage() {
     useEffect(() => {
         async function getGame() {
             const gameToGet = (await getGameById(
-                params.id as unknown as number
+                params.id as unknown as number,
             )) as FeaturedGame;
             setGame(gameToGet);
         }
@@ -132,8 +132,8 @@ function GamePage() {
                                     {isLoggedIn ? (
                                         <Button
                                             size="sm"
-                                            variant="ghost"
-                                            className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
+                                            variant="outline_plain"
+                                            className="p-0! border-none! bg-transparent! opacity-50 hover:opacity-100! shadow-none!"
                                             onClick={() =>
                                                 onSaveGameClick(game)
                                             }
@@ -153,7 +153,7 @@ function GamePage() {
                                     ) : (
                                         <Button
                                             size="sm"
-                                            variant="ghost"
+                                            variant="outline_plain"
                                             disabled
                                             className="px-0!"
                                         >

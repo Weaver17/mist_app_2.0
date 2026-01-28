@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { FeaturedGame, Game } from "@/types/types";
 import Image from "next/image";
 import { H3, Muted, P } from "@/typography/custom";
-import images from "@/lib/images";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/user-context";
 import { saveGameAction, unsaveGameAction } from "@/actions/actions";
@@ -14,11 +13,11 @@ import {
     CardContent,
     CardHeader,
 } from "../custom/components/cards/c_card";
-import { Button } from "../custom/components/buttons/c_button";
 import { AspectRatio } from "../custom/components/c_aspect-ratio";
 import { RainbowButton } from "../custom/components/buttons/c_rainbow-button";
 import { motion } from "motion/react";
 import { ShineBorder } from "../custom/components/animated/c_shine-border";
+import SaveBtn from "../buttons/save-btn";
 
 type FeaturedCardProps = {
     featuredGame: FeaturedGame;
@@ -67,35 +66,19 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                         {featuredGame.title}
                     </H3>
                     {isLoggedIn ? (
-                        <Button
-                            size="sm"
-                            variant="ghost"
-                            className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
-                            onClick={() => onSaveGameClick(featuredGame)}
-                        >
-                            <Image
-                                src={isSaved ? images.checkmark : images.save}
-                                alt="save icon"
-                                width={18}
-                                height={18}
-                                priority
-                            />
-                        </Button>
+                        <SaveBtn
+                            onSaveGameClick={onSaveGameClick}
+                            isSaved={isSaved}
+                            game={featuredGame}
+                            disabled={false}
+                        />
                     ) : (
-                        <Button
-                            size="sm"
-                            variant="ghost"
-                            disabled
-                            className="px-0!"
-                        >
-                            <Image
-                                src={images.save}
-                                alt="save icon"
-                                width={18}
-                                height={18}
-                                priority
-                            />
-                        </Button>
+                        <SaveBtn
+                            onSaveGameClick={onSaveGameClick}
+                            isSaved={isSaved}
+                            game={featuredGame}
+                            disabled={true}
+                        />
                     )}
                 </CardHeader>
                 <CardContent className="p-0! flex flex-col gap-2">
@@ -173,6 +156,7 @@ function FeaturedCard({ featuredGame }: FeaturedCardProps) {
                         </RainbowButton>
                     </div>
                 </CardContent>
+
                 <ShineBorder shineColor="#0284b8" />
             </Card>
         </motion.div>

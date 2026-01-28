@@ -16,6 +16,7 @@ import {
 import { Button } from "../custom/components/buttons/c_button";
 import { Avatar, AvatarFallback } from "../custom/components/c_avatar";
 import { AspectRatio } from "../custom/components/c_aspect-ratio";
+import { AnimatedThemeToggler } from "../custom/theme/c_animated-theme-toggler";
 
 const MOBILENAVBAR_KEYBOARD_SHORTCUT = "m";
 
@@ -133,6 +134,7 @@ function Navbar() {
                                         color="text-foreground!"
                                     />
                                 </NavigationMenuItem>
+                                <AnimatedThemeToggler />
                             </NavigationMenuList>
                         ) : (
                             <></>
@@ -144,7 +146,7 @@ function Navbar() {
                     viewport={false}
                     className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2"
                 >
-                    <NavigationMenuList className="flex gap-2 bg-border rounded-lg  shadow-md p-4">
+                    <NavigationMenuList className="flex gap-2 bg-zinc-950 rounded-lg  shadow-md p-4">
                         {isLoggedIn ? (
                             <></>
                         ) : (
@@ -167,6 +169,7 @@ function Navbar() {
                         <NavigationMenuItem>
                             <NavLink href="/all-games" text="All Games" />
                         </NavigationMenuItem>
+                        <AnimatedThemeToggler />
                     </NavigationMenuList>
                 </NavigationMenu>
             )}
