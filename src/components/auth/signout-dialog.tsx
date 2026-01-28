@@ -25,7 +25,7 @@ function SignOutDialog() {
             <DialogTrigger asChild>
                 <Button
                     variant="outline"
-                    className="bg-card/50! hover:bg-muted-foreground!"
+                    className="bg-card/50! hover:bg-muted-foreground! dark:hover:bg-muted/20!"
                 >
                     Sign Out
                 </Button>
@@ -41,7 +41,12 @@ function SignOutDialog() {
                         Sign Out
                     </Button>
                     <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button
+                            variant="outline"
+                            className="bg-card/50! hover:bg-muted-foreground! dark:hover:bg-muted/20!"
+                        >
+                            Cancel
+                        </Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

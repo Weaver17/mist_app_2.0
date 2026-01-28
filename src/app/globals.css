@@ -232,7 +232,7 @@
 :root {
     --radius: 0.625rem;
     --duration: 30s;
-    --background: #0284b820;
+    --background: #262626;
     --foreground: oklch(0.141 0.005 285.823);
     --card: #f6f6f6;
     --card-foreground: oklch(0.141 0.005 285.823);

@@ -55,12 +55,12 @@ function AvatarDialog({
                                 <FormLabel>{label}</FormLabel>
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="bg-border! border-card! text-card!">
+                        <DialogContent className="border-card! text-card! dark:border-border! dark:text-foreground!">
                             <DialogTitle className="hidden">
                                 Select Avatar
                             </DialogTitle>
                             <DialogHeader>Select an Avatar:</DialogHeader>
-                            <Separator className="bg-card!" />
+                            <Separator className="bg-card! dark:bg-foreground!" />
                             <FormControl>
                                 <RadioGroup
                                     onValueChange={field.onChange}
@@ -74,6 +74,7 @@ function AvatarDialog({
                                         >
                                             <FormControl>
                                                 <RadioGroupItem
+                                                    className="border-card!"
                                                     value={avatar.alt}
                                                 />
                                             </FormControl>
@@ -88,7 +89,7 @@ function AvatarDialog({
                                     ))}
                                 </RadioGroup>
                             </FormControl>
-                            <Separator className="bg-card!" />
+                            <Separator className="bg-card! dark:bg-foreground!" />
                             <DialogClose asChild>
                                 <Button>Confirm</Button>
                             </DialogClose>

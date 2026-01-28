@@ -134,6 +134,7 @@ function Navbar() {
                                         color="text-foreground!"
                                     />
                                 </NavigationMenuItem>
+                                <AnimatedThemeToggler />
                             </NavigationMenuList>
                         ) : (
                             <></>

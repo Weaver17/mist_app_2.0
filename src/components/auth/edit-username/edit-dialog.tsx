@@ -113,7 +113,7 @@ function EditDialog() {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    className="bg-muted/50! hover:bg-card!"
+                                    className="bg-card/50! hover:bg-muted-foreground! dark:hover:bg-muted/20!"
                                     onClick={handleEditClose}
                                 >
                                     Cancel

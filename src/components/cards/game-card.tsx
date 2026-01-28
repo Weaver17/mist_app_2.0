@@ -1,7 +1,6 @@
 "use client";
 
 import { Game } from "@/types/types";
-import images from "@/lib/images";
 import { useUserContext } from "@/contexts/user-context";
 import { saveGameAction, unsaveGameAction } from "@/actions/actions";
 import { getGameById } from "@/lib/game-api";
@@ -15,11 +14,11 @@ import {
     CardFooter,
     CardHeader,
 } from "../custom/components/cards/c_card";
-import { Button } from "../custom/components/buttons/c_button";
 import { AspectRatio } from "../custom/components/c_aspect-ratio";
 import { H5, Muted } from "@/typography/custom";
 import Image from "next/image";
 import { ShineBorder } from "../custom/components/animated/c_shine-border";
+import SaveBtn from "../buttons/save-btn";
 
 type GameCardProps = {
     game: Game | SavedGame;
@@ -59,35 +58,19 @@ function GameCard({ game }: GameCardProps) {
             <CardHeader className="pr-1! font-special text-lg flex justify-between items-center">
                 <H5 className="truncate">{game.title}</H5>
                 {isLoggedIn ? (
-                    <Button
-                        size="sm"
-                        variant="ghost"
-                        className="p-0! opacity-50 hover:bg-transparent! hover:opacity-100!"
-                        onClick={() => onSaveGameClick(game)}
-                    >
-                        <Image
-                            src={isSaved ? images.checkmark : images.save}
-                            alt="save icon"
-                            width={18}
-                            height={18}
-                            priority
-                        />
-                    </Button>
+                    <SaveBtn
+                        onSaveGameClick={onSaveGameClick}
+                        isSaved={isSaved}
+                        game={game}
+                        disabled={false}
+                    />
                 ) : (
-                    <Button
-                        size="sm"
-                        variant="ghost"
-                        disabled
-                        className="px-0!"
-                    >
-                        <Image
-                            src={images.save}
-                            alt="save icon"
-                            width={18}
-                            height={18}
-                            priority
-                        />
-                    </Button>
+                    <SaveBtn
+                        onSaveGameClick={onSaveGameClick}
+                        isSaved={isSaved}
+                        game={game}
+                        disabled={true}
+                    />
                 )}
             </CardHeader>
             <CardContent className="flex flex-col gap-2 p-1!">
