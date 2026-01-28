@@ -16,6 +16,7 @@ import {
 import { Button } from "../custom/components/buttons/c_button";
 import { Avatar, AvatarFallback } from "../custom/components/c_avatar";
 import { AspectRatio } from "../custom/components/c_aspect-ratio";
+import { AnimatedThemeToggler } from "../custom/theme/c_animated-theme-toggler";
 
 const MOBILENAVBAR_KEYBOARD_SHORTCUT = "m";
 
@@ -167,6 +168,7 @@ function Navbar() {
                         <NavigationMenuItem>
                             <NavLink href="/all-games" text="All Games" />
                         </NavigationMenuItem>
+                        <AnimatedThemeToggler />
                     </NavigationMenuList>
                 </NavigationMenu>
             )}
