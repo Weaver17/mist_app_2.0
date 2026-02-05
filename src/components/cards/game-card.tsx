@@ -69,7 +69,7 @@ function GameCard({ game }: GameCardProps) {
                         onSaveGameClick={onSaveGameClick}
                         isSaved={isSaved}
                         game={game}
-                        disabled={true}
+                        disabled={false}
                     />
                 )}
             </CardHeader>
