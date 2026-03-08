@@ -133,7 +133,7 @@ function GamePage() {
                                         <Button
                                             size="sm"
                                             variant="outline_plain"
-                                            className="p-0! border-none! bg-transparent! opacity-50 hover:opacity-100! shadow-none!"
+                                            className="p-0! px-1.5! border-none! bg-transparent! opacity-50 hover:opacity-100! shadow-none!  dark:bg-zinc-300!  dark:hover:opacity-100"
                                             onClick={() =>
                                                 onSaveGameClick(game)
                                             }
@@ -154,8 +154,8 @@ function GamePage() {
                                         <Button
                                             size="sm"
                                             variant="outline_plain"
+                                            className="p-0! px-1.5! border-none! bg-transparent! opacity-50 hover:opacity-100! shadow-none!  dark:bg-zinc-300!  dark:hover:opacity-100"
                                             disabled
-                                            className="px-0!"
                                         >
                                             <Image
                                                 src={images.save}

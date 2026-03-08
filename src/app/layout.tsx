@@ -41,7 +41,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <link
                     rel="icon"
@@ -52,7 +52,6 @@ export default function RootLayout({
             </head>
             <body
                 className={`${fontSans.variable} ${fontMono.variable} ${fontSpecial.variable} antialiased bg-zinc-300 relative dark:bg-zinc-800`}
-                suppressHydrationWarning
             >
                 <div className="bg-gradient-to-b from-primary/10 to-primary/80">
                     <ThemeProvider

@@ -60,14 +60,14 @@ function AboutPage() {
                                         LinkedIn
                                     </Link>
                                 </Button>
-                                <Button asChild variant="link">
+                                {/* <Button asChild variant="link">
                                     <Link
                                         href="https://elevate-auto-detailing.com/"
                                         target="_blank"
                                     >
                                         Elevate Auto Detailing
                                     </Link>
-                                </Button>
+                                </Button> */}
                             </div>
                             <P>
                                 Hello there! My name is Andrew Weaver and I
@@ -87,6 +87,14 @@ function AboutPage() {
                                 also own my own car detailing business, so if
                                 anyone is around Columbus, Ohio, feel free to
                                 check it out!
+                            </P>
+                            <P>
+                                For those of you wondering why there is a random
+                                pet adoption link on this gameing webpage, I had
+                                orignally created a seperate app using
+                                petfinder&apos;s free api, but they changed it
+                                to a code widget. So I thought I would just
+                                implement it here!
                             </P>
                         </CardContent>
                     </Card>

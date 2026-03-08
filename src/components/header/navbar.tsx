@@ -134,6 +134,13 @@ function Navbar() {
                                         color="text-foreground!"
                                     />
                                 </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <NavLink
+                                        href="/petfinder"
+                                        text="Find a Pet"
+                                        color="text-foreground!"
+                                    />
+                                </NavigationMenuItem>
                                 <AnimatedThemeToggler />
                             </NavigationMenuList>
                         ) : (
@@ -168,6 +175,9 @@ function Navbar() {
                         </NavigationMenuItem>
                         <NavigationMenuItem>
                             <NavLink href="/all-games" text="All Games" />
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <NavLink href="/petfinder" text="Find a Pet" />
                         </NavigationMenuItem>
                         <AnimatedThemeToggler />
                     </NavigationMenuList>
