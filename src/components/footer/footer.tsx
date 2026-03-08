@@ -55,6 +55,9 @@ function Footer() {
                         <NavigationMenuItem>
                             <NavLink href="/about" text="About" />
                         </NavigationMenuItem>
+                        <NavigationMenuItem>
+                            <NavLink href="/petfinder" text="Find a Pet" />
+                        </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>
             </div>
