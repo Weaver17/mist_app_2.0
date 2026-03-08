@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 declare global {
     interface HTMLElementTagNameMap {
-        "pet-scroller": HTMLElement & { [key: string]: any };
+        "pet-scroller": HTMLElement & { [key: string]: unknown };
     }
 }
 
@@ -46,7 +46,9 @@ export default function PetfinderPage() {
                     hideBreed="false"
                     limit="24"
                     petListTitle=""
-                ></pet-scroller>
+                >
+                    {/* @ts-expect-error snippet works just fine as far a I can tell */}
+                </pet-scroller>
             )}
             <Script
                 src="https://www.petfinder.com/pet-scroller.bundle.js"
