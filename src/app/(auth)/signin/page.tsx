@@ -33,7 +33,7 @@ function SignInPage() {
             signInForm.reset();
             router.push("/");
             toast.success(
-                "Signed In Successfully! Sending you to the homepage..."
+                "Signed In Successfully! Sending you to the homepage...",
             );
         } catch (error) {
             console.error(error);
@@ -76,6 +76,7 @@ function SignInPage() {
                             buttonText="Sign In"
                             linkHref="/signup"
                             linkText="Sign Up"
+                            linkQuestion="Don't have an account? "
                         />
                     </AuthSignInForm>
                 </CardContent>

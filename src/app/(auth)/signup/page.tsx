@@ -40,12 +40,12 @@ function SignUpPage() {
                     image: data.image,
                 },
                 data.password,
-                data.confirmPassword
+                data.confirmPassword,
             );
             signUpForm.reset();
             router.push("/signin");
             toast.success(
-                "Signed Up Successfully! Please sign in to continue..."
+                "Signed Up Successfully! Please sign in to continue...",
             );
         } catch (error) {
             console.error(error);
@@ -113,6 +113,7 @@ function SignUpPage() {
                             buttonText="Sign Up"
                             linkHref="/signin"
                             linkText="Sign In"
+                            linkQuestion="Already have an account? "
                         />
                     </AuthSignUpForm>
                 </CardContent>

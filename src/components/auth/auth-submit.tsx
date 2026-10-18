@@ -9,6 +9,7 @@ type AuthSubmitProps = {
     buttonText: string;
     linkText: string;
     linkHref: string;
+    linkQuestion: string;
 };
 
 function AuthSubmit({
@@ -17,6 +18,7 @@ function AuthSubmit({
     buttonText,
     linkHref,
     linkText,
+    linkQuestion,
 }: AuthSubmitProps) {
     return (
         <>
@@ -24,7 +26,7 @@ function AuthSubmit({
                 {isSubmitting ? submittingText : buttonText}
             </Button>
             <Muted className="text-center">
-                Already have an account?{" "}
+                {linkQuestion}
                 <Link
                     href={linkHref}
                     className="underline underline-offset-4 hover:text-foreground"
