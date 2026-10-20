@@ -19,10 +19,13 @@ import { AspectRatio } from "@/components/custom/components/c_aspect-ratio";
 import { Button } from "@/components/custom/components/buttons/c_button";
 import { Card, CardContent } from "@/components/custom/components/cards/c_card";
 import { motion } from "motion/react";
+import GameNotFound from "./not-found";
 
 function GamePage() {
     const [game, setGame] = useState<FeaturedGame>();
     const params = useParams<{ id: string }>();
+    const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState<unknown>(null);
 
     const {
         currentUser,
@@ -59,15 +62,37 @@ function GamePage() {
     };
 
     useEffect(() => {
-        async function getGame() {
-            const gameToGet = (await getGameById(
-                params.id as unknown as number,
-            )) as FeaturedGame;
-            setGame(gameToGet);
+        let cancelled = false;
+
+        async function loadGame() {
+            setIsLoading(true);
+            setGame(undefined);
+            setLoadError(null);
+
+            try {
+                const result = await getGameById(Number(params.id));
+
+                if (!cancelled) {
+                    setGame(
+                        result?.title ? (result as FeaturedGame) : undefined,
+                    );
+                }
+            } catch (error) {
+                if (!cancelled) {
+                    console.error("Failed to load game", error);
+                    setLoadError(error);
+                }
+            } finally {
+                if (!cancelled) setIsLoading(false);
+            }
         }
 
-        getGame();
-    });
+        void loadGame();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [params.id]);
 
     useEffect(() => {
         window.addEventListener("scroll", handleToTopBtn);
@@ -81,8 +106,12 @@ function GamePage() {
             viewport={{ once: true }}
             className="p-4 flex flex-col gap-4 max-w-[1380px] mx-auto lg:gap-8"
         >
-            {!game ? (
+            {isLoading ? (
                 <LoadingOverlay />
+            ) : loadError ? (
+                <GameNotFound />
+            ) : !game ? (
+                <GameNotFound />
             ) : (
                 <>
                     <div className="border-b border-secondary pb-4  w-full mx-auto">
