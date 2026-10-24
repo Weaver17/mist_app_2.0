@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-// import { AspectRatio } from "../custom/components/c_aspect-ratio";
 import { H5, Muted } from "@/typography/custom";
-// import Image from "next/image";
+import Image from "next/image";
 
 import {
     Card,
@@ -12,6 +11,8 @@ import {
     CardHeader,
 } from "@/components/custom/components/cards/c_card";
 import { ShineBorder } from "@/components/custom/components/animated/c_shine-border";
+import images from "@/lib/images";
+import { AspectRatio } from "@/components/custom/components/c_aspect-ratio";
 
 function PongCard() {
     return (
@@ -21,7 +22,17 @@ function PongCard() {
             </CardHeader>
             <CardContent className="flex flex-col gap-2 p-1!">
                 <Link href="/browser-games/pong">
-                    <div className="h-30 w-full bg-foreground"></div>
+                    <AspectRatio
+                        ratio={16 / 9}
+                        className="w-full rounded-sm z-10!"
+                    >
+                        <Image
+                            src={images.pongScreenshot}
+                            alt="Pong"
+                            fill
+                            className="rounded-sm z-10!"
+                        />
+                    </AspectRatio>
                 </Link>
 
                 <CardDescription className="text-xs text-foreground font-semibold h-[80px] overflow-hidden">
