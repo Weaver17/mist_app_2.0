@@ -1,8 +1,31 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+
+import {
+    COLORS,
+    WINNING_SCORE,
+    FIXED_TIME_STEP,
+    GAME_HEIGHT,
+    GAME_WIDTH,
+} from "./pong-types";
+
+import type {
+    Difficulty,
+    GameState,
+    GameStatus,
+    PlayerSide,
+} from "./pong-types";
+
+import {
+    createInitialGameState,
+    resetBall,
+    resetGame as resetEngine,
+    updateGame,
+} from "./pong-engine";
+
 import { Button } from "../../custom/components/buttons/c_button";
-import { H2, H3, P } from "@/typography/custom";
+import { H2, P } from "@/typography/custom";
 import { Label } from "@/components/custom/components/form/c_label";
 import {
     Select,
@@ -11,170 +34,176 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/custom/components/form/c_select";
-import { Separator } from "@/components/custom/components/c_separator";
-import { GameStatus } from "@/types/types";
 import StartPauseReset from "../components/start-pause-reset";
 import GameRules from "../components/game-rules";
 
-type Difficulty = "easy" | "medium" | "hard";
-
-// type GameStatus = "ready" | "playing" | "paused" | "gameOver";
-
-interface Paddle {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    speed: number;
-}
-
-interface Ball {
-    x: number;
-    y: number;
-    radius: number;
-    vx: number;
-    vy: number;
-    speed: number;
-}
-
-interface GameState {
-    width: number;
-    height: number;
-    player: Paddle;
-    ai: Paddle;
-    ball: Ball;
-    playerScore: number;
-    aiScore: number;
-    status: GameStatus;
-    winner: "player" | "ai" | null;
-    lastHit: "player" | "ai" | null;
-}
-
-interface DifficultyConfig {
-    aiSpeed: number;
-    reactionDelay: number;
-    predictionError: number;
-}
+// --------------------------------------------------
+// Component props
+// --------------------------------------------------
 
 interface PongGameProps {
     winningScore?: number;
     initialDifficulty?: Difficulty;
-    className?: string;
 }
 
-// CONSTANTS ---------------------
+// type Difficulty = "easy" | "medium" | "hard";
 
-const GAME_WIDTH = 900;
-const GAME_HEIGHT = 500;
+// // type GameStatus = "ready" | "playing" | "paused" | "gameOver";
 
-const PADDLE_WIDTH = 12;
-const PADDLE_HEIGHT = 100;
+// interface Paddle {
+//     x: number;
+//     y: number;
+//     width: number;
+//     height: number;
+//     speed: number;
+// }
 
-const BALL_RADIUS = 9;
+// interface Ball {
+//     x: number;
+//     y: number;
+//     radius: number;
+//     vx: number;
+//     vy: number;
+//     speed: number;
+// }
 
-const PLAYER_SPEED = 440;
+// interface GameState {
+//     width: number;
+//     height: number;
+//     player: Paddle;
+//     ai: Paddle;
+//     ball: Ball;
+//     playerScore: number;
+//     aiScore: number;
+//     status: GameStatus;
+//     winner: "player" | "ai" | null;
+//     lastHit: "player" | "ai" | null;
+// }
 
-const INITIAL_BALL_SPEED = 360;
-const MAX_BALL_SPEED = 720;
+// interface DifficultyConfig {
+//     aiSpeed: number;
+//     reactionDelay: number;
+//     predictionError: number;
+// }
 
-const BALL_SPEED_INCREMENT = 22;
+// interface PongGameProps {
+//     winningScore?: number;
+//     initialDifficulty?: Difficulty;
+//     className?: string;
+// }
 
-const FIXED_TIME_STEP = 1 / 120;
+// // CONSTANTS ---------------------
 
-const WINNING_SCORE = 7;
+// const GAME_WIDTH = 900;
+// const GAME_HEIGHT = 500;
 
-const COLORS = {
-    background: "#171717",
-    foreground: "#fafafa",
-    muted: "#71717a",
-    accent: "#0284b8",
-    player: "#0284b8",
-    ai: "#f6f6f6",
-    centerLine: "#444449",
-};
+// const PADDLE_WIDTH = 12;
+// const PADDLE_HEIGHT = 100;
 
-const DIFFICULTY_CONFIG: Record<Difficulty, DifficultyConfig> = {
-    easy: {
-        aiSpeed: 220,
-        reactionDelay: 0.22,
-        predictionError: 85,
-    },
+// const BALL_RADIUS = 9;
 
-    medium: {
-        aiSpeed: 340,
-        reactionDelay: 0.1,
-        predictionError: 35,
-    },
+// const PLAYER_SPEED = 440;
 
-    hard: {
-        aiSpeed: 460,
-        reactionDelay: 0.025,
-        predictionError: 8,
-    },
-};
+// const INITIAL_BALL_SPEED = 360;
+// const MAX_BALL_SPEED = 720;
 
-// FUNCTIONS ----------------------------
+// const BALL_SPEED_INCREMENT = 22;
 
-function clamp(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value));
-}
+// const FIXED_TIME_STEP = 1 / 120;
 
-function randomDirection(): number {
-    return Math.random() < 0.5 ? -1 : 1;
-}
+// const WINNING_SCORE = 7;
 
-function createPaddle(x: number, y: number): Paddle {
-    return {
-        x,
-        y,
-        width: PADDLE_WIDTH,
-        height: PADDLE_HEIGHT,
-        speed: PLAYER_SPEED,
-    };
-}
+// const COLORS = {
+//     background: "#171717",
+//     foreground: "#fafafa",
+//     muted: "#71717a",
+//     accent: "#0284b8",
+//     player: "#0284b8",
+//     ai: "#f6f6f6",
+//     centerLine: "#444449",
+// };
 
-function createBall(direction: number = randomDirection()): Ball {
-    return {
-        x: GAME_WIDTH / 2,
-        y: GAME_HEIGHT / 2,
-        radius: BALL_RADIUS,
-        vx: INITIAL_BALL_SPEED * direction,
-        vy: INITIAL_BALL_SPEED * 0.25 * randomDirection(),
-        speed: INITIAL_BALL_SPEED,
-    };
-}
+// const DIFFICULTY_CONFIG: Record<Difficulty, DifficultyConfig> = {
+//     easy: {
+//         aiSpeed: 220,
+//         reactionDelay: 0.22,
+//         predictionError: 85,
+//     },
 
-function createInitialGameState(): GameState {
-    return {
-        width: GAME_WIDTH,
-        height: GAME_HEIGHT,
+//     medium: {
+//         aiSpeed: 340,
+//         reactionDelay: 0.1,
+//         predictionError: 35,
+//     },
 
-        player: createPaddle(32, GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2),
+//     hard: {
+//         aiSpeed: 460,
+//         reactionDelay: 0.025,
+//         predictionError: 8,
+//     },
+// };
 
-        ai: createPaddle(
-            GAME_WIDTH - 32 - PADDLE_WIDTH,
-            GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2,
-        ),
+// // FUNCTIONS ----------------------------
 
-        ball: createBall(),
+// function clamp(value: number, min: number, max: number): number {
+//     return Math.max(min, Math.min(max, value));
+// }
 
-        playerScore: 0,
-        aiScore: 0,
+// function randomDirection(): number {
+//     return Math.random() < 0.5 ? -1 : 1;
+// }
 
-        status: "ready",
-        winner: null,
-        lastHit: null,
-    };
-}
+// function createPaddle(x: number, y: number): Paddle {
+//     return {
+//         x,
+//         y,
+//         width: PADDLE_WIDTH,
+//         height: PADDLE_HEIGHT,
+//         speed: PLAYER_SPEED,
+//     };
+// }
+
+// function createBall(direction: number = randomDirection()): Ball {
+//     return {
+//         x: GAME_WIDTH / 2,
+//         y: GAME_HEIGHT / 2,
+//         radius: BALL_RADIUS,
+//         vx: INITIAL_BALL_SPEED * direction,
+//         vy: INITIAL_BALL_SPEED * 0.25 * randomDirection(),
+//         speed: INITIAL_BALL_SPEED,
+//     };
+// }
+
+// function createInitialGameState(): GameState {
+//     return {
+//         width: GAME_WIDTH,
+//         height: GAME_HEIGHT,
+
+//         player: createPaddle(32, GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2),
+
+//         ai: createPaddle(
+//             GAME_WIDTH - 32 - PADDLE_WIDTH,
+//             GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2,
+//         ),
+
+//         ball: createBall(),
+
+//         playerScore: 0,
+//         aiScore: 0,
+
+//         status: "ready",
+//         winner: null,
+//         lastHit: null,
+//     };
+// }
 
 export function PongGame({
     winningScore = WINNING_SCORE,
     initialDifficulty = "medium",
-    className = "",
 }: PongGameProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const gameRef = useRef<GameState>(createInitialGameState());
+    const gameRef = useRef<GameState>(createInitialGameState(initialDifficulty));
 
     const keysRef = useRef<Set<string>>(new Set());
 
@@ -184,11 +213,18 @@ export function PongGame({
 
     const accumulatorRef = useRef<number>(0);
 
-    const aiReactionTimerRef = useRef<number>(0);
+    const aiStateRef = useRef({
+        reactionTimer: 0,
+        targetY: GAME_HEIGHT / 2,
+    });
 
-    const aiTargetYRef = useRef<number>(GAME_HEIGHT / 2);
+    //     const aiReactionTimerRef = useRef<number>(0);
+
+    //     const aiTargetYRef = useRef<number>(GAME_HEIGHT / 2);
 
     const difficultyRef = useRef<Difficulty>(initialDifficulty);
+
+    // REACT STATE
 
     const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
 
@@ -198,13 +234,13 @@ export function PongGame({
 
     const [aiScore, setAiScore] = useState(0);
 
-    const [winner, setWinner] = useState<"player" | "ai" | null>(null);
+    const [winner, setWinner] = useState<PlayerSide | null>(null);
 
     const [isFocused, setIsFocused] = useState(false);
 
-    // ------------------------------------------------
-    // State synchronization
-    // ------------------------------------------------
+    //     // ------------------------------------------------
+    //     // State synchronization
+    //     // ------------------------------------------------
 
     const syncUI = useCallback(() => {
         const game = gameRef.current;
@@ -215,60 +251,57 @@ export function PongGame({
         setWinner(game.winner);
     }, []);
 
-    // ------------------------------------------------
-    // Ball reset
-    // ------------------------------------------------
+    //     // ------------------------------------------------
+    //     // Ball reset
+    //     // ------------------------------------------------
 
-    const resetBall = useCallback((direction: number = randomDirection()) => {
-        const game = gameRef.current;
+    //     const resetBall = useCallback((direction: number = randomDirection()) => {
+    //         const game = gameRef.current;
 
-        game.ball = createBall(direction);
+    //         game.ball = createBall(direction);
 
-        game.lastHit = null;
+    //         game.lastHit = null;
 
-        aiReactionTimerRef.current = 0;
+    //         aiReactionTimerRef.current = 0;
 
-        aiTargetYRef.current = GAME_HEIGHT / 2;
-    }, []);
+    //         aiTargetYRef.current = GAME_HEIGHT / 2;
+    //     }, []);
 
-    // ------------------------------------------------
-    // Full game reset
-    // ------------------------------------------------
+    //     // ------------------------------------------------
+    //     // Full game reset
+    //     // ------------------------------------------------
 
-    const resetGame = useCallback(() => {
-        gameRef.current = createInitialGameState();
+    //     const resetGame = useCallback(() => {
+    //         gameRef.current = createInitialGameState();
 
-        keysRef.current.clear();
+    //         keysRef.current.clear();
 
-        accumulatorRef.current = 0;
+    //         accumulatorRef.current = 0;
 
-        previousTimeRef.current = 0;
+    //         previousTimeRef.current = 0;
 
-        aiReactionTimerRef.current = 0;
+    //         aiReactionTimerRef.current = 0;
 
-        aiTargetYRef.current = GAME_HEIGHT / 2;
+    //         aiTargetYRef.current = GAME_HEIGHT / 2;
 
-        syncUI();
-    }, [syncUI]);
+    //         syncUI();
+    //     }, [syncUI]);
 
-    // ------------------------------------------------
-    // Start / pause
-    // ------------------------------------------------
+    // -----------------------------------------------
+    // Start game
+    // -----------------------------------------------
 
     const startGame = useCallback(() => {
         const game = gameRef.current;
 
         if (game.status === "gameOver") {
-            game.playerScore = 0;
-            game.aiScore = 0;
+            resetEngine(game, difficultyRef.current);
 
-            game.winner = null;
-
-            game.player.y = GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2;
-
-            game.ai.y = GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2;
-
-            resetBall(randomDirection());
+            resetBall(
+                game,
+                difficultyRef.current,
+                Math.random() < 0.5 ? -1 : 1,
+            );
         }
 
         game.status = "playing";
@@ -278,7 +311,11 @@ export function PongGame({
         accumulatorRef.current = 0;
 
         syncUI();
-    }, [resetBall, syncUI]);
+    }, [syncUI]);
+
+    // -----------------------------------------------
+    // Pause game
+    // -----------------------------------------------
 
     const pauseGame = useCallback(() => {
         const game = gameRef.current;
@@ -298,325 +335,355 @@ export function PongGame({
         syncUI();
     }, [syncUI]);
 
-    // ------------------------------------------------
-    // Difficulty
-    // ------------------------------------------------
-
-    const changeDifficulty = useCallback((nextDifficulty: Difficulty) => {
-        difficultyRef.current = nextDifficulty;
-
-        setDifficulty(nextDifficulty);
-
-        aiReactionTimerRef.current = 0;
-    }, []);
-
-    // ------------------------------------------------
-    // Player movement
-    // ------------------------------------------------
-
-    const updatePlayer = useCallback((deltaTime: number) => {
-        const game = gameRef.current;
-
-        const keys = keysRef.current;
-
-        const movingUp = keys.has("w") || keys.has("arrowup");
-
-        const movingDown = keys.has("s") || keys.has("arrowdown");
-
-        let direction = 0;
-
-        if (movingUp) {
-            direction -= 1;
-        }
-
-        if (movingDown) {
-            direction += 1;
-        }
-
-        game.player.y += direction * game.player.speed * deltaTime;
-
-        game.player.y = clamp(
-            game.player.y,
-            0,
-            GAME_HEIGHT - game.player.height,
-        );
-    }, []);
-
-    // ------------------------------------------------
-    // AI movement
-    // ------------------------------------------------
-
-    const updateAI = useCallback((deltaTime: number) => {
-        const game = gameRef.current;
-
-        const config = DIFFICULTY_CONFIG[difficultyRef.current];
-
-        const ball = game.ball;
-
-        const ai = game.ai;
-
-        // AI updates its target periodically.
-        // Lower delay means faster reaction.
-
-        aiReactionTimerRef.current += deltaTime;
-
-        if (aiReactionTimerRef.current >= config.reactionDelay) {
-            aiReactionTimerRef.current = 0;
-
-            let targetY = ball.y;
-
-            // Predict the ball's future position
-            // when it is moving toward the AI.
-
-            if (ball.vx > 0) {
-                const distance = ai.x - ball.x;
-
-                const timeToReach = distance / ball.vx;
-
-                targetY = ball.y + ball.vy * timeToReach;
-
-                // Reflect predicted position against
-                // top and bottom boundaries.
-
-                const fieldHeight = GAME_HEIGHT - ball.radius * 2;
-
-                const reflectedPosition =
-                    (((targetY - ball.radius) % (fieldHeight * 2)) +
-                        fieldHeight * 2) %
-                    (fieldHeight * 2);
-
-                if (reflectedPosition > fieldHeight) {
-                    targetY = GAME_HEIGHT - reflectedPosition + ball.radius;
-                } else {
-                    targetY = reflectedPosition + ball.radius;
-                }
-            }
-
-            // Add controlled inaccuracy.
-
-            targetY += (Math.random() * 2 - 1) * config.predictionError;
-
-            aiTargetYRef.current = targetY;
-        }
-
-        const targetPaddleY = aiTargetYRef.current - ai.height / 2;
-
-        const difference = targetPaddleY - ai.y;
-
-        const maxMovement = config.aiSpeed * deltaTime;
-
-        ai.y += clamp(difference, -maxMovement, maxMovement);
-
-        ai.y = clamp(ai.y, 0, GAME_HEIGHT - ai.height);
-    }, []);
-
-    // ------------------------------------------------
-    // Ball-wall collision
-    // ------------------------------------------------
-
-    const handleWallCollision = useCallback(() => {
-        const game = gameRef.current;
-
-        const ball = game.ball;
-
-        if (ball.y - ball.radius <= 0 && ball.vy < 0) {
-            ball.y = ball.radius;
-
-            ball.vy *= -1;
-        }
-
-        if (ball.y + ball.radius >= GAME_HEIGHT && ball.vy > 0) {
-            ball.y = GAME_HEIGHT - ball.radius;
-
-            ball.vy *= -1;
-        }
-    }, []);
-
-    // ------------------------------------------------
-    // Paddle collision
-    // ------------------------------------------------
-
-    const handlePaddleCollision = useCallback(
-        (paddle: Paddle, side: "player" | "ai") => {
-            const game = gameRef.current;
-
-            const ball = game.ball;
-
-            const paddleCenter = paddle.y + paddle.height / 2;
-
-            const impactOffset = (ball.y - paddleCenter) / (paddle.height / 2);
-
-            // Normalize impact position:
-            // -1 = top of paddle
-            //  0 = center
-            //  1 = bottom
-
-            const normalizedImpact = clamp(impactOffset, -1, 1);
-
-            // Maximum rebound angle is 60 degrees.
-
-            const maxBounceAngle = Math.PI / 3;
-
-            const bounceAngle = normalizedImpact * maxBounceAngle;
-
-            // Increase ball speed slightly with each hit.
-
-            ball.speed = Math.min(
-                ball.speed + BALL_SPEED_INCREMENT,
-                MAX_BALL_SPEED,
-            );
-
-            // Horizontal direction depends on
-            // which paddle was hit.
-
-            const direction = side === "player" ? 1 : -1;
-
-            ball.vx = Math.cos(bounceAngle) * ball.speed * direction;
-
-            ball.vy = Math.sin(bounceAngle) * ball.speed;
-
-            // Move the ball outside the paddle
-            // to prevent repeated collisions.
-
-            if (side === "player") {
-                ball.x = paddle.x + paddle.width + ball.radius;
-            } else {
-                ball.x = paddle.x - ball.radius;
-            }
-
-            game.lastHit = side;
-
-            // AI reacts to the player's return.
-
-            aiReactionTimerRef.current = 0;
+    // -----------------------------------------------
+    // Reset game
+    // -----------------------------------------------
+
+    const handleReset = useCallback(() => {
+        resetEngine(gameRef.current, difficultyRef.current);
+
+        keysRef.current.clear();
+
+        previousTimeRef.current = 0;
+
+        accumulatorRef.current = 0;
+
+        aiStateRef.current = {
+            reactionTimer: 0,
+            targetY: GAME_HEIGHT / 2,
+        };
+
+        syncUI();
+    }, [syncUI]);
+
+    //     // ------------------------------------------------
+    //     // Difficulty
+    //     // ------------------------------------------------
+
+    const handleDifficultyChange = useCallback(
+        (nextDifficulty: Difficulty) => {
+            difficultyRef.current = nextDifficulty;
+            setDifficulty(nextDifficulty);
+            resetEngine(gameRef.current, nextDifficulty);
+            keysRef.current.clear();
+            previousTimeRef.current = 0;
+            accumulatorRef.current = 0;
+            aiStateRef.current = {
+                reactionTimer: 0,
+                targetY: GAME_HEIGHT / 2,
+            };
+            syncUI();
         },
-        [],
+        [syncUI],
     );
 
-    // ------------------------------------------------
-    // Paddle collision detection
-    // ------------------------------------------------
+    //     // ------------------------------------------------
+    //     // Player movement
+    //     // ------------------------------------------------
 
-    const detectPaddleCollisions = useCallback(() => {
-        const game = gameRef.current;
+    //     const updatePlayer = useCallback((deltaTime: number) => {
+    //         const game = gameRef.current;
 
-        const ball = game.ball;
+    //         const keys = keysRef.current;
 
-        const player = game.player;
+    //         const movingUp = keys.has("w") || keys.has("arrowup");
 
-        const ai = game.ai;
+    //         const movingDown = keys.has("s") || keys.has("arrowdown");
 
-        // Player paddle collision
+    //         let direction = 0;
 
-        const playerCollision =
-            ball.vx < 0 &&
-            ball.x - ball.radius <= player.x + player.width &&
-            ball.x + ball.radius >= player.x &&
-            ball.y + ball.radius >= player.y &&
-            ball.y - ball.radius <= player.y + player.height;
+    //         if (movingUp) {
+    //             direction -= 1;
+    //         }
 
-        if (playerCollision) {
-            handlePaddleCollision(player, "player");
-        }
+    //         if (movingDown) {
+    //             direction += 1;
+    //         }
 
-        // AI paddle collision
+    //         game.player.y += direction * game.player.speed * deltaTime;
 
-        const aiCollision =
-            ball.vx > 0 &&
-            ball.x + ball.radius >= ai.x &&
-            ball.x - ball.radius <= ai.x + ai.width &&
-            ball.y + ball.radius >= ai.y &&
-            ball.y - ball.radius <= ai.y + ai.height;
+    //         game.player.y = clamp(
+    //             game.player.y,
+    //             0,
+    //             GAME_HEIGHT - game.player.height,
+    //         );
+    //     }, []);
 
-        if (aiCollision) {
-            handlePaddleCollision(ai, "ai");
-        }
-    }, [handlePaddleCollision]);
+    //     // ------------------------------------------------
+    //     // AI movement
+    //     // ------------------------------------------------
 
-    // ------------------------------------------------
-    // Scoring
-    // ------------------------------------------------
+    //     const updateAI = useCallback((deltaTime: number) => {
+    //         const game = gameRef.current;
 
-    const handleScoring = useCallback(() => {
-        const game = gameRef.current;
+    //         const config = DIFFICULTY_CONFIG[difficultyRef.current];
 
-        const ball = game.ball;
+    //         const ball = game.ball;
 
-        // AI scores
+    //         const ai = game.ai;
 
-        if (ball.x + ball.radius < 0) {
-            game.aiScore += 1;
+    //         // AI updates its target periodically.
+    //         // Lower delay means faster reaction.
 
-            if (game.aiScore >= winningScore) {
-                game.status = "gameOver";
+    //         aiReactionTimerRef.current += deltaTime;
 
-                game.winner = "ai";
-            } else {
-                resetBall(-1);
-            }
+    //         if (aiReactionTimerRef.current >= config.reactionDelay) {
+    //             aiReactionTimerRef.current = 0;
 
-            syncUI();
+    //             let targetY = ball.y;
 
-            return;
-        }
+    //             // Predict the ball's future position
+    //             // when it is moving toward the AI.
 
-        // Player scores
+    //             if (ball.vx > 0) {
+    //                 const distance = ai.x - ball.x;
 
-        if (ball.x - ball.radius > GAME_WIDTH) {
-            game.playerScore += 1;
+    //                 const timeToReach = distance / ball.vx;
 
-            if (game.playerScore >= winningScore) {
-                game.status = "gameOver";
+    //                 targetY = ball.y + ball.vy * timeToReach;
 
-                game.winner = "player";
-            } else {
-                resetBall(1);
-            }
+    //                 // Reflect predicted position against
+    //                 // top and bottom boundaries.
 
-            syncUI();
-        }
-    }, [resetBall, syncUI, winningScore]);
+    //                 const fieldHeight = GAME_HEIGHT - ball.radius * 2;
 
-    // ------------------------------------------------
-    // Game physics
-    // ------------------------------------------------
+    //                 const reflectedPosition =
+    //                     (((targetY - ball.radius) % (fieldHeight * 2)) +
+    //                         fieldHeight * 2) %
+    //                     (fieldHeight * 2);
 
-    const updateGame = useCallback(
-        (deltaTime: number) => {
-            const game = gameRef.current;
+    //                 if (reflectedPosition > fieldHeight) {
+    //                     targetY = GAME_HEIGHT - reflectedPosition + ball.radius;
+    //                 } else {
+    //                     targetY = reflectedPosition + ball.radius;
+    //                 }
+    //             }
 
-            if (game.status !== "playing") {
-                return;
-            }
+    //             // Add controlled inaccuracy.
 
-            updatePlayer(deltaTime);
+    //             targetY += (Math.random() * 2 - 1) * config.predictionError;
 
-            updateAI(deltaTime);
+    //             aiTargetYRef.current = targetY;
+    //         }
 
-            const ball = game.ball;
+    //         const targetPaddleY = aiTargetYRef.current - ai.height / 2;
 
-            ball.x += ball.vx * deltaTime;
+    //         const difference = targetPaddleY - ai.y;
 
-            ball.y += ball.vy * deltaTime;
+    //         const maxMovement = config.aiSpeed * deltaTime;
 
-            handleWallCollision();
+    //         ai.y += clamp(difference, -maxMovement, maxMovement);
 
-            detectPaddleCollisions();
+    //         ai.y = clamp(ai.y, 0, GAME_HEIGHT - ai.height);
+    //     }, []);
 
-            handleScoring();
-        },
-        [
-            updatePlayer,
-            updateAI,
-            handleWallCollision,
-            detectPaddleCollisions,
-            handleScoring,
-        ],
-    );
+    //     // ------------------------------------------------
+    //     // Ball-wall collision
+    //     // ------------------------------------------------
 
-    // ------------------------------------------------
-    // Canvas rendering
-    // ------------------------------------------------
+    //     const handleWallCollision = useCallback(() => {
+    //         const game = gameRef.current;
+
+    //         const ball = game.ball;
+
+    //         if (ball.y - ball.radius <= 0 && ball.vy < 0) {
+    //             ball.y = ball.radius;
+
+    //             ball.vy *= -1;
+    //         }
+
+    //         if (ball.y + ball.radius >= GAME_HEIGHT && ball.vy > 0) {
+    //             ball.y = GAME_HEIGHT - ball.radius;
+
+    //             ball.vy *= -1;
+    //         }
+    //     }, []);
+
+    //     // ------------------------------------------------
+    //     // Paddle collision
+    //     // ------------------------------------------------
+
+    //     const handlePaddleCollision = useCallback(
+    //         (paddle: Paddle, side: "player" | "ai") => {
+    //             const game = gameRef.current;
+
+    //             const ball = game.ball;
+
+    //             const paddleCenter = paddle.y + paddle.height / 2;
+
+    //             const impactOffset = (ball.y - paddleCenter) / (paddle.height / 2);
+
+    //             // Normalize impact position:
+    //             // -1 = top of paddle
+    //             //  0 = center
+    //             //  1 = bottom
+
+    //             const normalizedImpact = clamp(impactOffset, -1, 1);
+
+    //             // Maximum rebound angle is 60 degrees.
+
+    //             const maxBounceAngle = Math.PI / 3;
+
+    //             const bounceAngle = normalizedImpact * maxBounceAngle;
+
+    //             // Increase ball speed slightly with each hit.
+
+    //             ball.speed = Math.min(
+    //                 ball.speed + BALL_SPEED_INCREMENT,
+    //                 MAX_BALL_SPEED,
+    //             );
+
+    //             // Horizontal direction depends on
+    //             // which paddle was hit.
+
+    //             const direction = side === "player" ? 1 : -1;
+
+    //             ball.vx = Math.cos(bounceAngle) * ball.speed * direction;
+
+    //             ball.vy = Math.sin(bounceAngle) * ball.speed;
+
+    //             // Move the ball outside the paddle
+    //             // to prevent repeated collisions.
+
+    //             if (side === "player") {
+    //                 ball.x = paddle.x + paddle.width + ball.radius;
+    //             } else {
+    //                 ball.x = paddle.x - ball.radius;
+    //             }
+
+    //             game.lastHit = side;
+
+    //             // AI reacts to the player's return.
+
+    //             aiReactionTimerRef.current = 0;
+    //         },
+    //         [],
+    //     );
+
+    //     // ------------------------------------------------
+    //     // Paddle collision detection
+    //     // ------------------------------------------------
+
+    //     const detectPaddleCollisions = useCallback(() => {
+    //         const game = gameRef.current;
+
+    //         const ball = game.ball;
+
+    //         const player = game.player;
+
+    //         const ai = game.ai;
+
+    //         // Player paddle collision
+
+    //         const playerCollision =
+    //             ball.vx < 0 &&
+    //             ball.x - ball.radius <= player.x + player.width &&
+    //             ball.x + ball.radius >= player.x &&
+    //             ball.y + ball.radius >= player.y &&
+    //             ball.y - ball.radius <= player.y + player.height;
+
+    //         if (playerCollision) {
+    //             handlePaddleCollision(player, "player");
+    //         }
+
+    //         // AI paddle collision
+
+    //         const aiCollision =
+    //             ball.vx > 0 &&
+    //             ball.x + ball.radius >= ai.x &&
+    //             ball.x - ball.radius <= ai.x + ai.width &&
+    //             ball.y + ball.radius >= ai.y &&
+    //             ball.y - ball.radius <= ai.y + ai.height;
+
+    //         if (aiCollision) {
+    //             handlePaddleCollision(ai, "ai");
+    //         }
+    //     }, [handlePaddleCollision]);
+
+    //     // ------------------------------------------------
+    //     // Scoring
+    //     // ------------------------------------------------
+
+    //     const handleScoring = useCallback(() => {
+    //         const game = gameRef.current;
+
+    //         const ball = game.ball;
+
+    //         // AI scores
+
+    //         if (ball.x + ball.radius < 0) {
+    //             game.aiScore += 1;
+
+    //             if (game.aiScore >= winningScore) {
+    //                 game.status = "gameOver";
+
+    //                 game.winner = "ai";
+    //             } else {
+    //                 resetBall(-1);
+    //             }
+
+    //             syncUI();
+
+    //             return;
+    //         }
+
+    //         // Player scores
+
+    //         if (ball.x - ball.radius > GAME_WIDTH) {
+    //             game.playerScore += 1;
+
+    //             if (game.playerScore >= winningScore) {
+    //                 game.status = "gameOver";
+
+    //                 game.winner = "player";
+    //             } else {
+    //                 resetBall(1);
+    //             }
+
+    //             syncUI();
+    //         }
+    //     }, [resetBall, syncUI, winningScore]);
+
+    //     // ------------------------------------------------
+    //     // Game physics
+    //     // ------------------------------------------------
+
+    //     const updateGame = useCallback(
+    //         (deltaTime: number) => {
+    //             const game = gameRef.current;
+
+    //             if (game.status !== "playing") {
+    //                 return;
+    //             }
+
+    //             updatePlayer(deltaTime);
+
+    //             updateAI(deltaTime);
+
+    //             const ball = game.ball;
+
+    //             ball.x += ball.vx * deltaTime;
+
+    //             ball.y += ball.vy * deltaTime;
+
+    //             handleWallCollision();
+
+    //             detectPaddleCollisions();
+
+    //             handleScoring();
+    //         },
+    //         [
+    //             updatePlayer,
+    //             updateAI,
+    //             handleWallCollision,
+    //             detectPaddleCollisions,
+    //             handleScoring,
+    //         ],
+    //     );
+
+    //     // ------------------------------------------------
+    //     // Canvas rendering
+    //     // ------------------------------------------------
 
     const renderGame = useCallback(() => {
         const canvas = canvasRef.current;
@@ -717,9 +784,9 @@ export function PongGame({
         context.restore();
     }, []);
 
-    // ------------------------------------------------
-    // Animation loop
-    // ------------------------------------------------
+    //     // ------------------------------------------------
+    //     // Animation loop
+    //     // ------------------------------------------------
 
     useEffect(() => {
         let running = true;
@@ -743,7 +810,34 @@ export function PongGame({
             accumulatorRef.current += frameDelta;
 
             while (accumulatorRef.current >= FIXED_TIME_STEP) {
-                updateGame(FIXED_TIME_STEP);
+                const input = {
+                    up:
+                        keysRef.current.has("w") ||
+                        keysRef.current.has("arrowup"),
+
+                    down:
+                        keysRef.current.has("s") ||
+                        keysRef.current.has("arrowdown"),
+                };
+
+                const nextAIState = updateGame(
+                    gameRef.current,
+                    input,
+                    difficultyRef.current,
+                    FIXED_TIME_STEP,
+                    aiStateRef.current,
+                    winningScore,
+                );
+
+                aiStateRef.current = {
+                    reactionTimer: nextAIState.reactionTimer,
+
+                    targetY: nextAIState.targetY,
+                };
+
+                if (nextAIState.scored) {
+                    syncUI();
+                }
 
                 accumulatorRef.current -= FIXED_TIME_STEP;
             }
@@ -762,7 +856,7 @@ export function PongGame({
                 cancelAnimationFrame(animationFrameRef.current);
             }
         };
-    }, [updateGame, renderGame]);
+    }, [renderGame, syncUI, winningScore]);
 
     // ------------------------------------------------
     // Keyboard controls
@@ -847,7 +941,7 @@ export function PongGame({
                     <Select
                         value={difficulty}
                         onValueChange={(value) =>
-                            changeDifficulty(value as Difficulty)
+                            handleDifficultyChange(value as Difficulty)
                         }
                     >
                         <SelectTrigger
@@ -946,7 +1040,7 @@ export function PongGame({
                         <StartPauseReset
                             startGame={startGame}
                             pauseGame={pauseGame}
-                            resetGame={resetGame}
+                            resetGame={handleReset}
                             status={status}
                         />
                     </div>

@@ -1,6 +1,6 @@
 import { Button } from "@/components/custom/components/buttons/c_button";
-import { GameStatus } from "@/types/types";
 import React from "react";
+import { GameStatus } from "../pong/pong-types";
 
 type StartPauseResetProps = {
     startGame: () => void;
