@@ -12,10 +12,13 @@ import {
     SelectValue,
 } from "@/components/custom/components/form/c_select";
 import { Separator } from "@/components/custom/components/c_separator";
+import { GameStatus } from "@/types/types";
+import StartPauseReset from "../components/start-pause-reset";
+import GameRules from "../components/game-rules";
 
 type Difficulty = "easy" | "medium" | "hard";
 
-type GameStatus = "ready" | "playing" | "paused" | "gameOver";
+// type GameStatus = "ready" | "playing" | "paused" | "gameOver";
 
 interface Paddle {
     x: number;
@@ -940,65 +943,22 @@ export function PongGame({
                 {/* Controls */}
                 <div className="flex flex-col gap-6">
                     <div className=" flex flex-wrap items-center justify-center gap-3">
-                        <Button
-                            variant="default_plain"
-                            onClick={startGame}
-                            disabled={status === "playing"}
-                        >
-                            {status === "paused"
-                                ? "Resume"
-                                : status === "gameOver"
-                                  ? "Play Again"
-                                  : "Start"}
-                        </Button>
-
-                        <Button
-                            variant="default_plain"
-                            onClick={pauseGame}
-                            disabled={status !== "playing"}
-                        >
-                            Pause
-                        </Button>
-
-                        <Button variant="secondary_plain" onClick={resetGame}>
-                            Reset
-                        </Button>
+                        <StartPauseReset
+                            startGame={startGame}
+                            pauseGame={pauseGame}
+                            resetGame={resetGame}
+                            status={status}
+                        />
                     </div>
 
                     {/* Instructions */}
 
-                    <div className=" grid gap-4 rounded-lg border bg-zinc-900/75 p-4 sm:grid-cols-3">
-                        <div>
-                            <P className="text-xs text-center font-semibold uppercase tracking-widest text-primary">
-                                Movement
-                            </P>
-
-                            <P className="mt-2 text-center text-sm text-zinc-400">
-                                W / S or ↑ / ↓
-                            </P>
-                        </div>
-
-                        <div>
-                            <P className="text-xs text-center font-semibold uppercase tracking-widest text-secondary">
-                                AI Difficulty
-                            </P>
-
-                            <P className="mt-2 text-center text-sm text-zinc-400">
-                                Difficulty sliders simply adjust the speed of
-                                the ball and AI paddle.
-                            </P>
-                        </div>
-
-                        <div>
-                            <P className="text-xs text-center font-semibold uppercase tracking-widest text-muted">
-                                Game Controls
-                            </P>
-
-                            <P className="mt-2 text-center text-sm text-zinc-400">
-                                Spacebar or ESC to start / Pause
-                            </P>
-                        </div>
-                    </div>
+                    <GameRules
+                        movementInstrucions="W / S or ↑ / ↓"
+                        difficultyBreakdown="Difficulty sliders simply adjust the speed of
+                                the ball and AI paddle."
+                        gameControls="Spacebar or ESC to start / Pause"
+                    />
                 </div>
             </div>
         </div>

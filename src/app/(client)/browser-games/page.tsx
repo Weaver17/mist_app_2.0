@@ -1,5 +1,5 @@
 "use client";
-import PongCard from "@/components/browser-games-components/pong/pong-card";
+import PongCard from "@/components/browser-games/pong/pong-card";
 import ToTopBtn from "@/components/buttons/to-top-btn";
 import BrowserGameCard from "@/components/cards/browser-game-card";
 import { AnimatedList } from "@/components/custom/components/animated/c_animated-list";

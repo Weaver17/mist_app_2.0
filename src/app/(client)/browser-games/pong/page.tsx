@@ -1,4 +1,4 @@
-import { PongGame } from "@/components/browser-games-components/pong/pong";
+import { PongGame } from "@/components/browser-games/pong/pong";
 import { H1 } from "@/typography/custom";
 import React from "react";
 

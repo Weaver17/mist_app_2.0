@@ -75,3 +75,5 @@ export type TAvatarImg = {
     alt: string;
     src: string;
 };
+
+export type GameStatus = "ready" | "playing" | "paused" | "gameOver";
