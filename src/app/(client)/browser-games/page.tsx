@@ -1,6 +1,7 @@
 "use client";
 import BreakoutCard from "@/components/browser-games/breakout/breakout-card";
 import PongCard from "@/components/browser-games/pong/pong-card";
+import SnakeCard from "@/components/browser-games/snake/snake-card";
 import ToTopBtn from "@/components/buttons/to-top-btn";
 import BrowserGameCard from "@/components/cards/browser-game-card";
 import { AnimatedList } from "@/components/custom/components/animated/c_animated-list";
@@ -68,7 +69,7 @@ function BrowserGamesPage() {
                 <AnimatedList className="mx-auto grid grid-cols-1  gap-4  grid2:grid-cols-2 grid3:grid-cols-3  grid4:grid-cols-4">
                     <PongCard />
                     <BreakoutCard />
-                    <BrowserGameCard />
+                    <SnakeCard />
                     <BrowserGameCard />
                     <BrowserGameCard />
                     <BrowserGameCard />
