@@ -1,3 +1,4 @@
+import { circleRectCollision } from "../shared/game-physics";
 import { Ball, Difficulty, Paddle } from "../shared/game-types";
 import {
     BALL_RADIUS,
@@ -285,24 +286,6 @@ function detectPaddleCollision(game: GameState): void {
     if (collision) {
         handlePaddleCollision(game);
     }
-}
-
-// --------------------------------------------------
-// Circle / rectangle collision
-// --------------------------------------------------
-
-function circleRectCollision(ball: Ball, rect: Brick): boolean {
-    const closestX = clamp(ball.x, rect.x, rect.x + rect.width);
-
-    const closestY = clamp(ball.y, rect.y, rect.y + rect.height);
-
-    const distanceX = ball.x - closestX;
-
-    const distanceY = ball.y - closestY;
-
-    const distanceSquared = distanceX * distanceX + distanceY * distanceY;
-
-    return distanceSquared <= ball.radius * ball.radius;
 }
 
 // --------------------------------------------------

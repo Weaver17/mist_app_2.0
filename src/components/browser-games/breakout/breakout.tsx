@@ -402,12 +402,18 @@ export default function BreakoutGame({
                     mouseX: mouseXRef.current,
                 };
 
+                const previousStatus = gameRef.current.status;
+
                 updateGame(
                     gameRef.current,
                     input,
                     FIXED_TIME_STEP,
                     difficultyRef.current,
                 );
+
+                if (gameRef.current.status !== previousStatus) {
+                    syncUI();
+                }
 
                 accumulatorRef.current -= FIXED_TIME_STEP;
             }
@@ -426,7 +432,7 @@ export default function BreakoutGame({
                 cancelAnimationFrame(animationFrameRef.current);
             }
         };
-    }, [renderGame]);
+    }, [renderGame, syncUI]);
 
     // -----------------------------------------------
     // Cleanup
@@ -496,31 +502,60 @@ export default function BreakoutGame({
 
                 {status !== "playing" && (
                     <div className="absolute inset-0 flex flex-col gap-4 items-center justify-center bg-black/60 backdrop-blur-sm">
-                        <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
-                            {status === "ready"
-                                ? "Ready?"
-                                : status === "paused"
-                                  ? "Paused"
-                                  : status === "won"
-                                    ? "You Win!"
-                                    : "Game Over"}
-                        </H2>
+                        {status === "ready" && (
+                            <>
+                                <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
+                                    Ready?
+                                </H2>
 
-                        <P className="text-sm text-zinc-400">
-                            {status === "ready"
-                                ? "Break every brick."
-                                : status === "paused"
-                                  ? "Game is paused."
-                                  : status === "won"
-                                    ? `Victory! Final Score: ${score}`
-                                    : `Game Over. Final Score: ${score}`}
-                        </P>
+                                <P className="mt-2 text-sm text-zinc-400">
+                                    Break every brick.
+                                </P>
+                            </>
+                        )}
 
-                        <Button onClick={startGame}>
-                            {status === "paused"
-                                ? "Resume"
-                                : status === "won" || status === "gameOver"
-                                  ? "Play Again"
+                        {status === "paused" && (
+                            <>
+                                <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
+                                    Paused
+                                </H2>
+
+                                <P className="mt-2 text-sm text-zinc-400">
+                                    The game is paused.
+                                </P>
+                            </>
+                        )}
+
+                        {status === "won" && (
+                            <>
+                                <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
+                                    Victory
+                                </H2>
+
+                                <p className="mt-2 text-sm text-zinc-400">
+                                    You have broken out. Final score: {score}
+                                </p>
+                            </>
+                        )}
+
+                        {status === "gameOver" && (
+                            <>
+                                <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
+                                    Game Over
+                                </H2>
+
+                                <p className="mt-2 text-sm text-zinc-400">
+                                    You have failed to break out. Final score:{" "}
+                                    {score}
+                                </p>
+                            </>
+                        )}
+
+                        <Button className="mt-4" size="lg" onClick={startGame}>
+                            {status === "gameOver"
+                                ? "Play Again"
+                                : status === "paused"
+                                  ? "Resume"
                                   : "Start Game"}
                         </Button>
                     </div>
