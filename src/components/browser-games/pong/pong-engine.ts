@@ -1,3 +1,4 @@
+import { Difficulty } from "../shared/game-types";
 import {
     BALL_RADIUS,
     WINNING_SCORE,
@@ -10,12 +11,7 @@ import {
     DEFAULT_DIFFICULTY,
 } from "./pong-types";
 
-import type {
-    Difficulty,
-    GameState,
-    InputState,
-    PlayerSide,
-} from "./pong-types";
+import type { GameState, InputState, PlayerSide } from "./pong-types";
 
 // --------------------------------------------------
 // Utility functions

@@ -10,12 +10,7 @@ import {
     GAME_WIDTH,
 } from "./pong-types";
 
-import type {
-    Difficulty,
-    GameState,
-    GameStatus,
-    PlayerSide,
-} from "./pong-types";
+import type { GameState, PlayerSide } from "./pong-types";
 
 import {
     createInitialGameState,
@@ -36,6 +31,7 @@ import {
 } from "@/components/custom/components/form/c_select";
 import StartPauseReset from "../components/start-pause-reset";
 import GameRules from "../components/game-rules";
+import { Difficulty, GameStatus } from "../shared/game-types";
 
 // --------------------------------------------------
 // Component props
@@ -203,7 +199,9 @@ export function PongGame({
 }: PongGameProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const gameRef = useRef<GameState>(createInitialGameState(initialDifficulty));
+    const gameRef = useRef<GameState>(
+        createInitialGameState(initialDifficulty),
+    );
 
     const keysRef = useRef<Set<string>>(new Set());
 

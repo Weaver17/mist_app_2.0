@@ -26,7 +26,7 @@ function GameRules({
 
             <div>
                 <P className="text-xs text-center font-semibold uppercase tracking-widest text-secondary">
-                    AI Difficulty
+                    Difficulty
                 </P>
 
                 <P className="mt-2 text-center text-sm text-zinc-400">

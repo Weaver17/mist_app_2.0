@@ -1,25 +1,6 @@
-export type Difficulty = "easy" | "medium" | "hard";
-
-export type GameStatus = "ready" | "playing" | "paused" | "gameOver";
+import { Ball, Difficulty, GameStatus, Paddle } from "../shared/game-types";
 
 export type PlayerSide = "player" | "ai";
-
-export interface Paddle {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    speed: number;
-}
-
-export interface Ball {
-    x: number;
-    y: number;
-    radius: number;
-    vx: number;
-    vy: number;
-    speed: number;
-}
 
 export interface GameState {
     width: number;

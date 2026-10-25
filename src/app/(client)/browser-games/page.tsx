@@ -1,4 +1,5 @@
 "use client";
+import BreakoutCard from "@/components/browser-games/breakout/breakout-card";
 import PongCard from "@/components/browser-games/pong/pong-card";
 import ToTopBtn from "@/components/buttons/to-top-btn";
 import BrowserGameCard from "@/components/cards/browser-game-card";
@@ -66,7 +67,7 @@ function BrowserGamesPage() {
             <div className="flex flex-col items-center justify-center gap-4">
                 <AnimatedList className="mx-auto grid grid-cols-1  gap-4  grid2:grid-cols-2 grid3:grid-cols-3  grid4:grid-cols-4">
                     <PongCard />
-                    <BrowserGameCard />
+                    <BreakoutCard />
                     <BrowserGameCard />
                     <BrowserGameCard />
                     <BrowserGameCard />
