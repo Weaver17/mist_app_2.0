@@ -31,7 +31,7 @@ import {
 import { Difficulty, GameStatus } from "../shared/game-types";
 
 type BreakoutGameProps = {
-    initialDifficulty: Difficulty;
+    initialDifficulty?: Difficulty;
 };
 
 // --------------------------------------------------
