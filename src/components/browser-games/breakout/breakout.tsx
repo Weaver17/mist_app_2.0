@@ -9,30 +9,51 @@ import {
     GAME_WIDTH,
 } from "./breakout-types";
 
-import type { GameState, GameStatus, InputState } from "./breakout-types";
+import type {
+    Difficulty,
+    GameState,
+    GameStatus,
+    InputState,
+} from "./breakout-types";
 
 import {
     createInitialGameState,
     resetGame as resetEngine,
     updateGame,
 } from "./breakout-engine";
-import { H1, H2, P } from "@/typography/custom";
+import { H2, P } from "@/typography/custom";
 import { Button } from "@/components/custom/components/buttons/c_button";
 import StartPauseReset from "../components/start-pause-reset";
 import GameRules from "../components/game-rules";
+import { Label } from "@/components/custom/components/form/c_label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/custom/components/form/c_select";
+
+type BreakoutGameProps = {
+    initialDifficulty: Difficulty;
+};
 
 // --------------------------------------------------
 // Component
 // --------------------------------------------------
 
-export default function BreakoutGame() {
+export default function BreakoutGame({
+    initialDifficulty = "medium",
+}: BreakoutGameProps) {
     // -----------------------------------------------
     // Refs
     // -----------------------------------------------
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const gameRef = useRef<GameState>(createInitialGameState());
+    const gameRef = useRef<GameState>(
+        createInitialGameState(initialDifficulty),
+    );
 
     const keysRef = useRef<Set<string>>(new Set());
 
@@ -44,6 +65,8 @@ export default function BreakoutGame() {
 
     const accumulatorRef = useRef<number>(0);
 
+    const difficultyRef = useRef<Difficulty>(initialDifficulty);
+
     // -----------------------------------------------
     // React state
     // -----------------------------------------------
@@ -53,6 +76,8 @@ export default function BreakoutGame() {
     const [score, setScore] = useState(0);
 
     const [lives, setLives] = useState(3);
+
+    const [difficulty, setDifficulty] = useState<Difficulty>(initialDifficulty);
 
     // -----------------------------------------------
     // Synchronize UI
@@ -76,7 +101,7 @@ export default function BreakoutGame() {
         const game = gameRef.current;
 
         if (game.status === "gameOver" || game.status === "won") {
-            resetEngine(game);
+            resetEngine(game, difficultyRef.current);
         }
 
         game.status = "playing";
@@ -117,7 +142,7 @@ export default function BreakoutGame() {
     // -----------------------------------------------
 
     const handleReset = useCallback(() => {
-        resetEngine(gameRef.current);
+        resetEngine(gameRef.current, difficultyRef.current);
 
         keysRef.current.clear();
 
@@ -138,7 +163,14 @@ export default function BreakoutGame() {
         const handleKeyDown = (event: KeyboardEvent) => {
             const key = event.key.toLowerCase();
 
-            const supportedKeys = ["a", "d", "arrowleft", "arrowright", " "];
+            const supportedKeys = [
+                "a",
+                "d",
+                "arrowleft",
+                "arrowright",
+                " ",
+                "escape",
+            ];
 
             if (!supportedKeys.includes(key)) {
                 return;
@@ -148,7 +180,7 @@ export default function BreakoutGame() {
 
             keysRef.current.add(key);
 
-            if (key === " " && !event.repeat) {
+            if ((key === " " || key === "escape") && !event.repeat) {
                 if (gameRef.current.status === "playing") {
                     pauseGame();
                 } else {
@@ -203,6 +235,20 @@ export default function BreakoutGame() {
             mouseXRef.current = mouseX;
         },
         [],
+    );
+
+    const handleDifficultyChange = useCallback(
+        (nextDifficulty: Difficulty) => {
+            difficultyRef.current = nextDifficulty;
+            setDifficulty(nextDifficulty);
+            resetEngine(gameRef.current, nextDifficulty);
+            keysRef.current.clear();
+            previousTimeRef.current = 0;
+            accumulatorRef.current = 0;
+
+            syncUI();
+        },
+        [syncUI],
     );
 
     const handleMouseLeave = useCallback(() => {
@@ -313,6 +359,13 @@ export default function BreakoutGame() {
         context.shadowBlur = 0;
 
         context.restore();
+
+        context.fillStyle = COLORS.foreground;
+        context.font = "bold 36px sans-serif";
+        context.textAlign = "center";
+        context.textBaseline = "top";
+        context.fillText(String(game.score), GAME_WIDTH * 0.25, 20);
+        context.fillText(String(game.lives), GAME_WIDTH * 0.75, 20);
     }, []);
 
     // -----------------------------------------------
@@ -353,7 +406,12 @@ export default function BreakoutGame() {
                     mouseX: mouseXRef.current,
                 };
 
-                updateGame(gameRef.current, input, FIXED_TIME_STEP);
+                updateGame(
+                    gameRef.current,
+                    input,
+                    FIXED_TIME_STEP,
+                    difficultyRef.current,
+                );
 
                 accumulatorRef.current -= FIXED_TIME_STEP;
             }
@@ -396,31 +454,31 @@ export default function BreakoutGame() {
 
     return (
         <div className="flex w-full flex-col items-center gap-4">
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mb-6 flex flex-col gap-4  sm:items-center sm:justify-between">
                 <div>
                     <P>Destroy every brick to win.</P>
                 </div>
+                <div className="flex items-center gap-3 ">
+                    <Label htmlFor="pong-difficulty">Difficulty:</Label>
 
-                <div className="flex gap-6">
-                    <div className="text-center">
-                        <p className="text-xs uppercase tracking-widest text-green-500">
-                            Score
-                        </p>
-
-                        <p className="text-2xl font-bold tabular-nums text-white">
-                            {score}
-                        </p>
-                    </div>
-
-                    <div className="text-center">
-                        <p className="text-xs uppercase tracking-widest text-orange-500">
-                            Lives
-                        </p>
-
-                        <p className="text-2xl font-bold tabular-nums text-white">
-                            {lives}
-                        </p>
-                    </div>
+                    <Select
+                        value={difficulty}
+                        onValueChange={(value) =>
+                            handleDifficultyChange(value as Difficulty)
+                        }
+                    >
+                        <SelectTrigger
+                            className="games-select-trigger"
+                            id="pong-difficulty"
+                        >
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-none bg-card">
+                            <SelectItem value="easy">Easy</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="hard">Hard</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 
@@ -481,9 +539,9 @@ export default function BreakoutGame() {
             />
 
             <GameRules
-                movementInstrucions="A / D or ← / →"
-                difficultyBreakdown="Move your mouse over the game."
-                gameControls="Spacebar to start / pause."
+                movementInstrucions="Use your mouse to move the paddle side to side"
+                difficultyBreakdown="Difficulty sliders affect ball speed and number of bricks required to break."
+                gameControls="Spacebar or ESC to start / pause."
             />
         </div>
     );

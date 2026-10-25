@@ -5,17 +5,17 @@ import {
     BRICK_COLUMNS,
     BRICK_GAP,
     BRICK_HEIGHT,
-    BRICK_ROWS,
     BRICK_TOP_OFFSET,
     BRICK_WIDTH,
     GAME_HEIGHT,
     GAME_WIDTH,
-    INITIAL_BALL_SPEED,
     INITIAL_LIVES,
     MAX_BALL_SPEED,
     PADDLE_HEIGHT,
     PADDLE_SPEED,
     PADDLE_WIDTH,
+    DIFFICULTY_CONFIG,
+    // DEFAULT_DIFFICULTY,
 } from "./breakout-types";
 
 import type {
@@ -24,6 +24,7 @@ import type {
     GameState,
     InputState,
     Paddle,
+    Difficulty,
 } from "./breakout-types";
 
 // --------------------------------------------------
@@ -42,7 +43,9 @@ function randomDirection(): number {
 // Create ball
 // --------------------------------------------------
 
-function createBall(): Ball {
+function createBall(difficulty: Difficulty): Ball {
+    const speed = DIFFICULTY_CONFIG[difficulty].initialBallSpeed;
+
     return {
         x: GAME_WIDTH / 2,
 
@@ -50,11 +53,11 @@ function createBall(): Ball {
 
         radius: BALL_RADIUS,
 
-        vx: INITIAL_BALL_SPEED * 0.25 * randomDirection(),
+        vx: speed * 0.25 * randomDirection(),
 
-        vy: -INITIAL_BALL_SPEED,
+        vy: -speed,
 
-        speed: INITIAL_BALL_SPEED,
+        speed: speed,
     };
 }
 
@@ -80,8 +83,10 @@ function createPaddle(): Paddle {
 // Create bricks
 // --------------------------------------------------
 
-export function createBricks(): Brick[] {
+export function createBricks(difficulty: Difficulty): Brick[] {
     const bricks: Brick[] = [];
+
+    const rows = DIFFICULTY_CONFIG[difficulty].brickRows;
 
     const totalWidth =
         BRICK_COLUMNS * BRICK_WIDTH + (BRICK_COLUMNS - 1) * BRICK_GAP;
@@ -90,7 +95,7 @@ export function createBricks(): Brick[] {
 
     let id = 0;
 
-    for (let row = 0; row < BRICK_ROWS; row++) {
+    for (let row = 0; row < rows; row++) {
         for (let column = 0; column < BRICK_COLUMNS; column++) {
             bricks.push({
                 id,
@@ -119,17 +124,17 @@ export function createBricks(): Brick[] {
 // Create initial game state
 // --------------------------------------------------
 
-export function createInitialGameState(): GameState {
+export function createInitialGameState(difficulty: Difficulty): GameState {
     return {
         width: GAME_WIDTH,
 
         height: GAME_HEIGHT,
 
-        ball: createBall(),
+        ball: createBall(difficulty),
 
         paddle: createPaddle(),
 
-        bricks: createBricks(),
+        bricks: createBricks(difficulty),
 
         score: 0,
 
@@ -143,8 +148,8 @@ export function createInitialGameState(): GameState {
 // Reset ball
 // --------------------------------------------------
 
-export function resetBall(game: GameState): void {
-    game.ball = createBall();
+export function resetBall(game: GameState, difficulty: Difficulty): void {
+    game.ball = createBall(difficulty);
 
     game.paddle.x = GAME_WIDTH / 2 - game.paddle.width / 2;
 }
@@ -153,8 +158,8 @@ export function resetBall(game: GameState): void {
 // Reset game
 // --------------------------------------------------
 
-export function resetGame(game: GameState): void {
-    const initialGame = createInitialGameState();
+export function resetGame(game: GameState, difficulty: Difficulty): void {
+    const initialGame = createInitialGameState(difficulty);
 
     Object.assign(game, initialGame);
 }
@@ -357,7 +362,7 @@ function handleBrickCollision(game: GameState): void {
 // Lives and game over
 // --------------------------------------------------
 
-function handleLifeLoss(game: GameState): void {
+function handleLifeLoss(game: GameState, difficulty: Difficulty): void {
     const ball = game.ball;
 
     if (ball.y - ball.radius > GAME_HEIGHT) {
@@ -371,7 +376,7 @@ function handleLifeLoss(game: GameState): void {
             return;
         }
 
-        resetBall(game);
+        resetBall(game, difficulty);
     }
 }
 
@@ -395,6 +400,7 @@ export function updateGame(
     game: GameState,
     input: InputState,
     deltaTime: number,
+    difficulty: Difficulty,
 ): void {
     if (game.status !== "playing") {
         return;
@@ -422,7 +428,7 @@ export function updateGame(
 
     // Check for life loss
 
-    handleLifeLoss(game);
+    handleLifeLoss(game, difficulty);
 
     // Check for victory
 

@@ -27,7 +27,7 @@ function BreakoutCard() {
                         className="w-full rounded-sm z-10!"
                     >
                         <Image
-                            src={images.pongScreenshot}
+                            src={images.breakoutScreenshot}
                             alt="Pong"
                             fill
                             className="rounded-sm z-10!"
