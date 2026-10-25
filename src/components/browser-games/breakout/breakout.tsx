@@ -9,12 +9,7 @@ import {
     GAME_WIDTH,
 } from "./breakout-types";
 
-import type {
-    Difficulty,
-    GameState,
-    GameStatus,
-    InputState,
-} from "./breakout-types";
+import type { GameState, InputState } from "./breakout-types";
 
 import {
     createInitialGameState,
@@ -33,6 +28,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/custom/components/form/c_select";
+import { Difficulty, GameStatus } from "../shared/game-types";
 
 type BreakoutGameProps = {
     initialDifficulty: Difficulty;

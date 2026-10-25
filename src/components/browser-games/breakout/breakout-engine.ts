@@ -1,3 +1,4 @@
+import { Ball, Difficulty, Paddle } from "../shared/game-types";
 import {
     BALL_RADIUS,
     BALL_SPEED_INCREMENT,
@@ -18,14 +19,7 @@ import {
     // DEFAULT_DIFFICULTY,
 } from "./breakout-types";
 
-import type {
-    Ball,
-    Brick,
-    GameState,
-    InputState,
-    Paddle,
-    Difficulty,
-} from "./breakout-types";
+import type { Brick, GameState, InputState } from "./breakout-types";
 
 // --------------------------------------------------
 // Utility functions

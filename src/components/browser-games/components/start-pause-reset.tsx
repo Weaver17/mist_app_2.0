@@ -1,6 +1,6 @@
 import { Button } from "@/components/custom/components/buttons/c_button";
 import React from "react";
-import { GameStatus } from "../breakout/breakout-types";
+import { GameStatus } from "../shared/game-types";
 
 type StartPauseResetProps = {
     startGame: () => void;
