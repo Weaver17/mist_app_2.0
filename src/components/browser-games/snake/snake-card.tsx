@@ -22,19 +22,17 @@ function SnakeCard() {
             </CardHeader>
             <CardContent className="flex flex-col gap-2 p-1!">
                 <Link href="/browser-games/snake">
-                    <div className="h-30 w-full bg-foreground"></div>
-
-                    {/* <AspectRatio
+                    <AspectRatio
                         ratio={16 / 9}
                         className="w-full rounded-sm z-10!"
                     >
                         <Image
-                            src={images.pongScreenshot}
-                            alt="Pong"
+                            src={images.snakeScreenshot}
+                            alt="Snake"
                             fill
                             className="rounded-sm z-10!"
                         />
-                    </AspectRatio> */}
+                    </AspectRatio>
                 </Link>
 
                 <CardDescription className="text-xs text-foreground font-semibold h-[80px] overflow-hidden">

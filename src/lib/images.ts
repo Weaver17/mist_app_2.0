@@ -4,6 +4,7 @@ import save from "../../public/save.svg";
 import checkmark from "../../public/checkmark.svg";
 import pongScreenshot from "../assets/screenshots/games/pong.png";
 import breakoutScreenshot from "../assets/screenshots/games/breakout.png";
+import snakeScreenshot from "../assets/screenshots/games/snake.png";
 
 const images = {
     logo,
@@ -12,6 +13,7 @@ const images = {
     checkmark,
     pongScreenshot,
     breakoutScreenshot,
+    snakeScreenshot,
 } as const;
 
 export default images;
