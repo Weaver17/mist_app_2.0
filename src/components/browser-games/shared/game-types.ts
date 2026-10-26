@@ -2,6 +2,8 @@ export type GameStatus = "ready" | "playing" | "paused" | "gameOver" | "won";
 
 export type Difficulty = "easy" | "medium" | "hard";
 
+export const DEFAULT_DIFFICULTY = "medium";
+
 export interface Paddle {
     x: number;
     y: number;

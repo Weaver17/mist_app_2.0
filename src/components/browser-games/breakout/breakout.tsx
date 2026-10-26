@@ -2,20 +2,16 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import {
-    COLORS,
-    FIXED_TIME_STEP,
-    GAME_HEIGHT,
-    GAME_WIDTH,
-} from "./breakout-types";
+import { FIXED_TIME_STEP, GAME_HEIGHT, GAME_WIDTH } from "./breakout-types";
 
-import type { GameState, InputState } from "./breakout-types";
+import type { BreakoutGameState, InputState } from "./breakout-types";
 
 import {
     createInitialGameState,
     resetGame as resetEngine,
     updateGame,
 } from "./breakout-engine";
+import { renderGame as renderBreakout } from "./breakout-renderer";
 import { H2, P } from "@/typography/custom";
 import { Button } from "@/components/custom/components/buttons/c_button";
 import StartPauseReset from "../components/start-pause-reset";
@@ -28,7 +24,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/custom/components/form/c_select";
-import { Difficulty, GameStatus } from "../shared/game-types";
+import {
+    DEFAULT_DIFFICULTY,
+    type Difficulty,
+    type GameStatus,
+} from "../shared/game-types";
 
 type BreakoutGameProps = {
     initialDifficulty?: Difficulty;
@@ -39,7 +39,7 @@ type BreakoutGameProps = {
 // --------------------------------------------------
 
 export default function BreakoutGame({
-    initialDifficulty = "medium",
+    initialDifficulty = DEFAULT_DIFFICULTY,
 }: BreakoutGameProps) {
     // -----------------------------------------------
     // Refs
@@ -47,7 +47,7 @@ export default function BreakoutGame({
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const gameRef = useRef<GameState>(
+    const gameRef = useRef<BreakoutGameState>(
         createInitialGameState(initialDifficulty),
     );
 
@@ -256,112 +256,10 @@ export default function BreakoutGame({
     // -----------------------------------------------
 
     const renderGame = useCallback(() => {
-        const canvas = canvasRef.current;
-
-        if (!canvas) {
-            return;
+        const context = canvasRef.current?.getContext("2d");
+        if (context) {
+            renderBreakout(context, gameRef.current);
         }
-
-        const context = canvas.getContext("2d");
-
-        if (!context) {
-            return;
-        }
-
-        const game = gameRef.current;
-
-        const scaleX = canvas.width / GAME_WIDTH;
-
-        const scaleY = canvas.height / GAME_HEIGHT;
-
-        context.save();
-
-        context.scale(scaleX, scaleY);
-
-        // --------------------------------------------
-        // Background
-        // --------------------------------------------
-
-        context.fillStyle = COLORS.background;
-
-        context.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-        // --------------------------------------------
-        // Bricks
-        // --------------------------------------------
-
-        for (const brick of game.bricks) {
-            if (brick.destroyed) {
-                continue;
-            }
-
-            context.fillStyle = brick.color;
-
-            context.fillRect(brick.x, brick.y, brick.width, brick.height);
-
-            // Brick highlight
-
-            context.fillStyle = "rgba(255,255,255,0.18)";
-
-            context.fillRect(brick.x, brick.y, brick.width, 3);
-
-            // Brick shadow
-
-            context.fillStyle = "rgba(0,0,0,0.15)";
-
-            context.fillRect(
-                brick.x,
-                brick.y + brick.height - 3,
-                brick.width,
-                3,
-            );
-        }
-
-        // --------------------------------------------
-        // Paddle
-        // --------------------------------------------
-
-        context.fillStyle = COLORS.paddle;
-
-        context.shadowBlur = 14;
-
-        context.shadowColor = COLORS.paddle;
-
-        context.fillRect(
-            game.paddle.x,
-            game.paddle.y,
-            game.paddle.width,
-            game.paddle.height,
-        );
-
-        context.shadowBlur = 0;
-
-        // --------------------------------------------
-        // Ball
-        // --------------------------------------------
-
-        context.beginPath();
-
-        context.arc(game.ball.x, game.ball.y, game.ball.radius, 0, Math.PI * 2);
-
-        context.fillStyle = COLORS.ball;
-
-        context.shadowBlur = 16;
-
-        context.shadowColor = COLORS.ball;
-
-        context.fill();
-
-        context.shadowBlur = 0;
-
-        context.restore();
-
-        context.fillStyle = COLORS.foreground;
-        context.font = "bold 36px sans-serif";
-        context.textAlign = "center";
-        context.textBaseline = "top";
-        context.fillText(String(game.score), GAME_WIDTH * 0.25, 20);
-        context.fillText(String(game.lives), GAME_WIDTH * 0.75, 20);
     }, []);
 
     // -----------------------------------------------

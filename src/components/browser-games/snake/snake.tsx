@@ -7,17 +7,12 @@ import StartPauseReset from "../components/start-pause-reset";
 import GameRules from "../components/game-rules";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { DPad } from "../shared/d-pad";
-import { useGameController } from "./snake-hooks/useGameController";
-import { useTouchControls } from "./snake-hooks/useTouchControls";
 import {
-    PowerUpType,
-    GameHUDProps,
-    Difficulty,
-    GameState,
-    createGameConfig,
+    SnakeGameState,
+    Direction,
+    GAME_HEIGHT,
+    GAME_WIDTH,
 } from "./snake-types";
-import { formatScore } from "./snake-utils/format";
-import { getPowerUpDisplay } from "./snake-utils/power-up-display";
 import {
     Select,
     SelectContent,
@@ -25,114 +20,43 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/custom/components/form/c_select";
-import { GameStatus } from "../shared/game-types";
-import { getInitialSnake } from "./snake-engine/snake";
-import { createInitialState } from "./snake-engine/game-state";
+import {
+    DEFAULT_DIFFICULTY,
+    Difficulty,
+    GameStatus,
+} from "../shared/game-types";
+import {
+    createInitialGameState,
+    getMoveInterval,
+    resetGame as resetEngine,
+    setDirection,
+    updateGame,
+} from "./snake-engine";
+import { renderGame } from "./snake-renderer";
 
 type SnakeGameProps = {
     initialDifficulty?: Difficulty;
 };
 
-// GAME HUD -----------------------------------------------------------------------------
+const HIGH_SCORE_KEY = "snake-high-score";
 
-function PowerUpIndicator({
-    type,
-    expiresAt,
-}: {
-    type: PowerUpType;
-    expiresAt: number;
-}) {
-    const remaining = Math.max(
-        0,
-        Math.ceil((expiresAt - performance.now()) / 1000),
-    );
-    const { symbol, label, tailwindColor } = getPowerUpDisplay(type);
-
-    return (
-        <span className={`${tailwindColor} text-xs font-bold animate-pulse`}>
-            {symbol} {label} ({remaining}s)
-        </span>
-    );
-}
-
-export function GameHUD({
-    score,
-    highScore,
-    level,
-    speed,
-    activePowerUps,
-}: GameHUDProps) {
-    return (
-        <div className="flex flex-wrap items-center justify-between gap-2 px-1 py-2 text-sm select-none">
-            <div className="flex items-center gap-4">
-                <span className="text-white font-bold">
-                    Score:{" "}
-                    <span className="text-green-400">{formatScore(score)}</span>
-                </span>
-                <span className="text-slate-400 text-xs">
-                    Best: {formatScore(highScore)}
-                </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-                {activePowerUps.map((p) => (
-                    <PowerUpIndicator
-                        key={p.type}
-                        type={p.type}
-                        expiresAt={p.expiresAt}
-                    />
-                ))}
-            </div>
-
-            <div className="flex items-center gap-4">
-                <span className="text-slate-300 text-xs">
-                    Lvl <span className="text-cyan-400 font-bold">{level}</span>
-                </span>
-                <span className="text-slate-300 text-xs">
-                    Speed{" "}
-                    <span className="text-yellow-400 font-bold">
-                        {Math.round(speed)}
-                    </span>
-                </span>
-            </div>
-        </div>
-    );
-}
-
-function Overlay({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-20 backdrop-blur-sm">
-            {children}
-        </div>
-    );
-}
-
-// GAME HUD -----------------------------------------------------------------------------
-
-// const DIFFICULTY_STYLES: Record<Difficulty, { active: string; label: string }> =
-//     {
-//         easy: {
-//             active: "bg-green-500 text-black ring-2 ring-green-300/60",
-//             label: "Easy",
-//         },
-//         [Difficulty.Medium]: {
-//             active: "bg-yellow-400 text-black ring-2 ring-yellow-200/70",
-//             label: "Medium",
-//         },
-//         [Difficulty.Hard]: {
-//             active: "bg-red-500 text-black ring-2 ring-red-300/60",
-//             label: "Hard",
-//         },
+// function copyState(state: SnakeGameState): SnakeGameState {
+//     return {
+//         ...state,
+//         snake: state.snake.map((segment) => ({ ...segment })),
+//         food: { ...state.food },
 //     };
+// }
 
-export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
+export function SnakeGame({
+    initialDifficulty = DEFAULT_DIFFICULTY,
+}: SnakeGameProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const gameRef = useRef<GameState>(createInitialState(initialDifficulty));
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [isFullscreen, setIsFullscreen] = useState(false);
-    const [isTouchDevice, setIsTouchDevice] = useState(false);
-    const [controlsOpen, setControlsOpen] = useState(true);
+    const gameRef = useRef<SnakeGameState>(
+        createInitialGameState(initialDifficulty),
+    );
     const difficultyRef = useRef<Difficulty>(initialDifficulty);
+    const keysRef = useRef<Set<string>>(new Set());
 
     // REACT STATE
 
@@ -140,7 +64,7 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
 
     const [status, setStatus] = useState<GameStatus>("ready");
 
-    // const [playerScore, setPlayerScore] = useState(0);
+    const [playerScore, setPlayerScore] = useState(0);
 
     // const [aiScore, setAiScore] = useState(0);
 
@@ -148,16 +72,107 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
 
     const [isFocused, setIsFocused] = useState(false);
 
-    const controller = useGameController(canvasRef);
+    // const animationFrameRef = useRef<number | null>(null);
 
-    useTouchControls(controller.onDirection, controller.onStart, containerRef);
+    const previousTimeRef = useRef<number | null>(0);
+
+    const accumulatorRef = useRef<number>(0);
+
+    //     // ------------------------------------------------
+    //     // State synchronization
+    //     // ------------------------------------------------
 
     const syncUI = useCallback(() => {
         const game = gameRef.current;
 
-        setDifficulty(game.difficulty);
+        setPlayerScore(game.score);
         setStatus(game.status);
     }, []);
+
+    // Load the persisted high score on the client.
+    useEffect(() => {
+        try {
+            const savedScore = Number(
+                window.localStorage.getItem(HIGH_SCORE_KEY) ?? 0,
+            );
+
+            if (Number.isFinite(savedScore) && savedScore > 0) {
+                gameRef.current.highScore = savedScore;
+                syncUI();
+            }
+        } catch {
+            // The game remains playable if browser storage is unavailable.
+        }
+    }, [syncUI]);
+
+    // Persist new high scores.
+    // useEffect(() => {
+    //     try {
+    //         window.localStorage.setItem(HIGH_SCORE_KEY, String(view.highScore));
+    //     } catch {
+    //         // Ignore storage restrictions.
+    //     }
+    // }, [view.highScore]);
+
+    // Animation loop: the renderer draws each frame, while the engine
+    // advances the snake at a speed controlled by the current score.
+    useEffect(() => {
+        let frameId = 0;
+        let mounted = true;
+
+        const animate = (timestamp: number) => {
+            if (!mounted) return;
+
+            const ctx = canvasRef.current?.getContext("2d");
+
+            if (previousTimeRef.current === null) {
+                previousTimeRef.current = timestamp;
+            }
+
+            const delta = Math.min(timestamp - previousTimeRef.current, 100);
+
+            previousTimeRef.current = timestamp;
+
+            const game = gameRef.current;
+
+            if (game.status === "playing") {
+                accumulatorRef.current += delta;
+
+                let changed = false;
+
+                // A while loop keeps movement consistent if a frame is delayed.
+                while (
+                    accumulatorRef.current >=
+                        getMoveInterval(game, difficulty) &&
+                    game.status === "playing"
+                ) {
+                    accumulatorRef.current -= getMoveInterval(game, difficulty);
+                    updateGame(game);
+                    changed = true;
+                }
+
+                if (changed) {
+                    syncUI();
+                }
+            } else {
+                accumulatorRef.current = 0;
+            }
+
+            if (ctx) {
+                renderGame(ctx, game);
+            }
+
+            frameId = requestAnimationFrame(animate);
+        };
+
+        frameId = requestAnimationFrame(animate);
+
+        return () => {
+            mounted = false;
+            cancelAnimationFrame(frameId);
+            previousTimeRef.current = null;
+        };
+    }, [syncUI, difficulty]);
 
     // -----------------------------------------------
     // Start game
@@ -167,14 +182,10 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
         const game = gameRef.current;
 
         if (game.status === "gameOver") {
-            resetEngine(game, difficultyRef.current);
-
-            resetBall(
-                game,
-                difficultyRef.current,
-                Math.random() < 0.5 ? -1 : 1,
-            );
+            resetEngine(game, difficulty);
         }
+
+        setStatus("playing");
 
         game.status = "playing";
 
@@ -183,7 +194,7 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
         accumulatorRef.current = 0;
 
         syncUI();
-    }, [syncUI]);
+    }, [syncUI, difficulty]);
 
     // -----------------------------------------------
     // Pause game
@@ -195,6 +206,8 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
         if (game.status !== "playing") {
             return;
         }
+
+        setStatus("paused");
 
         game.status = "paused";
 
@@ -212,7 +225,7 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
     // -----------------------------------------------
 
     const handleReset = useCallback(() => {
-        resetEngine(gameRef.current, difficultyRef.current);
+        resetEngine(gameRef.current, difficulty);
 
         keysRef.current.clear();
 
@@ -220,80 +233,94 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
 
         accumulatorRef.current = 0;
 
-        aiStateRef.current = {
-            reactionTimer: 0,
-            targetY: GAME_HEIGHT / 2,
-        };
-
         syncUI();
-    }, [syncUI]);
+    }, [syncUI, difficulty]);
 
-    const showDPad =
-        isTouchDevice && controlsOpen && controller.status === "playing";
-    const showHUD =
-        controller.status === "playing" || controller.status === "paused";
+    const handleDirection = useCallback(
+        (direction: Direction) => {
+            const game = gameRef.current;
 
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-        const media = window.matchMedia("(pointer: coarse)");
-        const update = () =>
-            setIsTouchDevice(media.matches || window.innerWidth < 1024);
-        update();
-        media.addEventListener("change", update);
-        window.addEventListener("resize", update);
-        return () => {
-            media.removeEventListener("change", update);
-            window.removeEventListener("resize", update);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (typeof document === "undefined") return;
-
-        const onFullscreenChange = () => {
-            const inFullscreen = Boolean(document.fullscreenElement);
-            setIsFullscreen(inFullscreen);
-
-            if (inFullscreen) {
-                document.body.classList.add("show-system-cursor");
-            } else {
-                document.body.classList.remove("show-system-cursor");
-            }
-        };
-
-        document.addEventListener("fullscreenchange", onFullscreenChange);
-        return () => {
-            document.removeEventListener(
-                "fullscreenchange",
-                onFullscreenChange,
-            );
-            document.body.classList.remove("show-system-cursor");
-        };
-    }, []);
-
-    const toggleFullscreen = useCallback(async () => {
-        const el = containerRef.current;
-        if (!el || typeof document === "undefined") return;
-
-        try {
-            if (document.fullscreenElement) {
-                await document.exitFullscreen();
+            if (game.status === "ready") {
+                setDirection(game, direction);
+                startGame();
+                accumulatorRef.current = 0;
+                syncUI();
                 return;
             }
 
-            const withWebkit = el as HTMLDivElement & {
-                webkitRequestFullscreen?: () => Promise<void> | void;
+            setDirection(game, direction);
+            syncUI();
+        },
+        [syncUI, startGame],
+    );
+
+    const handleDifficultyChange = useCallback(
+        (nextDifficulty: Difficulty) => {
+            difficultyRef.current = nextDifficulty;
+            setDifficulty(nextDifficulty);
+            resetEngine(gameRef.current, nextDifficulty);
+            keysRef.current.clear();
+            previousTimeRef.current = 0;
+            accumulatorRef.current = 0;
+
+            syncUI();
+        },
+        [syncUI],
+    );
+
+    // Global keyboard controls let the player steer without clicking
+    // the canvas first.
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            const key = event.key.toLowerCase();
+
+            event.preventDefault();
+
+            const directionKeys: Record<string, Direction> = {
+                arrowup: "up",
+                w: "up",
+                arrowdown: "down",
+                s: "down",
+                arrowleft: "left",
+                a: "left",
+                arrowright: "right",
+                d: "right",
             };
 
-            if (el.requestFullscreen) {
-                await el.requestFullscreen();
-            } else if (withWebkit.webkitRequestFullscreen) {
-                await withWebkit.webkitRequestFullscreen();
+            if (directionKeys[key]) {
+                event.preventDefault();
+                handleDirection(directionKeys[key]);
+                return;
             }
-        } catch {
-            // Ignore fullscreen failures caused by browser restrictions.
-        }
-    }, []);
+
+            if ((key === " " || key === "escape") && !event.repeat) {
+                const game = gameRef.current;
+
+                if (game.status === "playing") {
+                    pauseGame();
+                } else {
+                    startGame();
+                }
+            }
+
+            if (key === "enter" && gameRef.current.status === "ready") {
+                startGame();
+                syncUI();
+            }
+
+            if (key === "r") {
+                resetEngine(gameRef.current, difficulty);
+                accumulatorRef.current = 0;
+                syncUI();
+            }
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", onKeyDown);
+        };
+    }, [handleDirection, syncUI, startGame, pauseGame, difficulty]);
 
     return (
         <div className="flex w-full flex-col items-center gap-4">
@@ -306,10 +333,10 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
                     <Label htmlFor="pong-difficulty">Difficulty:</Label>
 
                     <Select
-                    // value={Difficulty}
-                    // onValueChange={(value) =>
-                    //     handleDifficultyChange(value as Difficulty)
-                    // }
+                        value={difficulty}
+                        onValueChange={(value) =>
+                            handleDifficultyChange(value as Difficulty)
+                        }
                     >
                         <SelectTrigger
                             className="games-select-trigger"
@@ -325,176 +352,93 @@ export function SnakeGame({ initialDifficulty = "medium" }: SnakeGameProps) {
                     </Select>
                 </div>
                 {/* Game canvas */}
-                <div
-                    ref={containerRef}
-                    className={`relative flex flex-col items-center justify-center w-full h-full min-h-[400px] bg-slate-950 select-none touch-manipulation cursor-default`}
-                    style={isFullscreen ? { cursor: "default" } : undefined}
-                >
-                    <div className="absolute top-2 right-2 z-30 flex items-center gap-2">
-                        {isTouchDevice && (
-                            <Button
-                                type="button"
-                                onClick={() => setControlsOpen((prev) => !prev)}
-                                aria-label={
-                                    controlsOpen
-                                        ? "Hide controller"
-                                        : "Show controller"
-                                }
-                                title={
-                                    controlsOpen
-                                        ? "Hide controller"
-                                        : "Show controller"
-                                }
-                            >
-                                {controlsOpen
-                                    ? "Controller On"
-                                    : "Controller Off"}
-                            </Button>
-                        )}
 
-                        <Button
-                            type="button"
-                            onClick={toggleFullscreen}
-                            aria-label={
-                                isFullscreen
-                                    ? "Exit fullscreen"
-                                    : "Enter fullscreen"
-                            }
-                            title={
-                                isFullscreen
-                                    ? "Exit fullscreen"
-                                    : "Enter fullscreen"
-                            }
-                        >
-                            {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
-                        </Button>
+                <div className="relative flex items-center justify-center">
+                    <div className="relative flex items-center justify-center w-full max-w-full overflow-hidden">
+                        <canvas
+                            ref={canvasRef}
+                            width={GAME_WIDTH}
+                            height={GAME_HEIGHT}
+                            className="rounded-lg border border-slate-700/50 max-w-full h-auto"
+                        />
                     </div>
 
-                    {showHUD && (
-                        <div className="w-full max-w-[500px] px-2 z-10">
-                            <GameHUD
-                                score={controller.score}
-                                highScore={controller.highScore}
-                                level={controller.level}
-                                speed={controller.speed}
-                                activePowerUps={controller.activePowerUps}
-                            />
-                        </div>
-                    )}
+                    {/* Game overlays */}
+                    {status !== "playing" && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                            <div className="text-center">
+                                {status === "ready" && (
+                                    <>
+                                        <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
+                                            Ready?
+                                        </H2>
 
-                    <div className="relative flex items-center justify-center">
-                        <div className="relative flex items-center justify-center w-full max-w-full overflow-hidden">
-                            <canvas
-                                ref={canvasRef}
-                                width={900}
-                                height={500}
-                                className="rounded-lg border border-slate-700/50 max-w-full h-auto"
-                                style={{ imageRendering: "pixelated" }}
-                            />
-                        </div>
+                                        <P className="mt-2 text-sm text-zinc-400">
+                                            Elongate your snake.
+                                        </P>
+                                    </>
+                                )}
 
-                        {/* <GameOverlay
-                            status={controller.status}
-                            score={controller.score}
-                            highScore={controller.highScore}
-                            lastScore={controller.lastScore}
-                            selectedDifficulty={controller.selectedDifficulty}
-                            obstaclesEnabled={controller.obstaclesEnabled}
-                            onSelectDifficulty={controller.onSelectDifficulty}
-                            onToggleObstacles={controller.onToggleObstacles}
-                            onStart={controller.onStart}
-                            onResume={controller.onResume}
-                        /> */}
+                                {status === "paused" && (
+                                    <>
+                                        <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
+                                            Paused
+                                        </H2>
 
-                        {showDPad && (
-                            <div className="absolute bottom-4 left-1/2 z-30 -translate-x-1/2 pointer-events-none lg:bottom-6">
-                                <DPad onDirection={controller.onDirection} />
+                                        <P className="mt-2 text-sm text-zinc-400">
+                                            The game is paused.
+                                        </P>
+                                    </>
+                                )}
+
+                                {status === "gameOver" && (
+                                    <>
+                                        <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
+                                            Game Over
+                                        </H2>
+
+                                        <p className="mt-2 text-sm text-zinc-400">
+                                            Final score: {playerScore}
+                                        </p>
+                                    </>
+                                )}
+
+                                <Button
+                                    className="mt-4"
+                                    size="lg"
+                                    onClick={startGame}
+                                >
+                                    {status === "gameOver"
+                                        ? "Play Again"
+                                        : status === "paused"
+                                          ? "Resume"
+                                          : "Start Game"}
+                                </Button>
                             </div>
-                        )}
-                    </div>
-
-                    {showDPad && (
-                        <div className="absolute bottom-4 left-1/2 z-30 -translate-x-1/2 pointer-events-none lg:bottom-6">
-                            <DPad onDirection={controller.onDirection} />
                         </div>
                     )}
                 </div>
 
-                {/* Game overlays */}
-                {status !== "playing" && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                        <div className="text-center">
-                            {status === "ready" && (
-                                <>
-                                    <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
-                                        Ready?
-                                    </H2>
-
-                                    <P className="mt-2 text-sm text-zinc-400">
-                                        Get ready to pong.
-                                    </P>
-                                </>
-                            )}
-
-                            {status === "paused" && (
-                                <>
-                                    <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
-                                        Paused
-                                    </H2>
-
-                                    <P className="mt-2 text-sm text-zinc-400">
-                                        The game is paused.
-                                    </P>
-                                </>
-                            )}
-
-                            {status === "gameOver" && (
-                                <>
-                                    <H2 className="text-primary border-secondary dark:text-secondary dark:border-primary">
-                                        Game Over
-                                    </H2>
-
-                                    <p className="mt-2 text-sm text-zinc-400">
-                                        Final score:
-                                    </p>
-                                </>
-                            )}
-
-                            <Button
-                                className="mt-4"
-                                size="lg"
-                                onClick={startGame}
-                            >
-                                {status === "gameOver"
-                                    ? "Play Again"
-                                    : status === "paused"
-                                      ? "Resume"
-                                      : "Start Game"}
-                            </Button>
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            {/* Controls */}
-            <div className="flex flex-col gap-6">
-                {/* <div className=" flex flex-wrap items-center justify-center gap-3">
+                {/* Controls */}
+                <div className="flex flex-col gap-6">
+                    <div className=" flex flex-wrap items-center justify-center gap-3">
                         <StartPauseReset
                             startGame={startGame}
                             pauseGame={pauseGame}
                             resetGame={handleReset}
                             status={status}
                         />
-                    </div> */}
+                    </div>
 
-                {/* Instructions */}
+                    {/* Instructions */}
 
-                {/* <GameRules
+                    {/* <GameRules
                         movementInstrucions="W / S or ↑ / ↓"
                         difficultyBreakdown="Difficulty sliders simply adjust the speed of
                                 the ball and AI paddle."
                         gameControls="Spacebar or ESC to start / Pause"
                     /> */}
+                </div>
             </div>
         </div>
     );

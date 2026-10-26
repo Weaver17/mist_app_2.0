@@ -1,5 +1,9 @@
-import { circleRectCollision } from "../shared/game-physics";
-import { Ball, Difficulty, Paddle } from "../shared/game-types";
+import {
+    circleRectCollision,
+    clamp,
+    randomDirection,
+} from "../shared/game-physics";
+import type { Ball, Difficulty, Paddle } from "../shared/game-types";
 import {
     BALL_RADIUS,
     BALL_SPEED_INCREMENT,
@@ -16,30 +20,19 @@ import {
     PADDLE_HEIGHT,
     PADDLE_SPEED,
     PADDLE_WIDTH,
-    DIFFICULTY_CONFIG,
-    // DEFAULT_DIFFICULTY,
+    BREAKOUT_DIFFICULTY_CONFIG,
 } from "./breakout-types";
 
-import type { Brick, GameState, InputState } from "./breakout-types";
+import type { Brick, BreakoutGameState, InputState } from "./breakout-types";
 
-// --------------------------------------------------
-// Utility functions
-// --------------------------------------------------
-
-export function clamp(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value));
-}
-
-function randomDirection(): number {
-    return Math.random() < 0.5 ? -1 : 1;
-}
+export { clamp } from "../shared/game-physics";
 
 // --------------------------------------------------
 // Create ball
 // --------------------------------------------------
 
 function createBall(difficulty: Difficulty): Ball {
-    const speed = DIFFICULTY_CONFIG[difficulty].initialBallSpeed;
+    const speed = BREAKOUT_DIFFICULTY_CONFIG[difficulty].initialBallSpeed;
 
     return {
         x: GAME_WIDTH / 2,
@@ -81,7 +74,7 @@ function createPaddle(): Paddle {
 export function createBricks(difficulty: Difficulty): Brick[] {
     const bricks: Brick[] = [];
 
-    const rows = DIFFICULTY_CONFIG[difficulty].brickRows;
+    const rows = BREAKOUT_DIFFICULTY_CONFIG[difficulty].brickRows;
 
     const totalWidth =
         BRICK_COLUMNS * BRICK_WIDTH + (BRICK_COLUMNS - 1) * BRICK_GAP;
@@ -119,7 +112,9 @@ export function createBricks(difficulty: Difficulty): Brick[] {
 // Create initial game state
 // --------------------------------------------------
 
-export function createInitialGameState(difficulty: Difficulty): GameState {
+export function createInitialGameState(
+    difficulty: Difficulty,
+): BreakoutGameState {
     return {
         width: GAME_WIDTH,
 
@@ -143,7 +138,10 @@ export function createInitialGameState(difficulty: Difficulty): GameState {
 // Reset ball
 // --------------------------------------------------
 
-export function resetBall(game: GameState, difficulty: Difficulty): void {
+export function resetBall(
+    game: BreakoutGameState,
+    difficulty: Difficulty,
+): void {
     game.ball = createBall(difficulty);
 
     game.paddle.x = GAME_WIDTH / 2 - game.paddle.width / 2;
@@ -153,7 +151,10 @@ export function resetBall(game: GameState, difficulty: Difficulty): void {
 // Reset game
 // --------------------------------------------------
 
-export function resetGame(game: GameState, difficulty: Difficulty): void {
+export function resetGame(
+    game: BreakoutGameState,
+    difficulty: Difficulty,
+): void {
     const initialGame = createInitialGameState(difficulty);
 
     Object.assign(game, initialGame);
@@ -164,7 +165,7 @@ export function resetGame(game: GameState, difficulty: Difficulty): void {
 // --------------------------------------------------
 
 function updatePaddle(
-    game: GameState,
+    game: BreakoutGameState,
     input: InputState,
     deltaTime: number,
 ): void {
@@ -229,7 +230,7 @@ function handleWallCollision(ball: Ball): void {
 // Paddle collision
 // --------------------------------------------------
 
-function handlePaddleCollision(game: GameState): void {
+function handlePaddleCollision(game: BreakoutGameState): void {
     const ball = game.ball;
 
     const paddle = game.paddle;
@@ -271,7 +272,7 @@ function handlePaddleCollision(game: GameState): void {
 // Paddle collision detection
 // --------------------------------------------------
 
-function detectPaddleCollision(game: GameState): void {
+function detectPaddleCollision(game: BreakoutGameState): void {
     const ball = game.ball;
 
     const paddle = game.paddle;
@@ -292,7 +293,7 @@ function detectPaddleCollision(game: GameState): void {
 // Brick collision
 // --------------------------------------------------
 
-function handleBrickCollision(game: GameState): void {
+function handleBrickCollision(game: BreakoutGameState): void {
     const ball = game.ball;
 
     for (const brick of game.bricks) {
@@ -339,7 +340,7 @@ function handleBrickCollision(game: GameState): void {
 // Lives and game over
 // --------------------------------------------------
 
-function handleLifeLoss(game: GameState, difficulty: Difficulty): void {
+function handleLifeLoss(game: BreakoutGameState, difficulty: Difficulty): void {
     const ball = game.ball;
 
     if (ball.y - ball.radius > GAME_HEIGHT) {
@@ -361,7 +362,7 @@ function handleLifeLoss(game: GameState, difficulty: Difficulty): void {
 // Win condition
 // --------------------------------------------------
 
-function handleWinCondition(game: GameState): void {
+function handleWinCondition(game: BreakoutGameState): void {
     const remainingBricks = game.bricks.filter((brick) => !brick.destroyed);
 
     if (remainingBricks.length === 0) {
@@ -374,7 +375,7 @@ function handleWinCondition(game: GameState): void {
 // --------------------------------------------------
 
 export function updateGame(
-    game: GameState,
+    game: BreakoutGameState,
     input: InputState,
     deltaTime: number,
     difficulty: Difficulty,

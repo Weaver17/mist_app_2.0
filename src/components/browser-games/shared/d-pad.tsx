@@ -1,4 +1,8 @@
-import { Direction, DPadProps } from "../snake/snake-types";
+type Direction = "up" | "down" | "left" | "right";
+
+type DPadProps = {
+    onDirection: (direction: Direction) => void;
+};
 
 const BTN =
     "flex items-center justify-center w-14 h-14 rounded-xl bg-slate-800/80 active:bg-green-400/60 text-white text-2xl select-none touch-manipulation";
@@ -18,8 +22,8 @@ export function DPad({ onDirection }: DPadProps) {
             <span />
             <button
                 className={BTN}
-                onTouchStart={fire(Direction.Up)}
-                onMouseDown={fire(Direction.Up)}
+                onTouchStart={fire("up")}
+                onMouseDown={fire("up")}
                 aria-label="Up"
             >
                 ▲
@@ -27,8 +31,8 @@ export function DPad({ onDirection }: DPadProps) {
             <span />
             <button
                 className={BTN}
-                onTouchStart={fire(Direction.Left)}
-                onMouseDown={fire(Direction.Left)}
+                onTouchStart={fire("left")}
+                onMouseDown={fire("left")}
                 aria-label="Left"
             >
                 ◀
@@ -36,8 +40,8 @@ export function DPad({ onDirection }: DPadProps) {
             <span />
             <button
                 className={BTN}
-                onTouchStart={fire(Direction.Right)}
-                onMouseDown={fire(Direction.Right)}
+                onTouchStart={fire("right")}
+                onMouseDown={fire("right")}
                 aria-label="Right"
             >
                 ▶
@@ -45,8 +49,8 @@ export function DPad({ onDirection }: DPadProps) {
             <span />
             <button
                 className={BTN}
-                onTouchStart={fire(Direction.Down)}
-                onMouseDown={fire(Direction.Down)}
+                onTouchStart={fire("down")}
+                onMouseDown={fire("down")}
                 aria-label="Down"
             >
                 ▼

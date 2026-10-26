@@ -3,14 +3,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
-    COLORS,
     WINNING_SCORE,
     FIXED_TIME_STEP,
     GAME_HEIGHT,
     GAME_WIDTH,
 } from "./pong-types";
 
-import type { GameState, PlayerSide } from "./pong-types";
+import type { PongGameState, PlayerSide } from "./pong-types";
 
 import {
     createInitialGameState,
@@ -18,6 +17,7 @@ import {
     resetGame as resetEngine,
     updateGame,
 } from "./pong-engine";
+import { renderGame as renderPong } from "./pong-renderer";
 
 import { Button } from "../../custom/components/buttons/c_button";
 import { H2, P } from "@/typography/custom";
@@ -31,7 +31,7 @@ import {
 } from "@/components/custom/components/form/c_select";
 import StartPauseReset from "../components/start-pause-reset";
 import GameRules from "../components/game-rules";
-import { Difficulty, GameStatus } from "../shared/game-types";
+import type { Difficulty, GameStatus } from "../shared/game-types";
 
 // --------------------------------------------------
 // Component props
@@ -48,7 +48,7 @@ export function PongGame({
 }: PongGameProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const gameRef = useRef<GameState>(
+    const gameRef = useRef<PongGameState>(
         createInitialGameState(initialDifficulty),
     );
 
@@ -189,102 +189,10 @@ export function PongGame({
     //     // ------------------------------------------------
 
     const renderGame = useCallback(() => {
-        const canvas = canvasRef.current;
-
-        if (!canvas) {
-            return;
+        const context = canvasRef.current?.getContext("2d");
+        if (context) {
+            renderPong(context, gameRef.current);
         }
-
-        const context = canvas.getContext("2d");
-
-        if (!context) {
-            return;
-        }
-
-        const game = gameRef.current;
-
-        const scaleX = canvas.width / GAME_WIDTH;
-
-        const scaleY = canvas.height / GAME_HEIGHT;
-
-        context.save();
-
-        context.scale(scaleX, scaleY);
-
-        // Background
-
-        context.fillStyle = COLORS.background;
-
-        context.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-        // Center line
-
-        context.strokeStyle = COLORS.centerLine;
-
-        context.lineWidth = 3;
-
-        context.setLineDash([12, 12]);
-
-        context.beginPath();
-
-        context.moveTo(GAME_WIDTH / 2, 0);
-
-        context.lineTo(GAME_WIDTH / 2, GAME_HEIGHT);
-
-        context.stroke();
-
-        context.setLineDash([]);
-
-        // Player paddle
-
-        context.fillStyle = COLORS.player;
-
-        context.fillRect(
-            game.player.x,
-            game.player.y,
-            game.player.width,
-            game.player.height,
-        );
-
-        // AI paddle
-
-        context.fillStyle = COLORS.ai;
-
-        context.fillRect(game.ai.x, game.ai.y, game.ai.width, game.ai.height);
-
-        // Ball
-
-        context.beginPath();
-
-        context.arc(game.ball.x, game.ball.y, game.ball.radius, 0, Math.PI * 2);
-
-        context.fillStyle = COLORS.foreground;
-
-        context.fill();
-
-        // Ball glow
-
-        context.shadowBlur = 18;
-
-        context.shadowColor = COLORS.foreground;
-
-        context.beginPath();
-
-        context.arc(game.ball.x, game.ball.y, game.ball.radius, 0, Math.PI * 2);
-
-        context.fill();
-
-        context.shadowBlur = 0;
-
-        // Scores
-        context.fillStyle = COLORS.foreground;
-        context.font = "bold 36px sans-serif";
-        context.textAlign = "center";
-        context.textBaseline = "top";
-        context.fillText(String(game.playerScore), GAME_WIDTH * 0.25, 20);
-        context.fillText(String(game.aiScore), GAME_WIDTH * 0.75, 20);
-
-        context.restore();
     }, []);
 
     //     // ------------------------------------------------
