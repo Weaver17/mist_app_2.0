@@ -1,8 +1,13 @@
-import { Ball, Difficulty, GameStatus, Paddle } from "../shared/game-types";
+import type {
+    Ball,
+    Difficulty,
+    GameStatus,
+    Paddle,
+} from "../shared/game-types";
 
 export type PlayerSide = "player" | "ai";
 
-export interface GameState {
+export interface PongGameState {
     width: number;
     height: number;
     player: Paddle;
@@ -15,7 +20,7 @@ export interface GameState {
     lastHit: PlayerSide | null;
 }
 
-export interface DifficultyConfig {
+export interface PongDifficultyConfig {
     aiSpeed: number;
     reactionDelay: number;
     predictionError: number;
@@ -55,8 +60,6 @@ export const FIXED_TIME_STEP = 1 / 120;
 
 export const WINNING_SCORE = 7;
 
-export const DEFAULT_DIFFICULTY = "medium";
-
 export const COLORS = {
     background: "#171717",
     foreground: "#fafafa",
@@ -67,31 +70,32 @@ export const COLORS = {
     centerLine: "#444449",
 };
 
-export const DIFFICULTY_CONFIG: Record<Difficulty, DifficultyConfig> = {
-    easy: {
-        aiSpeed: 220,
-        reactionDelay: 0.22,
-        predictionError: 85,
-        initialBallSpeed: 360,
-        maxBallSpeed: 540,
-        ballSpeedIncrement: 22,
-    },
+export const PONG_DIFFICULTY_CONFIG: Record<Difficulty, PongDifficultyConfig> =
+    {
+        easy: {
+            aiSpeed: 220,
+            reactionDelay: 0.22,
+            predictionError: 85,
+            initialBallSpeed: 360,
+            maxBallSpeed: 540,
+            ballSpeedIncrement: 22,
+        },
 
-    medium: {
-        aiSpeed: 340,
-        reactionDelay: 0.1,
-        predictionError: 35,
-        initialBallSpeed: 360,
-        maxBallSpeed: 720,
-        ballSpeedIncrement: 32,
-    },
+        medium: {
+            aiSpeed: 340,
+            reactionDelay: 0.1,
+            predictionError: 35,
+            initialBallSpeed: 360,
+            maxBallSpeed: 720,
+            ballSpeedIncrement: 32,
+        },
 
-    hard: {
-        aiSpeed: 460,
-        reactionDelay: 0.025,
-        predictionError: 8,
-        initialBallSpeed: 540,
-        maxBallSpeed: 1080,
-        ballSpeedIncrement: 38,
-    },
-};
+        hard: {
+            aiSpeed: 460,
+            reactionDelay: 0.025,
+            predictionError: 8,
+            initialBallSpeed: 540,
+            maxBallSpeed: 1080,
+            ballSpeedIncrement: 38,
+        },
+    };

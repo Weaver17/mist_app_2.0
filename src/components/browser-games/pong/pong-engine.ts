@@ -1,29 +1,19 @@
-import { Difficulty } from "../shared/game-types";
+import { clamp, randomDirection } from "../shared/game-physics";
+import { DEFAULT_DIFFICULTY, type Difficulty } from "../shared/game-types";
 import {
     BALL_RADIUS,
     WINNING_SCORE,
-    DIFFICULTY_CONFIG,
+    PONG_DIFFICULTY_CONFIG,
     GAME_HEIGHT,
     GAME_WIDTH,
     PADDLE_HEIGHT,
     PADDLE_WIDTH,
     PLAYER_SPEED,
-    DEFAULT_DIFFICULTY,
 } from "./pong-types";
 
-import type { GameState, InputState, PlayerSide } from "./pong-types";
+import type { PongGameState, InputState, PlayerSide } from "./pong-types";
 
-// --------------------------------------------------
-// Utility functions
-// --------------------------------------------------
-
-export function clamp(value: number, min: number, max: number): number {
-    return Math.max(min, Math.min(max, value));
-}
-
-function randomDirection(): number {
-    return Math.random() < 0.5 ? -1 : 1;
-}
+export { clamp } from "../shared/game-physics";
 
 // --------------------------------------------------
 // Create game objects
@@ -43,7 +33,7 @@ function createBall(
     difficulty: Difficulty,
     direction: number = randomDirection(),
 ) {
-    const speed = DIFFICULTY_CONFIG[difficulty].initialBallSpeed;
+    const speed = PONG_DIFFICULTY_CONFIG[difficulty].initialBallSpeed;
 
     return {
         x: GAME_WIDTH / 2,
@@ -61,7 +51,7 @@ function createBall(
 
 export function createInitialGameState(
     difficulty: Difficulty = DEFAULT_DIFFICULTY,
-): GameState {
+): PongGameState {
     return {
         width: GAME_WIDTH,
         height: GAME_HEIGHT,
@@ -91,7 +81,7 @@ export function createInitialGameState(
 // --------------------------------------------------
 
 export function resetBall(
-    game: GameState,
+    game: PongGameState,
     difficulty: Difficulty,
     direction: number = randomDirection(),
 ): void {
@@ -105,7 +95,7 @@ export function resetBall(
 // --------------------------------------------------
 
 export function resetGame(
-    game: GameState,
+    game: PongGameState,
     difficulty: Difficulty = DEFAULT_DIFFICULTY,
 ): void {
     const initialGame = createInitialGameState(difficulty);
@@ -118,7 +108,7 @@ export function resetGame(
 // --------------------------------------------------
 
 function updatePlayer(
-    game: GameState,
+    game: PongGameState,
     input: InputState,
     deltaTime: number,
 ): void {
@@ -142,7 +132,7 @@ function updatePlayer(
 // --------------------------------------------------
 
 export function updateAI(
-    game: GameState,
+    game: PongGameState,
     difficulty: Difficulty,
     deltaTime: number,
     reactionTimer: number,
@@ -151,7 +141,7 @@ export function updateAI(
     reactionTimer: number;
     targetY: number;
 } {
-    const config = DIFFICULTY_CONFIG[difficulty];
+    const config = PONG_DIFFICULTY_CONFIG[difficulty];
 
     const ball = game.ball;
 
@@ -218,7 +208,7 @@ export function updateAI(
 // Wall collision
 // --------------------------------------------------
 
-function handleWallCollision(game: GameState): void {
+function handleWallCollision(game: PongGameState): void {
     const ball = game.ball;
 
     if (ball.y - ball.radius <= 0 && ball.vy < 0) {
@@ -239,7 +229,7 @@ function handleWallCollision(game: GameState): void {
 // --------------------------------------------------
 
 function handlePaddleCollision(
-    game: GameState,
+    game: PongGameState,
     side: PlayerSide,
     difficulty: Difficulty = "medium",
 ): void {
@@ -257,8 +247,8 @@ function handlePaddleCollision(
 
     const bounceAngle = normalizedImpact * maxBounceAngle;
 
-    const ballSpeedInc = DIFFICULTY_CONFIG[difficulty].ballSpeedIncrement;
-    const maxBallSpeed = DIFFICULTY_CONFIG[difficulty].maxBallSpeed;
+    const ballSpeedInc = PONG_DIFFICULTY_CONFIG[difficulty].ballSpeedIncrement;
+    const maxBallSpeed = PONG_DIFFICULTY_CONFIG[difficulty].maxBallSpeed;
 
     ball.speed = Math.min(ball.speed + ballSpeedInc, maxBallSpeed);
 
@@ -284,7 +274,7 @@ function handlePaddleCollision(
 // Detect paddle collisions
 // --------------------------------------------------
 
-function detectPaddleCollisions(game: GameState): void {
+function detectPaddleCollisions(game: PongGameState): void {
     const ball = game.ball;
 
     const player = game.player;
@@ -323,7 +313,7 @@ function detectPaddleCollisions(game: GameState): void {
 // --------------------------------------------------
 
 export function handleScoring(
-    game: GameState,
+    game: PongGameState,
     difficulty: Difficulty,
     winningScore: number,
 ): boolean {
@@ -369,7 +359,7 @@ export function handleScoring(
 // --------------------------------------------------
 
 export function updateGame(
-    game: GameState,
+    game: PongGameState,
     input: InputState,
     difficulty: Difficulty,
     deltaTime: number,

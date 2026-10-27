@@ -1,15 +1,21 @@
-import { Ball, Difficulty, GameStatus, Paddle } from "../shared/game-types";
+import type {
+    Ball,
+    Difficulty,
+    GameStatus,
+    Paddle,
+} from "../shared/game-types";
 
-export interface DifficultyConfig {
+export interface BreakoutDifficultyConfig {
     initialBallSpeed: number;
     maxBallSpeed: number;
     ballSpeedIncrement: number;
     brickRows: number;
 }
 
-// export const DEFAULT_DIFFICULTY: Difficulty = "medium";
-
-export const DIFFICULTY_CONFIG: Record<Difficulty, DifficultyConfig> = {
+export const BREAKOUT_DIFFICULTY_CONFIG: Record<
+    Difficulty,
+    BreakoutDifficultyConfig
+> = {
     easy: {
         initialBallSpeed: 300,
         maxBallSpeed: 480,
@@ -40,7 +46,7 @@ export interface Brick {
     destroyed: boolean;
 }
 
-export interface GameState {
+export interface BreakoutGameState {
     width: number;
     height: number;
 
