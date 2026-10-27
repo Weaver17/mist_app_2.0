@@ -2,10 +2,11 @@
 
 import { Label } from "@/components/custom/components/form/c_label";
 import { DEFAULT_DIFFICULTY, Difficulty } from "../shared/game-types";
-import { H2, P } from "@/typography/custom";
+import { H2, H3, P } from "@/typography/custom";
 import { GAME_HEIGHT, GAME_WIDTH, TetrisGameState } from "./tetris-types";
 import {
     createInitialGameState,
+    advanceLineClearAnimation,
     hardDrop,
     holdPiece,
     movePiece,
@@ -28,6 +29,7 @@ import {
 } from "@/components/custom/components/form/c_select";
 import { Button } from "@/components/custom/components/buttons/c_button";
 import StartPauseReset from "../components/start-pause-reset";
+import { Kbd } from "@/components/custom/components/c_kbd";
 
 type TetrisGameProps = {
     initialDifficulty?: Difficulty;
@@ -270,15 +272,23 @@ export function TetrisGame({
             previousTimeRef.current = timestamp;
 
             if (game.status === "playing") {
-                accumulatorRef.current += delta;
+                if (game.lineClearAnimation) {
+                    if (advanceLineClearAnimation(game, delta)) {
+                        accumulatorRef.current = 0;
+                        syncUI();
+                    }
+                } else {
+                    accumulatorRef.current += delta;
 
-                while (
-                    accumulatorRef.current >= game.dropInterval &&
-                    game.status === "playing"
-                ) {
-                    updateGame(game, game.dropInterval);
-                    accumulatorRef.current -= game.dropInterval;
-                    syncUI();
+                    while (
+                        accumulatorRef.current >= game.dropInterval &&
+                        game.status === "playing" &&
+                        !game.lineClearAnimation
+                    ) {
+                        updateGame(game, game.dropInterval);
+                        accumulatorRef.current -= game.dropInterval;
+                        syncUI();
+                    }
                 }
             } else {
                 accumulatorRef.current = 0;
@@ -297,7 +307,7 @@ export function TetrisGame({
         <div className="flex w-full flex-col items-center gap-4">
             <P>Clear lines, build combos, and beat your high score.</P>
             <div className="flex flex-col items-center justify-center gap-8">
-                <div className="flex items-center gap-3 ">
+                {/* <div className="flex items-center gap-3 ">
                     <Label htmlFor="pong-difficulty">Difficulty:</Label>
 
                     <Select
@@ -318,7 +328,7 @@ export function TetrisGame({
                             <SelectItem value="hard">Hard</SelectItem>
                         </SelectContent>
                     </Select>
-                </div>
+                </div> */}
                 {/* Game canvas */}
 
                 <div className="relative flex items-center justify-center">
@@ -341,7 +351,8 @@ export function TetrisGame({
                                         </H2>
 
                                         <P className="mt-2 text-sm text-zinc-400">
-                                            May your I peices be plentiful.
+                                            May your <strong>I</strong> peices
+                                            be plentiful.
                                         </P>
                                     </>
                                 )}
@@ -398,6 +409,86 @@ export function TetrisGame({
                     </div>
 
                     {/* Instructions */}
+                    <div className="mt-6 grid gap-4 border-t border-zinc-800 pt-5 sm:grid-cols-2">
+                        <div>
+                            <h2 className="mb-2 text-sm font-semibold text-zinc-200">
+                                Keyboard controls
+                            </h2>
+                            <ul className="space-y-1 text-sm text-zinc-400">
+                                <li>
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        ←
+                                    </Kbd>{" "}
+                                    /{" "}
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        →
+                                    </Kbd>{" "}
+                                    Move piece
+                                </li>
+                                <li>
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        ↓
+                                    </Kbd>{" "}
+                                    Soft drop
+                                </li>
+                                <li>
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        ↑
+                                    </Kbd>{" "}
+                                    or{" "}
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        X
+                                    </Kbd>{" "}
+                                    Rotate clockwise
+                                </li>
+                                <li>
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        Z
+                                    </Kbd>{" "}
+                                    Rotate counterclockwise
+                                </li>
+                                <li>
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        Space
+                                    </Kbd>{" "}
+                                    Hard drop
+                                </li>
+                                <li>
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        C
+                                    </Kbd>{" "}
+                                    or{" "}
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        Shift
+                                    </Kbd>{" "}
+                                    Hold piece
+                                </li>
+                                <li>
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        P
+                                    </Kbd>{" "}
+                                    or{" "}
+                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                        Esc
+                                    </Kbd>{" "}
+                                    Pause/resume
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <H3>Scoring</H3>
+                            <ul className="space-y-1 text-sm text-zinc-400">
+                                <li>Single line: 100 × level</li>
+                                <li>Double line: 300 × level</li>
+                                <li>Triple line: 500 × level</li>
+                                <li>Tetris (4 lines): 800 × level</li>
+                                <li>Soft drop: 1 point per cell</li>
+                                <li>Hard drop: 2 points per cell</li>
+                                <li>Every 10 lines advances a level.</li>
+                            </ul>
+                        </div>
+                    </div>
 
                     {/* <GameRules
                         movementInstrucions="W/A/S/D or Arrow Keys"

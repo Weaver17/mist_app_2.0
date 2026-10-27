@@ -5,6 +5,7 @@ import {
     BOARD_ROWS,
     CELL_SIZE,
     GAME_HEIGHT,
+    LINE_CLEAR_ANIMATION_DURATION,
     TETROMINO_COLORS,
 } from "./tetris-types";
 
@@ -31,13 +32,36 @@ export function renderGame(
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
     drawBoard(ctx, game);
-    drawGhostPiece(ctx, game);
-    drawActivePiece(ctx, game);
+    if (game.lineClearAnimation) {
+        drawLineClearAnimation(ctx, game);
+    } else {
+        drawGhostPiece(ctx, game);
+        drawActivePiece(ctx, game);
+    }
     drawSidePanel(ctx, game);
 
     // if (game.status !== "playing") {
     //     drawOverlay(ctx, game.status);
     // }
+}
+
+function drawLineClearAnimation(
+    ctx: CanvasRenderingContext2D,
+    game: TetrisGameState,
+): void {
+    const progress =
+        game.lineClearAnimation!.elapsed / LINE_CLEAR_ANIMATION_DURATION;
+    const opacity = 0.25 + Math.sin(progress * Math.PI) * 0.75;
+
+    ctx.save();
+    ctx.globalAlpha = opacity;
+    ctx.fillStyle = "#ffffff";
+
+    for (const row of game.lineClearAnimation!.rows) {
+        ctx.fillRect(0, row * CELL_SIZE, BOARD_WIDTH, CELL_SIZE);
+    }
+
+    ctx.restore();
 }
 
 function drawBoard(ctx: CanvasRenderingContext2D, game: TetrisGameState): void {

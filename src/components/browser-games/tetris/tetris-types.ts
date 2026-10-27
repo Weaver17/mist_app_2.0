@@ -16,6 +16,12 @@ export interface ActivePiece {
     y: number;
 }
 
+export interface LineClearAnimation {
+    rows: number[];
+    linesCleared: number;
+    elapsed: number;
+}
+
 export interface TetrisGameState {
     board: Cell[][];
     activePiece: ActivePiece;
@@ -28,9 +34,10 @@ export interface TetrisGameState {
     level: number;
     status: GameStatus;
     dropInterval: number;
+    lineClearAnimation: LineClearAnimation | null;
 }
 
-export const BOARD_COLUMNS = 10;
+export const BOARD_COLUMNS = 12;
 export const BOARD_ROWS = 20;
 export const HIDDEN_ROWS = 2;
 export const TOTAL_ROWS = BOARD_ROWS + HIDDEN_ROWS;
@@ -38,7 +45,7 @@ export const TOTAL_ROWS = BOARD_ROWS + HIDDEN_ROWS;
 export const CELL_SIZE = 30;
 
 export const BOARD_WIDTH = BOARD_COLUMNS * CELL_SIZE;
-export const SIDE_PANEL_WIDTH = 180;
+export const SIDE_PANEL_WIDTH = 100;
 
 export const GAME_WIDTH = BOARD_WIDTH + SIDE_PANEL_WIDTH;
 export const GAME_HEIGHT = BOARD_ROWS * CELL_SIZE;
@@ -50,6 +57,7 @@ export const LINES_PER_LEVEL = 10;
 export const INITIAL_DROP_INTERVAL = 800;
 export const MIN_DROP_INTERVAL = 80;
 export const DROP_SPEED_MULTIPLIER = 0.85;
+export const LINE_CLEAR_ANIMATION_DURATION = 180;
 
 export const LINE_SCORES: Record<number, number> = {
     0: 0,
@@ -69,13 +77,13 @@ export const LINE_SCORES: Record<number, number> = {
 //   L: "#fb923c",
 // };
 export const TETROMINO_COLORS: Record<TetrominoType, string> = {
-    I: GAME_COLORS.red,
-    O: GAME_COLORS.pink,
-    T: GAME_COLORS.yellow,
-    S: GAME_COLORS.lightGreen,
-    Z: GAME_COLORS.lightBlue,
+    I: GAME_COLORS.primary,
+    O: GAME_COLORS.orange,
+    T: GAME_COLORS.purple,
+    S: GAME_COLORS.darkGreen,
+    Z: GAME_COLORS.darkBlue,
     J: GAME_COLORS.orange,
-    L: GAME_COLORS.purple,
+    L: GAME_COLORS.red,
 };
 
 // export const BACKGROUND_COLOR = "#09090b";

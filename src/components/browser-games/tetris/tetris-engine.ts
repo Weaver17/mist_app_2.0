@@ -4,6 +4,7 @@ import {
     DROP_SPEED_MULTIPLIER,
     INITIAL_DROP_INTERVAL,
     INITIAL_LEVEL,
+    LINE_CLEAR_ANIMATION_DURATION,
     LINE_SCORES,
     LINES_PER_LEVEL,
     MIN_DROP_INTERVAL,
@@ -126,6 +127,7 @@ export function createInitialGameState(highScore = 0): TetrisGameState {
         level: INITIAL_LEVEL,
         status: "ready",
         dropInterval: INITIAL_DROP_INTERVAL,
+        lineClearAnimation: null,
     };
 }
 
@@ -155,8 +157,10 @@ export function getPieceCells(piece: ActivePiece): Position[] {
     return SHAPES[piece.type].map((cell) => {
         let { x, y } = cell;
 
-        for (let i = 0; i < piece.rotation; i += 1) {
-            [x, y] = [3 - y, x];
+        if (piece.type !== "O") {
+            for (let i = 0; i < piece.rotation; i += 1) {
+                [x, y] = [3 - y, x];
+            }
         }
 
         return {
@@ -186,7 +190,7 @@ export function movePiece(
     dx: number,
     dy: number,
 ): boolean {
-    if (game.status !== "playing") return false;
+    if (game.status !== "playing" || game.lineClearAnimation) return false;
 
     const candidate = {
         ...game.activePiece,
@@ -210,7 +214,7 @@ export function rotatePiece(
     game: TetrisGameState,
     direction: 1 | -1 = 1,
 ): boolean {
-    if (game.status !== "playing") return false;
+    if (game.status !== "playing" || game.lineClearAnimation) return false;
 
     const piece = game.activePiece;
     const rotation = (piece.rotation + direction + 4) % 4;
@@ -256,7 +260,7 @@ export function rotatePiece(
 }
 
 export function softDrop(game: TetrisGameState): void {
-    if (game.status !== "playing") return;
+    if (game.status !== "playing" || game.lineClearAnimation) return;
 
     const moved = movePiece(game, 0, 1);
 
@@ -267,7 +271,7 @@ export function softDrop(game: TetrisGameState): void {
 }
 
 export function hardDrop(game: TetrisGameState): void {
-    if (game.status !== "playing") return;
+    if (game.status !== "playing" || game.lineClearAnimation) return;
 
     let distance = 0;
 
@@ -287,7 +291,9 @@ export function hardDrop(game: TetrisGameState): void {
 }
 
 export function holdPiece(game: TetrisGameState): void {
-    if (game.status !== "playing" || !game.canHold) return;
+    if (game.status !== "playing" || game.lineClearAnimation || !game.canHold) {
+        return;
+    }
 
     const currentType = game.activePiece.type;
 
@@ -312,7 +318,7 @@ export function holdPiece(game: TetrisGameState): void {
 }
 
 export function updateGame(game: TetrisGameState, deltaTime: number): void {
-    if (game.status !== "playing") return;
+    if (game.status !== "playing" || game.lineClearAnimation) return;
 
     // The component accumulates elapsed time and calls this
     // when the current gravity interval has elapsed.
@@ -335,27 +341,54 @@ function lockPiece(game: TetrisGameState): void {
         }
     }
 
-    clearLines(game);
-    spawnNext(game);
+    if (!clearLines(game)) {
+        spawnNext(game);
+    }
 }
 
-function clearLines(game: TetrisGameState): void {
-    const remainingRows = game.board.filter((row) =>
-        row.some((cell) => cell === null),
+function clearLines(game: TetrisGameState): boolean {
+    const rows = game.board.flatMap((row, index) =>
+        row.every((cell) => cell !== null) ? [index] : [],
     );
 
-    const cleared = BOARD_ROWS - remainingRows.length;
+    if (rows.length === 0) return false;
 
-    if (cleared === 0) return;
+    game.lineClearAnimation = {
+        rows,
+        linesCleared: rows.length,
+        elapsed: 0,
+    };
 
-    const emptyRows = Array.from({ length: cleared }, () =>
+    return true;
+}
+
+export function advanceLineClearAnimation(
+    game: TetrisGameState,
+    deltaTime: number,
+): boolean {
+    const animation = game.lineClearAnimation;
+
+    if (!animation || game.status !== "playing") return false;
+
+    animation.elapsed = Math.min(
+        animation.elapsed + deltaTime,
+        LINE_CLEAR_ANIMATION_DURATION,
+    );
+
+    if (animation.elapsed < LINE_CLEAR_ANIMATION_DURATION) return false;
+
+    const clearedRows = new Set(animation.rows);
+    const remainingRows = game.board.filter(
+        (_, index) => !clearedRows.has(index),
+    );
+    const emptyRows = Array.from({ length: animation.linesCleared }, () =>
         Array<Cell>(BOARD_COLUMNS).fill(null),
     );
 
     game.board = [...emptyRows, ...remainingRows];
-
-    game.lines += cleared;
-    game.score += (LINE_SCORES[cleared] ?? 0) * game.level;
+    game.lineClearAnimation = null;
+    game.lines += animation.linesCleared;
+    game.score += (LINE_SCORES[animation.linesCleared] ?? 0) * game.level;
 
     game.level = Math.floor(game.lines / LINES_PER_LEVEL) + INITIAL_LEVEL;
 
@@ -365,6 +398,8 @@ function clearLines(game: TetrisGameState): void {
     );
 
     updateHighScore(game);
+    spawnNext(game);
+    return true;
 }
 
 function spawnNext(game: TetrisGameState): void {
