@@ -2,6 +2,7 @@
 import BreakoutCard from "@/components/browser-games/breakout/breakout-card";
 import PongCard from "@/components/browser-games/pong/pong-card";
 import SnakeCard from "@/components/browser-games/snake/snake-card";
+import TetrisCard from "@/components/browser-games/tetris/tetris-card";
 import ToTopBtn from "@/components/buttons/to-top-btn";
 import BrowserGameCard from "@/components/cards/browser-game-card";
 import { AnimatedList } from "@/components/custom/components/animated/c_animated-list";
@@ -70,7 +71,7 @@ function BrowserGamesPage() {
                     <PongCard />
                     <BreakoutCard />
                     <SnakeCard />
-                    <BrowserGameCard />
+                    <TetrisCard />
                     <BrowserGameCard />
                     <BrowserGameCard />
                 </AnimatedList>
