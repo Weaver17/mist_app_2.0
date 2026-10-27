@@ -1,8 +1,9 @@
-import { GAME_HEIGHT, GAME_WIDTH, COLORS } from "./pong-types";
+import { GAME_HEIGHT, GAME_WIDTH } from "./pong-types";
 
 import type { PongGameState } from "./pong-types";
 
 import { drawGameBackground, drawGameScores } from "../shared/game-renderer";
+import { GAME_COLORS } from "../shared/game-types";
 
 export function renderGame(
     context: CanvasRenderingContext2D,
@@ -14,9 +15,14 @@ export function renderGame(
         context.canvas.height / GAME_HEIGHT,
     );
 
-    drawGameBackground(context, GAME_WIDTH, GAME_HEIGHT, COLORS.background);
+    drawGameBackground(
+        context,
+        GAME_WIDTH,
+        GAME_HEIGHT,
+        GAME_COLORS.background,
+    );
 
-    context.strokeStyle = COLORS.centerLine;
+    context.strokeStyle = GAME_COLORS.muted;
     context.lineWidth = 3;
     context.setLineDash([12, 12]);
     context.beginPath();
@@ -25,7 +31,7 @@ export function renderGame(
     context.stroke();
     context.setLineDash([]);
 
-    context.fillStyle = COLORS.player;
+    context.fillStyle = GAME_COLORS.primary;
     context.fillRect(
         game.player.x,
         game.player.y,
@@ -33,16 +39,16 @@ export function renderGame(
         game.player.height,
     );
 
-    context.fillStyle = COLORS.ai;
+    context.fillStyle = GAME_COLORS.white;
     context.fillRect(game.ai.x, game.ai.y, game.ai.width, game.ai.height);
 
     context.beginPath();
     context.arc(game.ball.x, game.ball.y, game.ball.radius, 0, Math.PI * 2);
-    context.fillStyle = COLORS.foreground;
+    context.fillStyle = GAME_COLORS.foreground;
     context.fill();
 
     context.shadowBlur = 18;
-    context.shadowColor = COLORS.foreground;
+    context.shadowColor = GAME_COLORS.foreground;
     context.beginPath();
     context.arc(game.ball.x, game.ball.y, game.ball.radius, 0, Math.PI * 2);
     context.fill();
@@ -53,7 +59,7 @@ export function renderGame(
         GAME_WIDTH,
         game.playerScore,
         game.aiScore,
-        COLORS.foreground,
+        GAME_COLORS.foreground,
     );
 
     context.restore();

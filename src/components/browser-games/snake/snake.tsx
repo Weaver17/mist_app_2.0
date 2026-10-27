@@ -432,12 +432,11 @@ export function SnakeGame({
 
                     {/* Instructions */}
 
-                    {/* <GameRules
-                        movementInstrucions="W / S or ↑ / ↓"
-                        difficultyBreakdown="Difficulty sliders simply adjust the speed of
-                                the ball and AI paddle."
+                    <GameRules
+                        movementInstrucions="W/A/S/D or Arrow Keys"
+                        difficultyBreakdown="Difficulty sliders change starting speed and speed increase per score."
                         gameControls="Spacebar or ESC to start / Pause"
-                    /> */}
+                    />
                 </div>
             </div>
         </div>

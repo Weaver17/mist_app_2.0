@@ -60,15 +60,15 @@ export const FIXED_TIME_STEP = 1 / 120;
 
 export const WINNING_SCORE = 7;
 
-export const COLORS = {
-    background: "#171717",
-    foreground: "#fafafa",
-    muted: "#71717a",
-    accent: "#0284b8",
-    player: "#0284b8",
-    ai: "#f6f6f6",
-    centerLine: "#444449",
-};
+// export const COLORS = {
+//     background: "#171717",
+//     foreground: "#fafafa",
+//     muted: "#71717a",
+//     accent: "#0284b8",
+//     player: "#0284b8",
+//     ai: "#f6f6f6",
+//     centerLine: "#444449",
+// };
 
 export const PONG_DIFFICULTY_CONFIG: Record<Difficulty, PongDifficultyConfig> =
     {

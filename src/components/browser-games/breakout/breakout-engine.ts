@@ -7,7 +7,6 @@ import type { Ball, Difficulty, Paddle } from "../shared/game-types";
 import {
     BALL_RADIUS,
     BALL_SPEED_INCREMENT,
-    BRICK_COLORS,
     BRICK_COLUMNS,
     BRICK_GAP,
     BRICK_HEIGHT,
@@ -21,6 +20,7 @@ import {
     PADDLE_SPEED,
     PADDLE_WIDTH,
     BREAKOUT_DIFFICULTY_CONFIG,
+    BRICK_COLORS,
 } from "./breakout-types";
 
 import type { Brick, BreakoutGameState, InputState } from "./breakout-types";

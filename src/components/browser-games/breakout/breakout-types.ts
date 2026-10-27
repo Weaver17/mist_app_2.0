@@ -112,13 +112,13 @@ export const BRICK_COLORS = [
     "#8b5cf6",
 ];
 
-// Visual configuration
+// // Visual configuration
 
-export const COLORS = {
-    background: "#171717",
-    foreground: "#fafafa",
-    muted: "#71717a",
-    paddle: "#0284b8",
-    ball: "#fafafa",
-    border: "#27272a",
-};
+// export const COLORS = {
+//     background: "#171717",
+//     foreground: "#fafafa",
+//     muted: "#71717a",
+//     paddle: "#0284b8",
+//     ball: "#fafafa",
+//     border: "#27272a",
+// };

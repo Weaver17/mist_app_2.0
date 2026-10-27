@@ -7,24 +7,22 @@ import {
 } from "./snake-types";
 
 import type { Point, SnakeGameState } from "./snake-types";
-import {
-    drawGameBackground,
-    drawGameScore,
-} from "../shared/game-renderer";
+import { drawGameBackground, drawGameScore } from "../shared/game-renderer";
+import { GAME_COLORS } from "../shared/game-types";
 
 export function renderGame(
     ctx: CanvasRenderingContext2D,
     game: SnakeGameState,
 ): void {
-    drawGameBackground(ctx, GAME_WIDTH, GAME_HEIGHT, "#171717");
+    drawGameBackground(ctx, GAME_WIDTH, GAME_HEIGHT, GAME_COLORS.background);
     drawGrid(ctx);
     drawFood(ctx, game.food);
     drawSnake(ctx, game.snake);
-    drawGameScore(ctx, game.score, GAME_WIDTH * 0.05, "#fafafa");
+    drawGameScore(ctx, game.score, GAME_WIDTH * 0.05, GAME_COLORS.foreground);
 }
 
 function drawGrid(ctx: CanvasRenderingContext2D): void {
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.045)";
+    ctx.strokeStyle = "rgb(30, 30, 35)";
     ctx.lineWidth = 1;
 
     for (let x = 0; x <= GRID_COLUMNS; x += 1) {
@@ -49,7 +47,8 @@ function drawSnake(ctx: CanvasRenderingContext2D, snake: Point[]): void {
         const y = segment.y * CELL_SIZE + inset;
         const size = CELL_SIZE - inset * 2;
 
-        ctx.fillStyle = index === 0 ? "#a3e635" : "#65a30d";
+        ctx.fillStyle =
+            index === 0 ? GAME_COLORS.primary : GAME_COLORS.lightBlue;
 
         ctx.beginPath();
         ctx.roundRect(x, y, size, size, index === 0 ? 7 : 5);
@@ -103,10 +102,10 @@ function drawFood(ctx: CanvasRenderingContext2D, food: Point): void {
     const centerY = food.y * CELL_SIZE + CELL_SIZE / 2;
 
     // Glow
-    ctx.shadowColor = "#fb7185";
+    ctx.shadowColor = GAME_COLORS.white;
     ctx.shadowBlur = 12;
 
-    ctx.fillStyle = "#fb7185";
+    ctx.fillStyle = GAME_COLORS.yellow;
     ctx.beginPath();
     ctx.arc(centerX, centerY, CELL_SIZE * 0.34, 0, Math.PI * 2);
     ctx.fill();
@@ -119,46 +118,3 @@ function drawFood(ctx: CanvasRenderingContext2D, food: Point): void {
     ctx.arc(centerX - 3, centerY - 3, CELL_SIZE * 0.11, 0, Math.PI * 2);
     ctx.fill();
 }
-
-// function drawOverlay(
-//     ctx: CanvasRenderingContext2D,
-//     status: SnakeGameState["status"],
-// ): void {
-//     const messages: Partial<
-//         Record<SnakeGameState["status"], { title: string; subtitle: string }>
-//     > = {
-//         ready: {
-//             title: "SNAKE",
-//             subtitle: "Press Start or an arrow key to begin",
-//         },
-//         paused: {
-//             title: "PAUSED",
-//             subtitle: "Press Space or Resume to continue",
-//         },
-//         gameOver: {
-//             title: "GAME OVER",
-//             subtitle: "Press Restart to try again",
-//         },
-//         won: {
-//             title: "YOU WIN!",
-//             subtitle: "You filled the entire board",
-//         },
-//     };
-
-//     const message = messages[status];
-//     if (!message) return;
-
-//     ctx.fillStyle = "rgba(9, 9, 11, 0.78)";
-//     ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-//     ctx.textAlign = "center";
-//     ctx.textBaseline = "middle";
-
-//     ctx.fillStyle = "#a3e635";
-//     ctx.font = "bold 48px sans-serif";
-//     ctx.fillText(message.title, GAME_WIDTH / 2, GAME_HEIGHT / 2 - 22);
-
-//     ctx.fillStyle = "#e4e4e7";
-//     ctx.font = "16px sans-serif";
-//     ctx.fillText(message.subtitle, GAME_WIDTH / 2, GAME_HEIGHT / 2 + 28);
-// }

@@ -1,8 +1,9 @@
-import { COLORS, GAME_HEIGHT, GAME_WIDTH } from "./breakout-types";
+import { GAME_HEIGHT, GAME_WIDTH } from "./breakout-types";
 
 import type { BreakoutGameState } from "./breakout-types";
 
 import { drawGameBackground, drawGameScores } from "../shared/game-renderer";
+import { GAME_COLORS } from "../shared/game-types";
 
 export function renderGame(
     context: CanvasRenderingContext2D,
@@ -14,7 +15,12 @@ export function renderGame(
         context.canvas.height / GAME_HEIGHT,
     );
 
-    drawGameBackground(context, GAME_WIDTH, GAME_HEIGHT, COLORS.background);
+    drawGameBackground(
+        context,
+        GAME_WIDTH,
+        GAME_HEIGHT,
+        GAME_COLORS.background,
+    );
 
     for (const brick of game.bricks) {
         if (brick.destroyed) {
@@ -31,9 +37,9 @@ export function renderGame(
         context.fillRect(brick.x, brick.y + brick.height - 3, brick.width, 3);
     }
 
-    context.fillStyle = COLORS.paddle;
+    context.fillStyle = GAME_COLORS.primary;
     context.shadowBlur = 14;
-    context.shadowColor = COLORS.paddle;
+    context.shadowColor = GAME_COLORS.primary;
     context.fillRect(
         game.paddle.x,
         game.paddle.y,
@@ -44,9 +50,9 @@ export function renderGame(
 
     context.beginPath();
     context.arc(game.ball.x, game.ball.y, game.ball.radius, 0, Math.PI * 2);
-    context.fillStyle = COLORS.ball;
+    context.fillStyle = GAME_COLORS.white;
     context.shadowBlur = 16;
-    context.shadowColor = COLORS.ball;
+    context.shadowColor = GAME_COLORS.white;
     context.fill();
     context.shadowBlur = 0;
 
@@ -55,7 +61,7 @@ export function renderGame(
         GAME_WIDTH,
         game.score,
         game.lives,
-        COLORS.foreground,
+        GAME_COLORS.foreground,
     );
 
     context.restore();
