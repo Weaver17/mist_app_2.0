@@ -98,7 +98,7 @@ function takeNextPiece(queue: TetrominoType[]): {
 
 function createBoard(): Cell[][] {
     return Array.from({ length: BOARD_ROWS }, () =>
-        Array<Cell>(BOARD_COLUMNS).fill(null),
+        new Array<Cell>(BOARD_COLUMNS).fill(null),
     );
 }
 
@@ -149,8 +149,8 @@ export function resumeGame(game: TetrisGameState): void {
     }
 }
 
-export function resetGame(game: TetrisGameState): TetrisGameState {
-    return createInitialGameState(game.highScore);
+export function resetGame(game: TetrisGameState): void {
+    Object.assign(game, createInitialGameState(game.highScore));
 }
 
 export function getPieceCells(piece: ActivePiece): Position[] {
@@ -382,7 +382,7 @@ export function advanceLineClearAnimation(
         (_, index) => !clearedRows.has(index),
     );
     const emptyRows = Array.from({ length: animation.linesCleared }, () =>
-        Array<Cell>(BOARD_COLUMNS).fill(null),
+        new Array<Cell>(BOARD_COLUMNS).fill(null),
     );
 
     game.board = [...emptyRows, ...remainingRows];

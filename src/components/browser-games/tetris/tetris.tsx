@@ -64,8 +64,14 @@ export function TetrisGame({
     // START GAME
 
     const start = useCallback(() => {
+        const game = gameRef.current;
+
         startGame(gameRef.current);
         resumeGame(gameRef.current);
+
+        if (game.status === "gameOver" || game.status === "won") {
+            resetGame(game);
+        }
         syncUI();
     }, [syncUI]);
 
@@ -225,11 +231,11 @@ export function TetrisGame({
                     break;
 
                 case "arrowup":
-                case "x":
+                case "w":
                     rotate(1);
                     break;
 
-                case "z":
+                case "q":
                     rotate(-1);
                     break;
 
@@ -409,80 +415,90 @@ export function TetrisGame({
                     </div>
 
                     {/* Instructions */}
-                    <div className="mt-6 grid gap-4 border-t border-zinc-800 pt-5 sm:grid-cols-2">
-                        <div>
-                            <h2 className="mb-2 text-sm font-semibold text-zinc-200">
-                                Keyboard controls
-                            </h2>
-                            <ul className="space-y-1 text-sm text-zinc-400">
-                                <li>
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        ←
-                                    </Kbd>{" "}
-                                    /{" "}
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        →
-                                    </Kbd>{" "}
-                                    Move piece
+                    <div className="flex gap-4">
+                        <div className="p-6 flex flex-col gap-6 border rounded-md bg-card/50">
+                            <H3 className="">Keyboard controls</H3>
+                            <ul className="space-y-1 text-sm text-card-foreground dark:text-muted-foreground">
+                                <li className="flex gap-2 items-center">
+                                    <div className="flex gap-2">
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            A
+                                        </Kbd>{" "}
+                                        /{" "}
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            D
+                                        </Kbd>
+                                    </div>{" "}
+                                    <P className="m-0!"> Move piece</P>
                                 </li>
-                                <li>
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        ↓
-                                    </Kbd>{" "}
-                                    Soft drop
+                                <li className="flex gap-2 items-center">
+                                    <div className="flex gap-2">
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            S
+                                        </Kbd>
+                                    </div>{" "}
+                                    <P className="m-0!">Soft drop</P>
                                 </li>
-                                <li>
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        ↑
-                                    </Kbd>{" "}
-                                    or{" "}
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        X
-                                    </Kbd>{" "}
-                                    Rotate clockwise
+                                <li className="flex gap-2 items-center">
+                                    <div className="flex gap-2">
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            W
+                                        </Kbd>
+                                    </div>{" "}
+                                    <P className="m-0!">Rotate clockwise</P>
                                 </li>
-                                <li>
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        Z
-                                    </Kbd>{" "}
-                                    Rotate counterclockwise
+                                <li className="flex gap-2 items-center">
+                                    <div className="flex gap-2">
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            Q
+                                        </Kbd>
+                                    </div>{" "}
+                                    <P className="m-0!">
+                                        Rotate counterclockwise
+                                    </P>
                                 </li>
-                                <li>
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        Space
-                                    </Kbd>{" "}
-                                    Hard drop
+                                <li className="flex gap-2 items-center">
+                                    <div className="flex gap-2">
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            Space
+                                        </Kbd>
+                                    </div>{" "}
+                                    <P className="m-0!">Hard drop</P>
                                 </li>
-                                <li>
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        C
-                                    </Kbd>{" "}
-                                    or{" "}
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        Shift
-                                    </Kbd>{" "}
-                                    Hold piece
+                                <li className="flex gap-2 items-center">
+                                    <div className="flex gap-2">
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            C
+                                        </Kbd>{" "}
+                                        or{" "}
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            Shift
+                                        </Kbd>
+                                    </div>{" "}
+                                    <P className="m-0!">Hold piece</P>
                                 </li>
-                                <li>
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        P
-                                    </Kbd>{" "}
-                                    or{" "}
-                                    <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
-                                        Esc
-                                    </Kbd>{" "}
-                                    Pause/resume
+                                <li className="flex gap-2 items-center">
+                                    <div className="flex gap-2">
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            P
+                                        </Kbd>{" "}
+                                        or{" "}
+                                        <Kbd className="bg-zinc-800! border-muted! text-muted-foreground! dark:bg-zinc-800! dark:border-muted!">
+                                            Esc
+                                        </Kbd>
+                                    </div>{" "}
+                                    <P className="m-0!">Pause/resume</P>
                                 </li>
                             </ul>
                         </div>
 
-                        <div>
+                        <div className="p-6 flex flex-col gap-6 border rounded-md bg-card/50">
                             <H3>Scoring</H3>
-                            <ul className="space-y-1 text-sm text-zinc-400">
-                                <li>Single line: 100 × level</li>
-                                <li>Double line: 300 × level</li>
-                                <li>Triple line: 500 × level</li>
-                                <li>Tetris (4 lines): 800 × level</li>
+                            <ul className="space-y-1 text-sm text-card-foreground dark:text-muted-foreground">
+                                <li>Single line: 100 x level</li>
+                                <li>Double line: 300 x level</li>
+                                <li>Triple line: 500 x level</li>
+                                <li>Tetris (4 lines): 800 x level</li>
                                 <li>Soft drop: 1 point per cell</li>
                                 <li>Hard drop: 2 points per cell</li>
                                 <li>Every 10 lines advances a level.</li>
